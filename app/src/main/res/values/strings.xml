@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GymBeacon</string>
+    <string name="login_app_name">Gym Info</string>
+    <string name="login">로그인</string>
+    <string name="edit_text_id">아이디</string>
+    <string name="edit_text_password">비밀번호</string>
+    <string name="button_login">로그인</string>
+    <string name="text_view_sign_up">회원가입</string>
 </resources>
