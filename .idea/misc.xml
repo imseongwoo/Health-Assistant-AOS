@@ -3,17 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/ic_kakao.xml" value="0.1425" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/layerlist_button_kakao.xml" value="0.1425" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/layerlist_button_naver.xml" value="0.152" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/selector_rect_radius_100_c4c4c4_ff7f23.xml" value="0.1" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/shape_circ_03c75a_stroke_2aab15_solid.xml" value="0.152" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/shape_circ_fee500_stroke_efd54f_solid.xml" value="0.1" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/shape_rect_c4c4c4_solid_radius_100.xml" value="0.1" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/shape_rect_f6bf54_solid_radius_100.xml" value="0.1" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/background_bluegrey.xml" value="0.159" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_login.xml" value="0.17760416666666667" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main_page.xml" value="0.11096014492753623" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main_page.xml" value="0.2" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/mainpage_item_layout.xml" value="0.2" />
       </map>
     </option>
   </component>
