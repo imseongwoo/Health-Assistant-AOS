@@ -1,6 +1,8 @@
 package com.example.gymbeacon.model
 
+import com.google.gson.annotations.SerializedName
+
 data class GymInfo(
-    val gymName: String,
-    val currentUser: Int
+    @SerializedName("gym_name")val gymName: String,
+    @SerializedName("current_user")val currentUser: Int
 )
