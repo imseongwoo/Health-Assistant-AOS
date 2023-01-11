@@ -24,6 +24,7 @@ class MainPageActivity : AppCompatActivity() {
         // GymInfoViewModel observe
         viewModel.items.observe(this@MainPageActivity) {
             Log.e("mainpage","items = $it")
+            mainpageAdapter.submitList(it)
         }
 
     }

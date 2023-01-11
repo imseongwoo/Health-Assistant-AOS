@@ -27,7 +27,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             tools:text="담헌헬스장"
-            android:text="@{gyminfo.gymName}"
+            android:text="@{gyminfo.gymName.toString()}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

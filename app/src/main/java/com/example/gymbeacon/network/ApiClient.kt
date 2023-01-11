@@ -1,4 +1,4 @@
-package com.example.gymbeacon
+package com.example.gymbeacon.network
 
 import com.example.gymbeacon.model.GymInfo
 import okhttp3.OkHttpClient

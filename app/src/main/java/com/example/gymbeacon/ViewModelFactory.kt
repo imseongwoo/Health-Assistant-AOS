@@ -2,7 +2,7 @@ package com.example.gymbeacon
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.gymbeacon.model.GymInfo
+import com.example.gymbeacon.network.ApiClient
 import com.example.gymbeacon.repository.GymInfoRemoteDatasource
 import com.example.gymbeacon.repository.GymInfoRepository
 import com.example.gymbeacon.ui.gyminfo.GymInfoViewModel
