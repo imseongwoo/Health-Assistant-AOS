@@ -11,5 +11,5 @@ object RetrofitImpl {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val service: RetrofitService = retrofit.create(RetrofitService::class.java)
+    private val service: RetrofitService = retrofit.create(RetrofitService::class.java)
 }
