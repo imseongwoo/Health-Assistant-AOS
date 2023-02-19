@@ -3,11 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/background_bluegrey.xml" value="0.159" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_login.xml" value="0.17760416666666667" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_device_control.xml" value="0.196875" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main_page.xml" value="0.2" />
-        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/mainpage_item_layout.xml" value="0.2" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main_page.xml" value="0.25" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/mainpage_item_layout.xml" value="0.22395833333333334" />
       </map>
     </option>
   </component>
