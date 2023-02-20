@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityLoginBinding
+import com.example.gymbeacon.ui.home.HomeActivity
 import com.example.gymbeacon.ui.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -23,6 +24,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun goToSignUpActivity() {
-        Intent(this,SignUpActivity::class.java).also { startActivity(it) }
+        Intent(this,HomeActivity::class.java).also { startActivity(it) }
     }
 }
