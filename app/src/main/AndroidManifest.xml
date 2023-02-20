@@ -16,7 +16,7 @@
         android:theme="@style/Theme.GymBeacon"
         tools:targetApi="31">
         <activity
-            android:name=".NewGymDetailActivity"
+            android:name=".ui.home.NewGymDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.HomeActivity"

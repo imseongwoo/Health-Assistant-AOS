@@ -1,5 +1,6 @@
 package com.example.gymbeacon.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,10 +27,14 @@ class NaviHomeFragment : Fragment() {
 
         with(binding) {
             constraintNewGym.setOnClickListener {
-
+                goToNewGymDetailActivity()
             }
         }
 
+    }
+
+    fun goToNewGymDetailActivity() {
+        Intent(activity,NewGymDetailActivity::class.java).also { startActivity(it) }
     }
 
     companion object {
