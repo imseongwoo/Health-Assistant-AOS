@@ -29,12 +29,26 @@ class NaviHomeFragment : Fragment() {
             constraintNewGym.setOnClickListener {
                 goToNewGymDetailActivity()
             }
+            constraintLayoutYeasolGym.setOnClickListener {
+                goToYeasolGymDetailActivity()
+            }
+            constraintLayoutDamheonGym.setOnClickListener {
+                goToDamheonGymDetailActivity()
+            }
         }
 
     }
 
     fun goToNewGymDetailActivity() {
         Intent(activity,NewGymDetailActivity::class.java).also { startActivity(it) }
+    }
+
+    fun goToYeasolGymDetailActivity() {
+        Intent(activity,YeasolGymDetailActivity::class.java).also { startActivity(it) }
+    }
+
+    fun goToDamheonGymDetailActivity() {
+        Intent(activity,DamheonGymDetailActivity::class.java).also { startActivity(it) }
     }
 
     companion object {
