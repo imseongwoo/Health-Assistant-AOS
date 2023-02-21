@@ -18,12 +18,18 @@ class LoginActivity : AppCompatActivity() {
 
         with(binding) {
             buttonLogin.setOnClickListener {
-                goToSignUpActivity()
+                goHomeActivity()
+            }
+            textViewSignUp.setOnClickListener {
+                goSignUpActivity()
             }
         }
     }
 
-    fun goToSignUpActivity() {
+    fun goHomeActivity() {
         Intent(this,HomeActivity::class.java).also { startActivity(it) }
+    }
+    fun goSignUpActivity() {
+        Intent(this, SignUpActivity::class.java).also { startActivity(it) }
     }
 }
