@@ -22,7 +22,7 @@
             android:name=".ui.home.YeasolGymDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.NewGymDetailActivity"
+            android:name=".ui.home.UpperBodyCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.HomeActivity"

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.NewGymDetailActivity">
+        tools:context=".ui.home.UpperBodyCategoryActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/new_gym_detail_constraint_layout"

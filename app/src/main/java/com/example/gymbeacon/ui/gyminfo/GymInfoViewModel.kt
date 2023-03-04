@@ -16,13 +16,13 @@ class GymInfoViewModel(
     val items : LiveData<List<GymInfo>> = _items
 
     init {
-        loadGymInfo()
+//        loadGymInfo()
     }
 
-    private fun loadGymInfo() {
-        viewModelScope.launch {
-            val gyminfo = gymInfoRepository.getGyminfo()
-            _items.value = gyminfo
-        }
-    }
+//    private fun loadGymInfo() {
+//        viewModelScope.launch {
+//            val gyminfo = gymInfoRepository.getGyminfo()
+//            _items.value = gyminfo
+//        }
+//    }
 }
