@@ -27,7 +27,7 @@ class NaviHomeFragment : Fragment() {
 
         with(binding) {
             constraintLayoutUpperBody.setOnClickListener {
-                goToNewGymDetailActivity()
+                goToUpperBodyCategoryActivity()
             }
             constraintLayoutLowerBody.setOnClickListener {
                 goToYeasolGymDetailActivity()
@@ -36,7 +36,7 @@ class NaviHomeFragment : Fragment() {
 
     }
 
-    fun goToNewGymDetailActivity() {
+    fun goToUpperBodyCategoryActivity() {
         Intent(activity,UpperBodyCategoryActivity::class.java).also { startActivity(it) }
     }
 

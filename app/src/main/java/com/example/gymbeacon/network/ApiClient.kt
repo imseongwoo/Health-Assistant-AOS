@@ -1,6 +1,6 @@
 package com.example.gymbeacon.network
 
-import com.example.gymbeacon.model.GymInfo
+import com.example.gymbeacon.model.Category
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,12 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiClient {
-    @GET("gyminfo.json")
-    suspend fun getGyminfo(): List<GymInfo>
+    @GET("categories.json")
+    suspend fun getCategories(): List<Category>
 
     companion object {
 
-        private const val baseUrl = "https://gymbeacon-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        private const val baseUrl = "https://health-assistant-39e16-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
         fun create(): ApiClient {
 

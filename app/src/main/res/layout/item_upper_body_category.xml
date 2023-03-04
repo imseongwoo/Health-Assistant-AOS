@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="category"
+            type="com.example.gymbeacon.model.Category" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_bluegrey">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/item_upper_body_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintCircleRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_111111"
+            android:paddingStart="10dp"
+            android:layout_marginTop="12dp"
+            android:paddingEnd="10dp"
+            android:layout_marginBottom="16dp"
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="@{category.label}"
+            android:ellipsize="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_upper_body_image"
+            tools:text="벤치프레스" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
