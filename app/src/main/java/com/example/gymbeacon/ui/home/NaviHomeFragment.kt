@@ -26,30 +26,24 @@ class NaviHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            constraintNewGym.setOnClickListener {
+            constraintLayoutUpperBody.setOnClickListener {
                 goToNewGymDetailActivity()
             }
-            constraintLayoutYeasolGym.setOnClickListener {
+            constraintLayoutLowerBody.setOnClickListener {
                 goToYeasolGymDetailActivity()
-            }
-            constraintLayoutDamheonGym.setOnClickListener {
-                goToDamheonGymDetailActivity()
             }
         }
 
     }
 
     fun goToNewGymDetailActivity() {
-        Intent(activity,NewGymDetailActivity::class.java).also { startActivity(it) }
+        Intent(activity,UpperBodyCategoryActivity::class.java).also { startActivity(it) }
     }
 
     fun goToYeasolGymDetailActivity() {
         Intent(activity,YeasolGymDetailActivity::class.java).also { startActivity(it) }
     }
 
-    fun goToDamheonGymDetailActivity() {
-        Intent(activity,DamheonGymDetailActivity::class.java).also { startActivity(it) }
-    }
 
     companion object {
         fun newInstance(): NaviHomeFragment {
