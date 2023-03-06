@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gymbeacon.model.Category
-import com.example.gymbeacon.repository.CategoryRepository
+import com.example.gymbeacon.repository.upper.CategoryRepository
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(
-    private val categoryRepository: CategoryRepository 
+    private val categoryRepository: CategoryRepository
 ): ViewModel() {
 
     private val _items = MutableLiveData<List<Category>>()

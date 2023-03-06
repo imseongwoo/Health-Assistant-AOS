@@ -1,4 +1,4 @@
-package com.example.gymbeacon.repository
+package com.example.gymbeacon.repository.upper
 
 import com.example.gymbeacon.model.Category
 import com.example.gymbeacon.network.ApiClient

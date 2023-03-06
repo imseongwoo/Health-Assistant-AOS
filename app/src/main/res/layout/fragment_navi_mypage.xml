@@ -10,7 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.NaviMyPageFragment">
+        tools:context=".ui.home.fragment.NaviMyPageFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_new_gym"

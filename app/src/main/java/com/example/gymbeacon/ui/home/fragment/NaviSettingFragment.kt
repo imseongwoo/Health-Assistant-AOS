@@ -1,4 +1,4 @@
-package com.example.gymbeacon.ui.home
+package com.example.gymbeacon.ui.home.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

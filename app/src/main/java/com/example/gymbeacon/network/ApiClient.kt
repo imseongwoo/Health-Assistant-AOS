@@ -1,6 +1,7 @@
 package com.example.gymbeacon.network
 
 import com.example.gymbeacon.model.Category
+import com.example.gymbeacon.model.LowerBodyCategory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,8 +9,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiClient {
-    @GET("categories.json")
+    @GET("a/categories.json")
     suspend fun getCategories(): List<Category>
+
+    @GET("lowercategories.json")
+    suspend fun getLowerCategories(): List<LowerBodyCategory>
 
     companion object {
 
