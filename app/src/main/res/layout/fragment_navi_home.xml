@@ -42,14 +42,15 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/upper_body_image"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="center"
+                android:scaleType="centerCrop"
                 app:layout_constraintCircleRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/Circle"
+                app:srcCompat="@drawable/upper" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,14 +77,16 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/lower_body_image"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:scaleType="center"
+                android:scaleType="centerCrop"
                 app:layout_constraintCircleRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/Circle"
+                app:srcCompat="@drawable/lower" />
 
             <TextView
                 android:layout_width="wrap_content"
