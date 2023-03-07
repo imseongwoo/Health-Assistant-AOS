@@ -7,96 +7,133 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.fragment.NaviMyPageFragment">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_new_gym"
+        android:fillViewport="true"
+        >
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="18dp"
-            android:layout_marginTop="100dp"
-            android:background="@drawable/background_bluegrey"
-            android:paddingBottom="20dp">
+            android:layout_height="match_parent"
+            tools:context=".ui.home.fragment.NaviMyPageFragment">
 
-            <TextView
-                android:id="@+id/my_page_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:text=""
-                android:textStyle="bold"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_mypage"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="마이페이지" />
+
+            <CalendarView
+                android:id="@+id/calendar_view"
+                android:layout_marginTop="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_new_gym"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="430dp"
+                android:background="@drawable/background_bluegrey"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:id="@+id/my_page_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/my_page_chest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Chest : "
+                    app:layout_constraintStart_toStartOf="@id/my_page_date"
+                    app:layout_constraintTop_toBottomOf="@+id/my_page_date" />
+
+                <TextView
+                    android:id="@+id/gym_current_user_value_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/my_page_chest"
+                    app:layout_constraintStart_toEndOf="@+id/my_page_chest"
+                    app:layout_constraintTop_toTopOf="@+id/my_page_chest"
+                    tools:text="15" />
+
+                <TextView
+                    android:id="@+id/my_page_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/my_page_chest"
+                    app:layout_constraintStart_toStartOf="@+id/my_page_date"
+                    android:text="Back : "
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/my_page_back"
+                    app:layout_constraintStart_toEndOf="@id/my_page_back"
+                    app:layout_constraintBottom_toBottomOf="@+id/my_page_back"
+                    android:text="150"
+                    />
+
+                <TextView
+                    android:id="@+id/my_page_lower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/my_page_back"
+                    app:layout_constraintStart_toStartOf="@+id/my_page_date"
+                    android:text="Lower : "
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/my_page_lower"
+                    app:layout_constraintStart_toEndOf="@id/my_page_lower"
+                    app:layout_constraintBottom_toBottomOf="@+id/my_page_lower"
+                    android:text="150"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/my_page_chest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Chest : "
-                app:layout_constraintStart_toStartOf="@id/my_page_date"
-                app:layout_constraintTop_toBottomOf="@+id/my_page_date" />
-
-            <TextView
-                android:id="@+id/gym_current_user_value_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/my_page_chest"
-                app:layout_constraintStart_toEndOf="@+id/my_page_chest"
-                app:layout_constraintTop_toTopOf="@+id/my_page_chest"
-                tools:text="15" />
-
-            <TextView
-                android:id="@+id/my_page_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/my_page_chest"
-                app:layout_constraintStart_toStartOf="@+id/my_page_date"
-                android:text="Back : "
+                android:text="@string/ranking"
+                android:textStyle="bold"
+                android:layout_marginTop="600dp"
+                android:textSize="20sp"
+                android:textColor="@color/color_111111"
+                android:layout_marginStart="15dp"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/my_page_back"
-                app:layout_constraintStart_toEndOf="@id/my_page_back"
-                app:layout_constraintBottom_toBottomOf="@+id/my_page_back"
-                android:text="150"
-                />
-
-            <TextView
-                android:id="@+id/my_page_lower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/my_page_back"
-                app:layout_constraintStart_toStartOf="@+id/my_page_date"
-                android:text="Lower : "
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/my_page_lower"
-                app:layout_constraintStart_toEndOf="@id/my_page_lower"
-                app:layout_constraintBottom_toBottomOf="@+id/my_page_lower"
-                android:text="150"
+                android:layout_marginTop="650dp"
+                android:text="랭킹 그래프 구현"
                 />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
-        <CalendarView
-            android:id="@+id/calendar_view"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
 
-    </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </layout>
