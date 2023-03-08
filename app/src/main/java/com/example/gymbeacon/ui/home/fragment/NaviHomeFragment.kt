@@ -1,4 +1,4 @@
-package com.example.gymbeacon.ui.home
+package com.example.gymbeacon.ui.home.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.FragmentNaviHomeBinding
+import com.example.gymbeacon.ui.home.LowerBodyCategoryActivity
+import com.example.gymbeacon.ui.home.UpperBodyCategoryActivity
 
 class NaviHomeFragment : Fragment() {
     lateinit var binding: FragmentNaviHomeBinding
@@ -27,21 +29,21 @@ class NaviHomeFragment : Fragment() {
 
         with(binding) {
             constraintLayoutUpperBody.setOnClickListener {
-                goToNewGymDetailActivity()
+                goToUpperBodyCategoryActivity()
             }
             constraintLayoutLowerBody.setOnClickListener {
-                goToYeasolGymDetailActivity()
+                goToLowerBodyCategoryActivity()
             }
         }
 
     }
 
-    fun goToNewGymDetailActivity() {
-        Intent(activity,UpperBodyCategoryActivity::class.java).also { startActivity(it) }
+    fun goToUpperBodyCategoryActivity() {
+        Intent(activity, UpperBodyCategoryActivity::class.java).also { startActivity(it) }
     }
 
-    fun goToYeasolGymDetailActivity() {
-        Intent(activity,YeasolGymDetailActivity::class.java).also { startActivity(it) }
+    fun goToLowerBodyCategoryActivity() {
+        Intent(activity, LowerBodyCategoryActivity::class.java).also { startActivity(it) }
     }
 
 

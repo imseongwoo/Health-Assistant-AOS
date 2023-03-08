@@ -1,0 +1,19 @@
+{
+  "lowercategories" : [
+    {
+      "category_id": "squat",
+      "label": "스쿼트",
+      "thumbnail_image_url": "https://user-images.githubusercontent.com/26344560/223176014-d6ebd3ca-7076-491a-88e7-2bd1a7436a3c.jpg"
+    },
+    {
+      "category_id": "dead-lift",
+      "label": "데드리프트",
+      "thumbnail_image_url": "https://user-images.githubusercontent.com/26344560/223176021-2a6aeb82-080f-4204-a188-7973bae569c6.jpg"
+    },
+    {
+      "category_id": "leg-extension",
+      "label": "레그 익스텐션",
+      "thumbnail_image_url": "https://user-images.githubusercontent.com/26344560/223176019-bb1db78f-466d-4ec4-8777-ae16039e7ada.jpg"
+    }
+  ]
+}

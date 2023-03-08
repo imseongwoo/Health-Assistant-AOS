@@ -1,0 +1,19 @@
+{
+  "categories" : [
+    {
+      "category_id": "bench-press",
+      "label": "벤치프레스",
+      "thumbnail_image_url": "https://user-images.githubusercontent.com/26344560/222880975-b403a35e-29b1-4390-bb3e-5afed2954dfa.png"
+    },
+    {
+      "category_id": "cable-crossover",
+      "label": "케이블 크로스오버",
+      "thumbnail_image_url": "https://user-images.githubusercontent.com/26344560/222880977-e482503e-35e7-4723-a56a-501bc29f163a.jpg"
+    },
+    {
+      "category_id": "incline-bench-press",
+      "label": "인클라인 벤치프레스",
+      "thumbnail_image_url": "https://user-images.githubusercontent.com/26344560/222880978-38bb4de9-8074-4818-b1ba-6d9b66c684df.jpg"
+    }
+  ]
+}

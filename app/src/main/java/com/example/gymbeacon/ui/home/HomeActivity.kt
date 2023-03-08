@@ -3,10 +3,12 @@ package com.example.gymbeacon.ui.home
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.AdapterViewBindingAdapter.setOnItemSelectedListener
 import androidx.fragment.app.Fragment
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityHomeBinding
+import com.example.gymbeacon.ui.home.fragment.NaviHomeFragment
+import com.example.gymbeacon.ui.home.fragment.NaviMyPageFragment
+import com.example.gymbeacon.ui.home.fragment.NaviSettingFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

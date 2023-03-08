@@ -9,32 +9,33 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.ViewModelFactory
-import com.example.gymbeacon.databinding.ActivityUpperBodyCategoryBinding
-import com.example.gymbeacon.ui.category.CategoryViewModel
+import com.example.gymbeacon.databinding.ActivityLowerBodyCategoryBinding
+import com.example.gymbeacon.ui.category.LowerBodyCategoryViewModel
+import com.example.gymbeacon.ui.home.adapter.LowerBodyAdapter
 import com.example.gymbeacon.ui.home.adapter.UpperBodyAdapter
 import com.example.gymbeacon.ui.home.detail.DetailActivity
 
-class UpperBodyCategoryActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUpperBodyCategoryBinding
-    private val viewModel: CategoryViewModel by viewModels { ViewModelFactory() }
-    val upperBodyAdapter = UpperBodyAdapter()
+class LowerBodyCategoryActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLowerBodyCategoryBinding
+    // viewmodel 변경 필요
+    private val viewModel: LowerBodyCategoryViewModel by viewModels { ViewModelFactory() }
+    val lowerBodyAdapter = LowerBodyAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_upper_body_category)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_lower_body_category)
         binding.lifecycleOwner = this
 
         with(binding) {
-            recyclerViewUpperBodyCategoryList.adapter = upperBodyAdapter
+            recyclerViewLowerBodyCategoryList.adapter = lowerBodyAdapter
         }
 
-        upperBodyAdapter.itemClick = object : UpperBodyAdapter.ItemClick{
+        lowerBodyAdapter.itemClick = object : LowerBodyAdapter.ItemClick{
             override fun onClick(view: View, position: Int) {
-                Log.e("test", position.toString())
                 when(position) {
-                    0 -> goToDetailActivity("벤치프레스")
-                    1 -> goToDetailActivity("케이블 크로스오버")
-                    2 -> goToDetailActivity("인클라인 벤치프레스")
+                    0 -> goToDetailActivity("스쿼트")
+                    1 -> goToDetailActivity("데드리프트")
+                    2 -> goToDetailActivity("레그 익스텐션")
                 }
             }
 
@@ -42,7 +43,7 @@ class UpperBodyCategoryActivity : AppCompatActivity() {
 
         viewModel.items.observe(this) {
             Log.e("upper body page","items = $it")
-            upperBodyAdapter.submitList(it)
+            lowerBodyAdapter.submitList(it)
         }
     }
 
@@ -51,6 +52,4 @@ class UpperBodyCategoryActivity : AppCompatActivity() {
         intent.putExtra("upper",posValue)
         startActivity(intent)
     }
-
-
 }
