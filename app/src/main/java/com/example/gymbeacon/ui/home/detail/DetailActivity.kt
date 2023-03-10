@@ -1,11 +1,14 @@
 package com.example.gymbeacon.ui.home.detail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
+import com.example.gymbeacon.ui.home.camera.CameraActivity
+import com.example.gymbeacon.ui.signup.SignUpActivity
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -38,6 +41,14 @@ class DetailActivity : AppCompatActivity() {
                 val nowCount = currentCount.toInt() + 1
                 textViewDetailPageCount.text = nowCount.toString()
             }
+
+            buttonDetailStart.setOnClickListener {
+                goToCameraActivity()
+            }
         }
+    }
+
+    fun goToCameraActivity() {
+        Intent(this, CameraActivity::class.java).also { startActivity(it) }
     }
 }

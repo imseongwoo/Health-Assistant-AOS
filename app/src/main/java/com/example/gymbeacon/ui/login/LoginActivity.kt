@@ -1,9 +1,12 @@
 package com.example.gymbeacon.ui.login
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityLoginBinding
@@ -15,10 +18,13 @@ import com.google.firebase.auth.FirebaseUser
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     var auth : FirebaseAuth? = null
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
+
+        getPermissions()
 
         with(binding) {
             buttonLogin.setOnClickListener {
@@ -32,6 +38,23 @@ class LoginActivity : AppCompatActivity() {
                 goSignUpActivity()
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA),101)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED) getPermissions()
     }
 
     fun goHomeActivity(user: FirebaseUser?) {

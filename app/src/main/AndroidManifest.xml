@@ -4,6 +4,7 @@
     package="com.example.gymbeacon">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymBeacon"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.home.camera.CameraActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.home.detail.DetailActivity"
             android:exported="false" />
