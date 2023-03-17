@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityLoginBinding
+import com.example.gymbeacon.tts.TextToSpeechActivity
 import com.example.gymbeacon.ui.home.HomeActivity
 import com.example.gymbeacon.ui.signup.SignUpActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +37,9 @@ class LoginActivity : AppCompatActivity() {
             }
             textViewSignUp.setOnClickListener {
                 goSignUpActivity()
+            }
+            buttonTts.setOnClickListener {
+                goToTtsActivity()
             }
         }
     }
@@ -64,6 +68,9 @@ class LoginActivity : AppCompatActivity() {
     }
     fun goSignUpActivity() {
         Intent(this, SignUpActivity::class.java).also { startActivity(it) }
+    }
+    fun goToTtsActivity() {
+        Intent(this, TextToSpeechActivity::class.java).also { startActivity(it) }
     }
 
     fun signinEmail() {
