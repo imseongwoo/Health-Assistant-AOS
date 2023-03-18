@@ -38,9 +38,6 @@ class LoginActivity : AppCompatActivity() {
             textViewSignUp.setOnClickListener {
                 goSignUpActivity()
             }
-            buttonTts.setOnClickListener {
-                goToTtsActivity()
-            }
         }
     }
 
