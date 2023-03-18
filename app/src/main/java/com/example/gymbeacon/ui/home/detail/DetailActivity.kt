@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
 import com.example.gymbeacon.ui.home.camera.CameraActivity
-import com.example.gymbeacon.ui.signup.SignUpActivity
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -49,6 +48,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun goToCameraActivity() {
-        Intent(this, CameraActivity::class.java).also { startActivity(it) }
+        val intent = Intent(this, CameraActivity::class.java)
+        intent.putExtra("maxnum",binding.textViewDetailPageCount.text)
+        startActivity(intent)
     }
 }

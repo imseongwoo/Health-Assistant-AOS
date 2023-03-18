@@ -2,6 +2,7 @@ package com.example.gymbeacon.ui.home.camera
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
@@ -11,29 +12,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.util.Range
 import android.view.Surface
 import android.view.TextureView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityCameraBinding
 import com.example.gymbeacon.ml.LiteModelMovenetSingleposeLightningTfliteFloat164
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.gymbeacon.ui.common.CommonUtil
+import com.example.gymbeacon.ui.common.HealthEntity
+import com.example.gymbeacon.ui.common.PoseDetector
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import kotlin.math.PI
-import kotlin.math.acos
-import kotlin.math.pow
-import kotlin.math.sqrt
+import java.util.*
 
-class CameraActivity : AppCompatActivity() {
+
+class CameraActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var binding: ActivityCameraBinding
     lateinit var cameraManager: CameraManager
     lateinit var handler: Handler
@@ -41,15 +46,36 @@ class CameraActivity : AppCompatActivity() {
     lateinit var bitmap: Bitmap
     lateinit var model: LiteModelMovenetSingleposeLightningTfliteFloat164
     lateinit var imageProcessor: ImageProcessor
+    lateinit var tts : TextToSpeech
+    lateinit var maxNum : String
+
     val paint = Paint()
-    var isSqaut = false
     var count = 0
     var temp = false
+    private var previousTtsData: String = ""
+    var database = Firebase.database
+    val myRef = database.getReference("health/momentum")
+
+
+    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+
+        if (it.resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
+            tts = TextToSpeech(this,this)
+        } else {
+            val installIntent: Intent = Intent()
+            installIntent.action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
+            startActivity(installIntent)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_camera)
         binding.lifecycleOwner = this
+
+        getIntentData()
 
         imageProcessor =
             ImageProcessor.Builder().add(ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR)).build()
@@ -61,6 +87,31 @@ class CameraActivity : AppCompatActivity() {
 
         paint.setColor(Color.YELLOW)
 
+        // tts 초기화
+        tts = TextToSpeech(this) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                val languageStatus: Int = tts.setLanguage(Locale.KOREAN)
+
+                if(languageStatus == TextToSpeech.LANG_MISSING_DATA ||
+                    languageStatus == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(this,"언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    val data: String = count.toString()
+                    var speechStatus: Int = 0
+
+                    if (data != previousTtsData && data != "0") {
+                        speechStatus = tts.speak(data,TextToSpeech.QUEUE_FLUSH,null,null)
+                        if (speechStatus == TextToSpeech.ERROR) {
+                            Toast.makeText(this, "음성전환 에러입니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    previousTtsData = data
+                }
+            } else {
+                Toast.makeText(this, "Initialization failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
                 openCamera()
@@ -71,6 +122,7 @@ class CameraActivity : AppCompatActivity() {
             }
 
             override fun onSurfaceTextureDestroyed(p0: SurfaceTexture): Boolean {
+                Log.e("test","onSurfaceTextureDestroyed 실행")
                 return false
             }
 
@@ -108,14 +160,16 @@ class CameraActivity : AppCompatActivity() {
                             } else {
                                 Log.d("Circle not drawn", "outputFeature0[$x+2] = ${outputFeature0.get(x + 2)}")
                             }
-                            Log.d("Circle not drawn", "outputFeature0[$x+2] = ${outputFeature0.get(x + 2)}")
                             x += 3
                         }
 
                         if (circleDrawn && circleCount >= 3) {
                             if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(47) > 0.3 && outputFeature0.get(50) > 0.3) {
-                                val result = detectSquatByAngle(outputFeature0)
+                                val result = PoseDetector.detectSquatByAngle(outputFeature0)
+                                val intent: Intent = Intent()
+                                intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
                                 countSquat(result)
+                                activityResult.launch(intent)
                                 Log.e("result","${result},${count}")
                             }
                         }
@@ -128,9 +182,16 @@ class CameraActivity : AppCompatActivity() {
             }
         }
     }
-
+ // 종료 시 count 된 값 서버에 전송
     override fun onDestroy() {
         super.onDestroy()
+        var healthEntity = HealthEntity(CommonUtil.getUid(),CommonUtil.getTime(System.currentTimeMillis()),count.toString())
+        Log.e("test","ondestroy 실행")
+        myRef.push().setValue(healthEntity)
+        tts?.let {
+            it.stop()
+            it.shutdown()
+        }
         model.close()
     }
 
@@ -171,34 +232,51 @@ class CameraActivity : AppCompatActivity() {
             handler)
     }
 
-    fun detectSquatByAngle(outputFeature0: FloatArray): Boolean {
-        val squatAngleLeft = calculateAngle(outputFeature0.get(33),outputFeature0.get(34),outputFeature0.get(39),outputFeature0.get(40),outputFeature0.get(45),outputFeature0.get(46))
-        val squatAngleRight = calculateAngle(outputFeature0.get(36),outputFeature0.get(37),outputFeature0.get(42),outputFeature0.get(43),outputFeature0.get(48),outputFeature0.get(49))
-        val squatLowThreshold = 60f
-        val squatHighThreshold = 125f
 
-        val isLeft = (squatAngleLeft > squatLowThreshold && squatAngleLeft < squatHighThreshold)
-        val isRight = (squatAngleLeft > squatLowThreshold && squatAngleLeft < squatHighThreshold)
-        val isSquat = isLeft || isRight
-        return isSquat
-    }
-    // 거리를 계산하는 함수입니다.
-    fun calculateDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
-        return sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2))
-    }
-
-    // 각도를 계산하는 함수입니다.
-    fun calculateAngle(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float): Float {
-        val a = calculateDistance(x1, y1, x2, y2)
-        val b = calculateDistance(x2, y2, x3, y3)
-        val c = calculateDistance(x3, y3, x1, y1)
-        return acos((a.pow(2) + b.pow(2) - c.pow(2)) / (2 * a * b)) * 180 / PI.toFloat()
-    }
 
     fun countSquat(result: Boolean) {
         if (result == true && temp == false) {
             count += 1
         }
         temp = result
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val languageStatus: Int = tts.setLanguage(Locale.KOREAN)
+
+            if(languageStatus == TextToSpeech.LANG_MISSING_DATA ||
+                languageStatus == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this,"언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                val data: String = count.toString()
+                var speechStatus: Int = 0
+
+                if (data != previousTtsData && data != "0") {
+                    if (data.toInt() >= maxNum.toInt()) {
+                        tts.speak("세트가 끝났습니다",TextToSpeech.QUEUE_FLUSH,null,null)
+                        GlobalScope.launch {
+                            delay(2000) // 2초 대기
+                            finish() // 종료
+                        }
+
+                    } else {
+                        speechStatus = tts.speak(data,TextToSpeech.QUEUE_FLUSH,null,null)
+                        if (speechStatus == TextToSpeech.ERROR) {
+                            Toast.makeText(this, "음성전환 에러입니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                previousTtsData = data
+            }
+        } else {
+            Toast.makeText(this, "Initialization failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun getIntentData() {
+        val cameraIntent = intent
+        maxNum = cameraIntent.getStringExtra("maxnum")!!
+        Log.e("maxnum","${maxNum}")
     }
 }
