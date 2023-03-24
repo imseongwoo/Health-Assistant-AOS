@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_view_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="18dp"
+            android:textColor="@color/color_111111"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="example" />
+
+        <TextView
+            android:id="@+id/item_text_view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:text="운동 총 횟수 : "
+            android:textColor="@color/color_111111"
+            android:textSize="20sp"
+
+            app:layout_constraintEnd_toStartOf="@+id/text_view_second_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_item" />
+
+        <TextView
+            android:id="@+id/text_view_second_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_111111"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_text_view_count"
+            app:layout_constraintStart_toEndOf="@+id/item_text_view_count" />
+
+        <TextView
+            android:id="@+id/item_text_view_set_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="운동 총 세트 : "
+            android:textColor="@color/color_111111"
+            android:textSize="20sp"
+
+            app:layout_constraintStart_toStartOf="@+id/text_view_item"
+            app:layout_constraintTop_toBottomOf="@+id/item_text_view_count" />
+
+        <TextView
+            android:id="@+id/text_view_third_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_111111"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_text_view_set_count"
+            app:layout_constraintStart_toEndOf="@+id/item_text_view_set_count" />
+
+        <TextView
+            android:id="@+id/item_text_view_average_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="세트 별 평균 횟수 : "
+            android:textColor="@color/color_111111"
+            android:textSize="20sp"
+
+            app:layout_constraintStart_toStartOf="@+id/item_text_view_set_count"
+            app:layout_constraintTop_toBottomOf="@+id/item_text_view_set_count" />
+
+        <TextView
+            android:id="@+id/text_view_fourth_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_111111"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_text_view_average_count"
+            app:layout_constraintStart_toEndOf="@+id/item_text_view_average_count" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

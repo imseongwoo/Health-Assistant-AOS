@@ -11,6 +11,7 @@ import com.example.gymbeacon.ui.home.camera.CameraActivity
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var selectedExerciseName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +19,7 @@ class DetailActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         val detailIntent = intent
-        val selectedExerciseName = detailIntent.getStringExtra("upper")
+        selectedExerciseName = detailIntent.getStringExtra("upper")!!
 
         with(binding) {
             textViewExerciseName.text = selectedExerciseName
@@ -50,6 +51,7 @@ class DetailActivity : AppCompatActivity() {
     fun goToCameraActivity() {
         val intent = Intent(this, CameraActivity::class.java)
         intent.putExtra("maxnum",binding.textViewDetailPageCount.text)
+        intent.putExtra("selectedExerciseName",selectedExerciseName)
         startActivity(intent)
     }
 }

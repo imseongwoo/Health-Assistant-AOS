@@ -36,12 +36,11 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_new_gym"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="180dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="18dp"
                 android:layout_marginTop="430dp"
-                android:background="@drawable/background_bluegrey"
                 android:paddingBottom="20dp">
 
                 <TextView
@@ -55,64 +54,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/my_page_chest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Chest : "
-                    app:layout_constraintStart_toStartOf="@id/my_page_date"
-                    app:layout_constraintTop_toBottomOf="@+id/my_page_date" />
-
-                <TextView
-                    android:id="@+id/gym_current_user_value_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/my_page_chest"
-                    app:layout_constraintStart_toEndOf="@+id/my_page_chest"
-                    app:layout_constraintTop_toTopOf="@+id/my_page_chest"
-                    tools:text="15" />
-
-                <TextView
-                    android:id="@+id/my_page_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/my_page_chest"
-                    app:layout_constraintStart_toStartOf="@+id/my_page_date"
-                    android:text="Back : "
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@+id/my_page_back"
-                    app:layout_constraintStart_toEndOf="@id/my_page_back"
-                    app:layout_constraintBottom_toBottomOf="@+id/my_page_back"
-                    android:text="150"
-                    />
-
-                <TextView
-                    android:id="@+id/my_page_lower"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/my_page_back"
-                    app:layout_constraintStart_toStartOf="@+id/my_page_date"
-                    android:text="Lower : "
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@+id/my_page_lower"
-                    app:layout_constraintStart_toEndOf="@id/my_page_lower"
-                    app:layout_constraintBottom_toBottomOf="@+id/my_page_lower"
-                    android:text="150"
-                    />
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_detail_textview"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="4dp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/text_view_my_ranking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ranking"
@@ -123,12 +77,22 @@
                 android:layout_marginStart="15dp"
                 />
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="650dp"
-                android:text="랭킹 그래프 구현"
-                />
+                android:layout_height="500dp">
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 
         </FrameLayout>
