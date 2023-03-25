@@ -25,7 +25,7 @@ import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityCameraBinding
 import com.example.gymbeacon.ml.LiteModelMovenetSingleposeLightningTfliteFloat164
 import com.example.gymbeacon.ui.common.CommonUtil
-import com.example.gymbeacon.ui.common.HealthEntity
+import com.example.gymbeacon.model.HealthEntity
 import com.example.gymbeacon.ui.common.PoseDetector
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -48,6 +48,7 @@ class CameraActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var imageProcessor: ImageProcessor
     lateinit var tts : TextToSpeech
     lateinit var maxNum : String
+    lateinit var selectedExerciseName : String
 
     val paint = Paint()
     var count = 0
@@ -185,7 +186,7 @@ class CameraActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
  // 종료 시 count 된 값 서버에 전송
     override fun onDestroy() {
         super.onDestroy()
-        var healthEntity = HealthEntity(CommonUtil.getUid(),CommonUtil.getTime(System.currentTimeMillis()),count.toString())
+        var healthEntity = HealthEntity(CommonUtil.getUid(),CommonUtil.getTime(System.currentTimeMillis()),count.toString(),selectedExerciseName)
         Log.e("test","ondestroy 실행")
         myRef.push().setValue(healthEntity)
         tts?.let {
@@ -277,6 +278,7 @@ class CameraActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     fun getIntentData() {
         val cameraIntent = intent
         maxNum = cameraIntent.getStringExtra("maxnum")!!
+        selectedExerciseName = cameraIntent.getStringExtra("selectedExerciseName")!!
         Log.e("maxnum","${maxNum}")
     }
 }
