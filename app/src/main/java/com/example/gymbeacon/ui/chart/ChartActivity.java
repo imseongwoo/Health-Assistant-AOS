@@ -32,6 +32,8 @@ public class ChartActivity extends AppCompatActivity {
     BarChart barChart_back;
     BarChart barChart_lower;
     Button back_btn;
+
+    // 부위별 arrayList 추가 예정
     ArrayList<BarEntry> barEntryArrayList;
     ArrayList<String> labelsNames = new ArrayList<>();
 
