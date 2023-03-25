@@ -1,5 +1,6 @@
 package com.example.gymbeacon.ui.home.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.FragmentNaviMypageBinding
+import com.example.gymbeacon.ui.chart.ChartActivity
 import com.example.gymbeacon.ui.common.CommonUtil
 import com.example.gymbeacon.ui.common.HealthEntity
 import com.google.firebase.database.ChildEventListener
@@ -46,6 +48,10 @@ class NaviMyPageFragment : Fragment() {
                 setData(year, month+1, dayOfMonth)
                 binding.gymCurrentUserValueTextview.text =
                     returnCount.toString()
+            }
+
+            chartBtn.setOnClickListener {
+                goToChartActivity()
             }
         }
     }
@@ -96,6 +102,10 @@ class NaviMyPageFragment : Fragment() {
                     TODO("Not yet implemented")
                 }
             })
+    }
+
+    fun goToChartActivity() {
+        Intent(activity, ChartActivity::class.java).also { startActivity(it) }
     }
 
     companion object {
