@@ -1,5 +1,6 @@
 package com.example.gymbeacon.ui.home.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.gymbeacon.R
 import com.example.gymbeacon.ViewModelFactory
 import com.example.gymbeacon.databinding.FragmentNaviMypageBinding
+import com.example.gymbeacon.ui.chart.ChartActivity
 import com.example.gymbeacon.ui.home.adapter.MyPageViewPagerAdapter
 import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
 import com.github.mikephil.charting.data.BarData
@@ -82,6 +84,10 @@ class NaviMyPageFragment : Fragment() {
 
 
             }
+
+            chartBtn.setOnClickListener {
+                goToChartActivity()
+            }
         }
 
 
@@ -126,6 +132,10 @@ class NaviMyPageFragment : Fragment() {
             chart.animateY(1000)
         }
 
+    }
+
+    fun goToChartActivity() {
+        Intent(activity, ChartActivity::class.java).also { startActivity(it) }
     }
 
     companion object {
