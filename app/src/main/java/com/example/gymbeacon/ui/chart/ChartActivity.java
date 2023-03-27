@@ -34,19 +34,19 @@ public class ChartActivity extends AppCompatActivity {
     Button back_btn;
 
     // 하체 운동 데이터 ArrayList
-    ArrayList<BarEntry> barEntryArrayList_lower;
+    ArrayList<BarEntry> barEntryArrayList_lower = new ArrayList<>();
     ArrayList<String> labelsNames_lower = new ArrayList<>();
 
     ArrayList<DateCountsData> dateCountsDataArrayList_lower = new ArrayList<>();
 
     // 등 운동 데이터 ArrayList
-    ArrayList<BarEntry> barEntryArrayList_back;
+    ArrayList<BarEntry> barEntryArrayList_back = new ArrayList<>();
     ArrayList<String> labelsNames_back = new ArrayList<>();
 
     ArrayList<DateCountsData> dateCountsDataArrayList_back = new ArrayList<>();
 
     // 가슴 운동 데이터 ArrayList
-    ArrayList<BarEntry> barEntryArrayList_chest;
+    ArrayList<BarEntry> barEntryArrayList_chest = new ArrayList<>();
     ArrayList<String> labelsNames_chest = new ArrayList<>();
 
     ArrayList<DateCountsData> dateCountsDataArrayList_chest = new ArrayList<>();
@@ -61,9 +61,9 @@ public class ChartActivity extends AppCompatActivity {
         barChart_back = findViewById(R.id.barChart_back);
         barChart_lower = findViewById(R.id.barChart_lower);
 
-        barEntryArrayList_lower = new ArrayList<>();
-        barEntryArrayList_back = new ArrayList<>();
-        barEntryArrayList_chest = new ArrayList<>();
+//        barEntryArrayList_lower = new ArrayList<>();
+//        barEntryArrayList_back = new ArrayList<>();
+//        barEntryArrayList_chest = new ArrayList<>();
         //labelsNames = new ArrayList<>();
 
 //        barEntryArrayList.clear();
