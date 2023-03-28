@@ -16,4 +16,11 @@
     <string name="text_view_total_count">운동 총 횟수 :</string>
     <string name="text_view_total_set">운동 총 세트 :</string>
     <string name="text_view_average_count">세트 별 평균 횟수 :</string>
+    <string name="check_part_chart">부위 별 차트 확인</string>
+    <string name="button_bench">bench</string>
+    <string name="button_squat">squat</string>
+    <string name="button_deadlift">dead</string>
+    <string name="button_incline_bench">incline</string>
+    <string name="button_legex">legex</string>
+    <string name="button_crossover">crossover</string>
 </resources>
