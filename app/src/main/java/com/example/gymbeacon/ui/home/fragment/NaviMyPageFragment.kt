@@ -86,9 +86,7 @@ class NaviMyPageFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setChart()
         val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
 
         with(binding) {
             val date: Date = Date(calendarView.date)
@@ -352,31 +350,6 @@ class NaviMyPageFragment : Fragment() {
         viewModel.getDbData(nowTimeStamp)
         var exerciseCountMap = mutableMapOf<String, Int>()
         exerciseCountMap = viewModel.getExerciseCountMap()
-
-    }
-
-    fun setChart() {
-        val entries = listOf(
-            BarEntry(0f, 30f),
-            BarEntry(1f, 80f),
-            BarEntry(2f, 60f),
-            BarEntry(3f, 50f),
-            BarEntry(4f, 70f)
-        )
-
-        val dataSet = BarDataSet(entries, "Label")
-        dataSet.color = Color.BLUE
-
-        val data = BarData(dataSet)
-        data.barWidth = 0.5f
-
-        with(binding) {
-            chart.data = data
-            chart.setFitBars(true)
-            chart.description.isEnabled = false
-            chart.setDrawGridBackground(false)
-            chart.animateY(1000)
-        }
 
     }
 
