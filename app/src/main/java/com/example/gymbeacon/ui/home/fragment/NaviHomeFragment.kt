@@ -28,10 +28,10 @@ class NaviHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            constraintLayoutUpperBody.setOnClickListener {
+            textViewUpperBody.setOnClickListener {
                 goToUpperBodyCategoryActivity()
             }
-            constraintLayoutLowerBody.setOnClickListener {
+            textViewLowerBody.setOnClickListener {
                 goToLowerBodyCategoryActivity()
             }
         }
