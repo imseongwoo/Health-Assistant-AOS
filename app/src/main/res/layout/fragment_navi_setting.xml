@@ -16,314 +16,204 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/text_view_login_app_name"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_setting"
                 android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="@color/color_222222"
+                app:title="설정" />
+
+            <TextView
+                android:id="@+id/text_view_account_administration"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
                 android:layout_marginTop="40dp"
-                android:text="@string/login_app_name"
-                android:textAlignment="center"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/text_view_account_administration"
+                android:textColor="@color/color_9675f7"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_setting" />
 
             <TextView
-                android:id="@+id/text_view_help_custom"
+                android:id="@+id/text_view_change_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="30dp"
-                android:text="고객지원"
-                android:textSize="20sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16.5dp"
+                android:text="@string/text_view_change_id"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_login_app_name" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_help_custom">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="공지사항"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/first_line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/color_c4c4c4"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_account_administration" />
 
             <TextView
-                android:id="@+id/text_view_set_purpose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="목표치 설정"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/first_line"
-                />
+                android:layout_marginStart="157dp"
+                android:layout_marginEnd="13dp"
+                android:textColor="@color/color_9675f7"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_id_next"
+                app:layout_constraintTop_toTopOf="@id/text_view_change_id"
+                tools:text="ididid" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_two"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_view_id_next"
+                android:layout_width="15dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:drawableStartCompat="@drawable/ic_next_custom"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_set_purpose">
+                app:layout_constraintTop_toTopOf="@+id/text_view_change_id" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="일별 목표치"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_two" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_two" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_three"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_view_change_password"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/text_view_change_password"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout_two">
+                app:layout_constraintTop_toBottomOf="@id/text_view_change_id" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="월별 목표치"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_three" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_three" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/second_line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/color_c4c4c4"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout_three" />
+            <TextView
+                android:id="@+id/text_view_password_next"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:drawableStartCompat="@drawable/ic_next_custom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_view_change_password" />
 
             <TextView
                 android:id="@+id/text_view_individual_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="개인 정보"
-                android:textSize="20sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/text_view_individual_info"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/second_line"
-                />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_four"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_individual_info">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="개인정보 처리방침"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_four" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_four" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_five"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout_four">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="회원 탈퇴"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_five" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_five" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/third_line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/color_c4c4c4"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout_five" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_change_password" />
 
             <TextView
-                android:id="@+id/text_view_app_info"
+                android:id="@+id/text_view_individual_info_link"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:drawableStartCompat="@drawable/ic_link_custom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_view_individual_info" />
+
+
+            <TextView
+                android:id="@+id/text_view_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="앱 정보"
-                android:textSize="20sp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="36dp"
+                android:text="@string/text_view_service"
+                android:textColor="@color/color_9675f7"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/third_line"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_individual_info" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_six"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_view_announcement"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/text_view_announcement"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_app_info">
+                app:layout_constraintTop_toBottomOf="@id/text_view_service" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="오픈소스 고지항목"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_six" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_six" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_seven"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_view_announcement_link"
+                android:layout_width="15dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:drawableStartCompat="@drawable/ic_link_custom"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout_six">
+                app:layout_constraintTop_toTopOf="@+id/text_view_announcement" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="업데이트 확인"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_seven" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/ic_setting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_seven" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/setting_constraint_layout_eight"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_view_question"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/text_view_question"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_constraint_layout_seven">
+                app:layout_constraintTop_toBottomOf="@id/text_view_announcement" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="버전 정보"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_eight" />
+            <TextView
+                android:id="@+id/text_view_question_link"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:drawableStartCompat="@drawable/ic_link_custom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_view_question" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:text="1.0"
-                    app:layout_constraintBottom_toBottomOf="@+id/setting_constraint_layout_eight"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/setting_constraint_layout_eight" />
+            <TextView
+                android:id="@+id/text_view_app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/text_view_app_version"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_question" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="157dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/color_9675f7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_view_app_version"
+                tools:text="app version 1.2.0/ 최신 1.2.0" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_view_log_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/text_view_logout"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/text_view_withdraw"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_goneMarginStart="16dp" />
 
-
+            <TextView
+                android:id="@+id/text_view_withdraw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="42dp"
+                android:text="@string/text_view_withdraw"
+                android:textColor="@color/color_666666"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

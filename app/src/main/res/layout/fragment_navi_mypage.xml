@@ -9,7 +9,6 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
-        android:background="@drawable/background_bluegrey"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -17,67 +16,32 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/color_efeff5"
             tools:context=".ui.home.fragment.NaviMyPageFragment">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_mypage"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="60dp"
+                app:titleTextColor="@color/color_222222"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="마이페이지" />
 
-            <CalendarView
-                android:id="@+id/calendar_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginTop="100dp" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="430dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="18dp"
-                android:paddingBottom="20dp">
-
-                <TextView
-                    android:id="@+id/my_page_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/background_detail_textview"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="4dp" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="630dp">
+                android:layout_marginTop="330dp">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/chart_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/check_part_chart"
                     android:background="@drawable/background_bluegrey"
                     android:padding="10dp"
+                    android:text="@string/check_part_chart"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -87,15 +51,15 @@
                     android:id="@+id/bench_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:text="@string/button_bench"
-                    android:background="@drawable/background_detail_textview"
+                    android:layout_marginStart="35dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginStart="35dp"
+                    android:background="@drawable/background_detail_textview"
+                    android:text="@string/button_bench"
                     android:textSize="14sp"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintHorizontal_bias="0.33"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/chart_btn" />
 
@@ -103,64 +67,64 @@
                     android:id="@+id/squat_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
+                    android:layout_margin="16dp"
                     android:layout_marginStart="10dp"
                     android:background="@drawable/background_detail_textview"
                     android:text="@string/button_squat"
-                    android:layout_margin="16dp"
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@id/bench_btn"
                     app:layout_constraintTop_toBottomOf="@id/chart_btn" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:background="@drawable/background_detail_textview"
                     android:id="@+id/dead_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:layout_marginStart="10dp"
                     android:layout_margin="16dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/background_detail_textview"
                     android:text="@string/button_deadlift"
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@id/squat_btn"
                     app:layout_constraintTop_toBottomOf="@id/chart_btn" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:background="@drawable/background_detail_textview"
                     android:id="@+id/incline_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    app:layout_constraintTop_toBottomOf="@+id/bench_btn"
+                    android:layout_marginStart="35dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginStart="35dp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/background_detail_textview"
                     android:text="@string/button_incline_bench"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    android:textSize="14sp"
                     app:layout_constraintHorizontal_bias="0.33"
-                    android:textSize="14sp" />
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bench_btn" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:background="@drawable/background_detail_textview"
                     android:id="@+id/legex_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_margin="16dp"
-                    app:layout_constraintTop_toBottomOf="@id/squat_btn"
-                    app:layout_constraintStart_toEndOf="@id/incline_btn"
                     android:layout_marginStart="10dp"
-                    android:text="@string/button_legex" />
+                    android:background="@drawable/background_detail_textview"
+                    android:text="@string/button_legex"
+                    app:layout_constraintStart_toEndOf="@id/incline_btn"
+                    app:layout_constraintTop_toBottomOf="@id/squat_btn" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:background="@drawable/background_detail_textview"
                     android:id="@+id/crossover_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_margin="16dp"
                     android:layout_marginStart="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/dead_btn"
-                    app:layout_constraintStart_toEndOf="@id/legex_btn"
+                    android:background="@drawable/background_detail_textview"
                     android:text="@string/button_crossover"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@id/legex_btn"
+                    app:layout_constraintTop_toBottomOf="@id/dead_btn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

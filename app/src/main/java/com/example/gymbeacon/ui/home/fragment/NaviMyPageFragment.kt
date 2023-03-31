@@ -89,47 +89,9 @@ class NaviMyPageFragment : Fragment() {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
 
         with(binding) {
-            val date: Date = Date(calendarView.date)
-            myPageDate.text = dateFormat.format(date)
-            calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
-//                binding.myPageDate.text = "${year}년 ${month + 1}월 ${dayOfMonth}일"
-                setData(year, month + 1, dayOfMonth)
-
-                viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
-                    val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
-
-                    for (healthEntity in healthEntities) {
-                        val exercise = healthEntity.exercise
-                        val count = healthEntity.count?.toIntOrNull() ?: 0
-
-                        if (exercise != null && exercise.isNotEmpty()) {
-                            val (sum, num) = exerciseCountMap.getOrDefault(exercise, Pair(0, 0))
-                            exerciseCountMap[exercise] = Pair(sum + count, num + 1)
-                        }
-                    }
-
-                    for ((exercise, countPair) in exerciseCountMap) {
-                        val (sum, num) = countPair
-                        val average = if (num > 0) sum / num else 0
-                        Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
-                    }
-
-                    viewPagerExerciseCountMap = exerciseCountMap
-
-                    this@NaviMyPageFragment.viewPager = binding.viewPager
-                    viewPager.adapter = MyPageViewPagerAdapter(exerciseCountMap)
-                    viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-                }
-
-
-            }
-
             chartBtn.setOnClickListener {
                 goToChartActivity()
             }
-
-
 
         //  실시간 DB 참조 위치(health/momentum) 설정
             CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.uid)
