@@ -24,10 +24,10 @@ import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
 import com.example.gymbeacon.ml.LiteModelMovenetSingleposeLightningTfliteFloat164
+import com.example.gymbeacon.model.BodyPart
 import com.example.gymbeacon.model.HealthEntity
 import com.example.gymbeacon.ui.common.CommonUtil
 import com.example.gymbeacon.ui.common.PoseDetector
-import com.example.gymbeacon.ui.home.camera.CameraActivity
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -57,6 +57,27 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var previousTtsData: String = ""
     var database = Firebase.database
     val myRef = database.getReference("health/momentum")
+
+    private val bodyJoints = listOf(
+        Pair(BodyPart.NOSE, BodyPart.LEFT_EYE),
+        Pair(BodyPart.NOSE, BodyPart.RIGHT_EYE),
+        Pair(BodyPart.LEFT_EYE, BodyPart.LEFT_EAR),
+        Pair(BodyPart.RIGHT_EYE, BodyPart.RIGHT_EAR),
+        Pair(BodyPart.NOSE, BodyPart.LEFT_SHOULDER),
+        Pair(BodyPart.NOSE, BodyPart.RIGHT_SHOULDER),
+        Pair(BodyPart.LEFT_SHOULDER, BodyPart.LEFT_ELBOW),
+        Pair(BodyPart.LEFT_ELBOW, BodyPart.LEFT_WRIST),
+        Pair(BodyPart.RIGHT_SHOULDER, BodyPart.RIGHT_ELBOW),
+        Pair(BodyPart.RIGHT_ELBOW, BodyPart.RIGHT_WRIST),
+        Pair(BodyPart.LEFT_SHOULDER, BodyPart.RIGHT_SHOULDER),
+        Pair(BodyPart.LEFT_SHOULDER, BodyPart.LEFT_HIP),
+        Pair(BodyPart.RIGHT_SHOULDER, BodyPart.RIGHT_HIP),
+        Pair(BodyPart.LEFT_HIP, BodyPart.RIGHT_HIP),
+        Pair(BodyPart.LEFT_HIP, BodyPart.LEFT_KNEE),
+        Pair(BodyPart.LEFT_KNEE, BodyPart.LEFT_ANKLE),
+        Pair(BodyPart.RIGHT_HIP, BodyPart.RIGHT_KNEE),
+        Pair(BodyPart.RIGHT_KNEE, BodyPart.RIGHT_ANKLE)
+    )
 
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
@@ -137,7 +158,9 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                         while (x <= 49) {
                             if (outputFeature0.get(x + 2) > 0.45) {
-                                canvas.drawCircle(outputFeature0.get(x + 1) * w, outputFeature0.get(x) * h, 10f, paint)
+                                val circleX = outputFeature0.get(x + 1) * w
+                                val circleY = outputFeature0.get(x) * h
+                                canvas.drawCircle(circleX, circleY, 10f, paint)
                                 circleDrawn = true
                                 circleCount += 1
                             } else {
@@ -146,6 +169,32 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                             x += 3
                         }
 
+                        // 각 원의 x좌표 y좌표를 맵에 저장
+                        val circleCoordinates = mutableMapOf<Int, Pair<Float, Float>>()
+                        for (i in 0 until 51 step 3) {
+                            if (outputFeature0[i + 2] > 0.45) {
+                                circleCoordinates[i] = Pair(outputFeature0[i + 1] * w, outputFeature0[i] * h)
+                            }
+                        }
+
+                        // 원을 연결하는 선 그리기
+                        for (joint in bodyJoints) {
+                            val start = joint.first.ordinal * 3
+                            val end = joint.second.ordinal * 3
+
+                            val startCoordinates = circleCoordinates[start]
+                            val endCoordinates = circleCoordinates[end]
+
+                            if (startCoordinates != null && endCoordinates != null) {
+                                canvas.drawLine(
+                                    startCoordinates.first, startCoordinates.second,
+                                    endCoordinates.first, endCoordinates.second,
+                                    paint
+                                )
+                            }
+                        }
+
+                        // 원이 그려지고 그려진 원의 수가 3개 이상일 때 스쿼트 탐지 함수 실행
                         if (circleDrawn && circleCount >= 3) {
                             if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(47) > 0.3 && outputFeature0.get(50) > 0.3) {
                                 val result = PoseDetector.detectSquatByAngle(outputFeature0)
