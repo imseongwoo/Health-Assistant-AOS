@@ -18,11 +18,12 @@ import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    var auth : FirebaseAuth? = null
+    var auth: FirebaseAuth? = null
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
 
         getPermissions()
@@ -30,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         with(binding) {
             buttonLogin.setOnClickListener {
                 if (binding.editTextId.text.isNullOrEmpty() || binding.editTextPassword.text.isNullOrEmpty()) {
-                    Toast.makeText(this@LoginActivity,"정보를 입력해주세요",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "정보를 입력해주세요", Toast.LENGTH_SHORT).show()
                 } else {
                     signinEmail()
                 }
@@ -43,8 +44,22 @@ class LoginActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun getPermissions() {
+        val permissions = arrayOf(android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(permissions[1]) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(permissions, 101)
+            }
+        }
+
+
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(android.Manifest.permission.CAMERA),101)
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 101)
         }
     }
 
@@ -52,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) getPermissions()
@@ -60,21 +75,23 @@ class LoginActivity : AppCompatActivity() {
 
     fun goHomeActivity(user: FirebaseUser?) {
         if (user != null) {
-            Intent(this,HomeActivity::class.java).also { startActivity(it) }
+            Intent(this, HomeActivity::class.java).also { startActivity(it) }
         }
     }
+
     fun goSignUpActivity() {
         Intent(this, SignUpActivity::class.java).also { startActivity(it) }
     }
+
     fun goToTtsActivity() {
         Intent(this, TextToSpeechActivity::class.java).also { startActivity(it) }
     }
 
     fun signinEmail() {
-        auth?.signInWithEmailAndPassword(binding.editTextId.text.toString(),binding.editTextPassword.text.toString())
-            ?.addOnCompleteListener {
-                    task ->
-                if(task.isSuccessful) {
+        auth?.signInWithEmailAndPassword(binding.editTextId.text.toString(),
+            binding.editTextPassword.text.toString())
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     // Login, 아이디와 패스워드가 맞았을 때
                     goHomeActivity(task.result?.user)
                 } else {
