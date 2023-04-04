@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityHomeBinding
+import com.example.gymbeacon.ui.home.fragment.NaviCalendarFragment
 import com.example.gymbeacon.ui.home.fragment.NaviHomeFragment
 import com.example.gymbeacon.ui.home.fragment.NaviMyPageFragment
 import com.example.gymbeacon.ui.home.fragment.NaviSettingFragment
@@ -17,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
     private val naviFragmentHome by lazy { NaviHomeFragment.newInstance() }
     private val naviFragmentSetting by lazy { NaviSettingFragment.newInstance() }
     private val naviFragmentMyPage by lazy { NaviMyPageFragment.newInstance() }
+    private val naviCalendarFragment by lazy { NaviCalendarFragment.newInstance() }
     var auth : FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,9 @@ class HomeActivity : AppCompatActivity() {
                     }
                     R.id.myPageItem -> {
                         changeFragment(naviFragmentMyPage)
+                    }
+                    R.id.calendarItem -> {
+                        changeFragment(naviCalendarFragment)
                     }
                     R.id.settingItem -> {
                         changeFragment(naviFragmentSetting)

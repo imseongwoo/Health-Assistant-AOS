@@ -12,14 +12,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.detail.DetailActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/detail_page_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="운동 횟수 세팅" />
 
         <TextView
             android:id="@+id/text_view_exercise_name"
@@ -32,31 +24,53 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_page_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="운동 명" />
+
+        <FrameLayout
+            android:id="@+id/camera_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_exercise_name">
+
+            <TextureView
+                android:id="@+id/texture_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/text_view_detail_page_count"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/background_detail_textview"
             android:gravity="center"
+            android:text="@string/detail_text_view_first_num"
             android:textAlignment="center"
             android:textSize="50sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_exercise_name"
-            android:text="@string/detail_text_view_first_num" />
+            app:layout_constraintTop_toBottomOf="@+id/camera_frame_layout" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/minus_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="26dp"
             android:background="@drawable/shape_circ_stroke_66ffff"
             android:text="@string/button_minus"
-            android:layout_marginStart="15dp"
             app:layout_constraintEnd_toStartOf="@+id/text_view_detail_page_count"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count" />
@@ -66,9 +80,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="26dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/shape_circ_stroke_66ffff"
             android:text="@string/button_plus"
-            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_view_detail_page_count"
             app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count" />
@@ -77,13 +91,24 @@
             android:id="@+id/button_detail_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/detail_start_button"
-            android:background="@drawable/shape_circ_stroke_66ffff"
-            app:layout_constraintTop_toBottomOf="@id/text_view_detail_page_count"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="80dp"
-            />
+            android:background="@drawable/selector_circ_detail_button"
+            android:text="@string/detail_start_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_detail_page_count" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_detail_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/selector_circ_detail_button"
+            android:text="record"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/button_detail_start"
+            app:layout_constraintTop_toTopOf="@id/button_detail_start" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

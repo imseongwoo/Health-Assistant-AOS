@@ -14,91 +14,58 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_home"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:title="카테고리" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout_upper_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="18dp"
-            android:background="@drawable/background_bluegrey"
-            android:paddingBottom="20dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/upper_body_image"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintCircleRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/Circle"
-                app:srcCompat="@drawable/upper" />
+                app:title="카테고리"
+                app:titleTextColor="@color/color_222222" />
 
             <TextView
+                android:id="@+id/text_view_program"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:textColor="@color/color_222222"
+                android:text="프로그램"
+                app:layout_constraintBottom_toTopOf="@id/text_view_upper_body"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="10dp"
+                />
+
+            <TextView
+                android:id="@+id/text_view_upper_body"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="312dp"
+                android:background="@drawable/gradient_home_menu_background"
+                android:gravity="center"
                 android:text="상체"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/upper_body_image" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout_lower_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="350dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="18dp"
-            android:background="@drawable/background_bluegrey"
-            android:paddingBottom="20dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/lower_body_image"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintCircleRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/Circle"
-                app:srcCompat="@drawable/lower" />
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@id/text_view_program"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_home" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:id="@+id/text_view_lower_body"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="20sp"
+                android:background="@drawable/gradient_home_menu_background"
+                android:gravity="center"
                 android:text="하체"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lower_body_image" />
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/text_view_upper_body"
+                app:layout_constraintTop_toTopOf="@+id/text_view_upper_body" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </FrameLayout>
 </layout>

@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:subtitleTextAppearance="@color/color_111111"
-            app:title="하체 운동 카테고리" />
+            app:title="하체" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_lower_body_category_list"
@@ -33,7 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_lower_body_category"
-            app:spanCount="3"
+            app:spanCount="1"
             tools:listitem="@layout/item_lower_body_category" />
 
 
