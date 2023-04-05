@@ -1,13 +1,12 @@
 package com.example.gymbeacon.ui.home.detail
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.*
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.*
 import android.media.MediaRecorder
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +36,7 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,7 +49,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var model: LiteModelMovenetSingleposeLightningTfliteFloat164
     lateinit var imageProcessor: ImageProcessor
     lateinit var tts : TextToSpeech
-    private var cameraDevice: CameraDevice? = null
 
     //    lateinit var maxNum : String
     private lateinit var selectedExerciseName : String
@@ -62,8 +61,25 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     var database = Firebase.database
     val myRef = database.getReference("health/momentum")
 
-    private lateinit var mediaRecorder: MediaRecorder
-    private lateinit var videoFile: File
+
+    // 녹화 관련 (04-05 추가)
+    private lateinit var mMediaRecorder: MediaRecorder
+    private var mNextVideoAbsolutePath: String? = null
+
+    // 원하는 폴더이름 생성
+    private val DETAIL_PATH = "DCIM/Koreatech/"
+    private var cameraDevice: CameraDevice? = null
+    var mCameraCaptureSession: CameraCaptureSession? = null
+    var mCaptureRequestBuilder: CaptureRequest.Builder? = null
+
+    companion object {
+        //권한 요청 코드
+        private const val REQUEST_RECORD_AUDIO_PERMISSION = 201
+    }
+    // 녹화
+
+
+    private val requirePermissions = arrayOf(Manifest.permission.RECORD_AUDIO)
 
     private val bodyJoints = listOf(
         Pair(BodyPart.NOSE, BodyPart.LEFT_EYE),
@@ -107,10 +123,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val detailIntent = intent
         selectedExerciseName = detailIntent.getStringExtra("upper")!!
 
+        // 오디오 권한 요청
+        requestPermissions(requirePermissions, REQUEST_RECORD_AUDIO_PERMISSION)
+        //
+
         with(binding) {
             textViewExerciseName.text = selectedExerciseName
         }
-        setupMediaRecorder()
+        //setupMediaRecorder()
         initEvent()
 
         imageProcessor =
@@ -225,7 +245,13 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
         }
 
-
+        // 04-05 추가
+        binding.buttonDetailRecord.setOnClickListener {
+            startRecording()
+        }
+        binding.buttonStopRecording.setOnClickListener {
+            stopRecordingVideo()
+        }
 
     }
 
@@ -280,7 +306,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             buttonStopRecording.setOnClickListener {
-                stopRecording()
+                stopRecordingVideo()
             }
         }
     }
@@ -344,6 +370,24 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         model.close()
     }
 
+    // 04-05 추가
+    // 권한 요청 결과 함수
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // 다음 두 가지 조건을 만족해야 오디오 권한 요청을 사용자가 허가했다고 판단한다.
+        // 1. 요청 코드가 requestPermissions()의 파라미터로 전달한 요청코드인 경우
+        // 2. 허가한 요청 중 첫 번째 권한을 승인한 경우 (권한이 많으면 grantResult안의 권한은 반복해서 확인해야 함)
+        val audioRecordPermissionGranted =
+            requestCode == REQUEST_RECORD_AUDIO_PERMISSION &&
+                    grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
+
+    }
+
     @SuppressLint("MissingPermission")
     fun openCamera() {
         cameraManager.openCamera(cameraManager.cameraIdList[0],
@@ -389,73 +433,174 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             handler)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    fun startRecording() {
-        if (cameraDevice == null) {
-            Log.e("camera", "CameraDevice is null. Cannot start recording.")
-            return
+    //영상녹화 설정 (04-05 추가)
+    @Throws(IOException::class)
+    private fun setUpMediaRecorder() {
+
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+
+        if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath!!.isEmpty()) {
+            mNextVideoAbsolutePath = getVideoFilePath()
         }
+        mMediaRecorder.setOutputFile(mNextVideoAbsolutePath)
+        mMediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024)
+        mMediaRecorder.setVideoFrameRate(30)
+        mMediaRecorder.setVideoSize(1920, 1080)
 
-        val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
+        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mMediaRecorder.setOrientationHint(90);    // 녹화 영상 출력 방향
 
-        // 최소 및 최대 프레임 속도 설정
-        captureRequest.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(10, 10))
-
-        val surface = Surface(binding.textureView.surfaceTexture)
-        captureRequest.addTarget(surface)
-
-        // Add the MediaRecorder's surface as a target
-        val recorderSurface = mediaRecorder.surface
-        captureRequest.addTarget(recorderSurface)
-
-        // 녹화를 위한 CaptureSession 생성
-        cameraDevice!!.createCaptureSession(mutableListOf(surface, recorderSurface),
-            object : CameraCaptureSession.StateCallback() {
-                override fun onConfigured(p0: CameraCaptureSession) {
-                    p0.setRepeatingRequest(captureRequest.build(), null, null)
-                }
-
-                override fun onConfigureFailed(p0: CameraCaptureSession) {
-                    Log.e("camera", "Failed to configure CameraCaptureSession.")
-                }
-            },
-            handler)
+        mMediaRecorder.prepare()
+        mMediaRecorder.start()
     }
 
-    fun stopRecording() {
-        // 녹화 종료 및 미디어 레코더 리셋
-        mediaRecorder.stop()
-        mediaRecorder.reset()
+    //파일 이름 및 저장경로를 생성, 04-05 추가
+    private fun getVideoFilePath(): String {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val dir = Environment.getExternalStorageDirectory().absoluteFile
+        val path = dir.path + "/" + DETAIL_PATH
+        val dst = File(path)
+        if (!dst.exists()) dst.mkdirs()
 
+        return path + timeStamp + ".mp4"
+    }
+
+//    @RequiresApi(Build.VERSION_CODES.P)
+//    fun startRecording() {
+//        if (cameraDevice == null) {
+//            Log.e("camera", "CameraDevice is null. Cannot start recording.")
+//            return
+//        }
+//
+//        val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
+//
+//        // 최소 및 최대 프레임 속도 설정
+//        captureRequest.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(10, 10))
+//
+//        val surface = Surface(binding.textureView.surfaceTexture)
+//        captureRequest.addTarget(surface)
+//
+//        // Add the MediaRecorder's surface as a target
+//        val recorderSurface = mediaRecorder.surface
+//        captureRequest.addTarget(recorderSurface)
+//
+//        // 녹화를 위한 CaptureSession 생성
+//        cameraDevice!!.createCaptureSession(mutableListOf(surface, recorderSurface),
+//            object : CameraCaptureSession.StateCallback() {
+//                override fun onConfigured(p0: CameraCaptureSession) {
+//                    p0.setRepeatingRequest(captureRequest.build(), null, null)
+//                }
+//
+//                override fun onConfigureFailed(p0: CameraCaptureSession) {
+//                    Log.e("camera", "Failed to configure CameraCaptureSession.")
+//                }
+//            },
+//            handler)
+//    }
+
+//    fun stopRecording() {
+//        // 녹화 종료 및 미디어 레코더 리셋
+//        mediaRecorder.stop()
+//        mediaRecorder.reset()
+//
+//        cameraDevice?.close()
+//        cameraDevice = null
+//
+//        // 녹화 종료 후 카메라 미리보기 재개
+//        openCamera()
+//    }
+
+    // 녹화 시작 04-05 추가
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun startRecording() {
+
+        mMediaRecorder = MediaRecorder()
+
+        try {
+            closePreviewSession()
+            setUpMediaRecorder()
+            val texture: SurfaceTexture = binding.textureView.getSurfaceTexture()!!
+            val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
+
+            mCaptureRequestBuilder = captureRequest
+            val surfaces: ArrayList<Surface> = ArrayList()
+            val previewSurface = Surface(texture)
+            surfaces.add(previewSurface)
+            mCaptureRequestBuilder!!.addTarget(previewSurface)
+            val recordSurface = mMediaRecorder.surface
+            surfaces.add(recordSurface)
+            mCaptureRequestBuilder!!.addTarget(recordSurface)
+
+            binding.buttonDetailRecord.setText("녹화 중..")
+
+            cameraDevice!!.createCaptureSession(surfaces, object : CameraCaptureSession.StateCallback() {
+                override fun onConfigured(session: CameraCaptureSession) {
+                    mCameraCaptureSession = session
+                    mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(), null, null)
+                    Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onConfigureFailed(session: CameraCaptureSession) {
+                }
+            }, handler)
+            //timer()
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    //녹화 중지 04-05 추가
+    private fun stopRecordingVideo() {
+        binding.buttonDetailRecord.setText("녹화 시작")
+        Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()
+        mMediaRecorder.stop()
+        mMediaRecorder.reset()
+
+        mNextVideoAbsolutePath = null
         cameraDevice?.close()
         cameraDevice = null
 
-        // 녹화 종료 후 카메라 미리보기 재개
+        //2023-04-04 23:23 추가, 녹화 종료 후 카메라 미리보기 재개
         openCamera()
+
     }
 
-    private fun setupMediaRecorder() {
-        // 파일 이름을 현재 시간으로 설정
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val videoFileName = "VIDEO_$timeStamp.mp4"
-
-        // 비디오 파일을 저장할 경로 지정
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_MOVIES)
-        val videoFile = File(storageDir, videoFileName)
-        mediaRecorder = MediaRecorder()
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
-        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
-        mediaRecorder.setVideoSize(1920, 1080)
-        mediaRecorder.setVideoFrameRate(30)
-        mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024)
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-
-        mediaRecorder.setOutputFile(videoFile.absolutePath)
-        mediaRecorder.prepare()
-        mediaRecorder.start()
+    // 04-05 추가
+    private fun closePreviewSession() {
+        if (mCameraCaptureSession != null) {
+            mCameraCaptureSession!!.close()
+            mCameraCaptureSession = null
+        }
     }
+
+//    private fun setupMediaRecorder() {
+//        // 파일 이름을 현재 시간으로 설정
+//        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+//        val videoFileName = "VIDEO_$timeStamp.mp4"
+//
+//        // 비디오 파일을 저장할 경로 지정
+//        val storageDir = getExternalFilesDir(Environment.DIRECTORY_MOVIES)
+//        val videoFile = File(storageDir, videoFileName)
+//        mediaRecorder = MediaRecorder()
+//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
+//        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
+//        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+//        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+//        mediaRecorder.setVideoSize(1920, 1080)
+//        mediaRecorder.setVideoFrameRate(30)
+//        mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024)
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+//
+//        mediaRecorder.setOutputFile(videoFile.absolutePath)
+//        mediaRecorder.prepare()
+//        mediaRecorder.start()
+//    }
 
     fun countSquat(result: Boolean) {
         if (result == true && temp == false) {
