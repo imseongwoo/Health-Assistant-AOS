@@ -30,8 +30,10 @@
         <FrameLayout
             android:id="@+id/camera_frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="430dp"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_exercise_name">
 
@@ -53,7 +55,7 @@
             android:id="@+id/text_view_detail_page_count"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/background_detail_textview"
             android:gravity="center"
             android:text="@string/detail_text_view_first_num"
@@ -92,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/selector_circ_detail_button"
             android:text="@string/detail_start_button"
             app:layout_constraintStart_toStartOf="parent"
