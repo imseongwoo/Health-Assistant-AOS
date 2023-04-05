@@ -47,84 +47,96 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/bench_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="35dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/background_detail_textview"
-                    android:text="@string/button_bench"
-                    android:textSize="14sp"
-                    app:layout_constraintHorizontal_bias="0.33"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chart_btn" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/squat_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_margin="16dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/background_detail_textview"
-                    android:text="@string/button_squat"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@id/bench_btn"
-                    app:layout_constraintTop_toBottomOf="@id/chart_btn" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="60dp">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/dead_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_margin="16dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/background_detail_textview"
-                    android:text="@string/button_deadlift"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@id/squat_btn"
-                    app:layout_constraintTop_toBottomOf="@id/chart_btn" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/bench_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@drawable/background_detail_textview"
+                        android:text="@string/button_bench"
+                        android:textSize="14sp" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/squat_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@drawable/background_detail_textview"
+                        android:text="@string/button_squat"
+                        android:textSize="14sp" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/dead_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@drawable/background_detail_textview"
+                        android:text="@string/button_deadlift"
+                        android:textSize="14sp" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/incline_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="35dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/background_detail_textview"
-                    android:text="@string/button_incline_bench"
-                    android:textSize="14sp"
-                    app:layout_constraintHorizontal_bias="0.33"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bench_btn" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="120dp">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/legex_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_margin="16dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/background_detail_textview"
-                    android:text="@string/button_legex"
-                    app:layout_constraintStart_toEndOf="@id/incline_btn"
-                    app:layout_constraintTop_toBottomOf="@id/squat_btn" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/incline_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@drawable/background_detail_textview"
+                        android:text="@string/button_incline_bench"
+                        android:textSize="14sp" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/legex_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@drawable/background_detail_textview"
+                        android:text="@string/button_legex" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/crossover_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@drawable/background_detail_textview"
+                        android:text="@string/button_crossover"
+                        android:textSize="14sp" />
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
 
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/crossover_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_margin="16dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/background_detail_textview"
-                    android:text="@string/button_crossover"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@id/legex_btn"
-                    app:layout_constraintTop_toBottomOf="@id/dead_btn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
