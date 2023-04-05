@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gymbeacon.R;
 import com.example.gymbeacon.ui.common.CommonUtil;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
@@ -28,28 +32,35 @@ import java.util.ArrayList;
 
 public class ChartActivity extends AppCompatActivity {
 
+    // 차트 선언
     BarChart barChart_chest;
     BarChart barChart_back;
     BarChart barChart_lower;
     Button back_btn;
+    PieChart pieChart;
 
     // 하체 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_lower = new ArrayList<>();
     ArrayList<String> labelsNames_lower = new ArrayList<>();
-
     ArrayList<DateCountsData> dateCountsDataArrayList_lower = new ArrayList<>();
 
     // 등 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_back = new ArrayList<>();
     ArrayList<String> labelsNames_back = new ArrayList<>();
-
     ArrayList<DateCountsData> dateCountsDataArrayList_back = new ArrayList<>();
 
     // 가슴 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_chest = new ArrayList<>();
     ArrayList<String> labelsNames_chest = new ArrayList<>();
-
     ArrayList<DateCountsData> dateCountsDataArrayList_chest = new ArrayList<>();
+
+    // 파이 차트 ArrayList
+    ArrayList<PieEntry> pieEntryArrayList = new ArrayList<>();
+    ArrayList<String> labelsNames_pie = new ArrayList<>();
+    ArrayList<DateCountsData> dateCountsDataArrayList_pie = new ArrayList<>();
+    int counts_lower = 0;
+    int counts_back = 0;
+    int counts_chest = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +80,7 @@ public class ChartActivity extends AppCompatActivity {
 //        barEntryArrayList.clear();
 //        labelsNames.clear();
 
-//  실시간 DB 참조 위치(health/momentum) 설정
+    //  실시간 DB 참조 위치(health/momentum) 설정
     CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.getUid()).addValueEventListener(new ValueEventListener(){
 
         @Override
@@ -87,6 +98,10 @@ public class ChartActivity extends AppCompatActivity {
             barEntryArrayList_back.clear();
             labelsNames_back.clear();
 
+            dateCountsDataArrayList_pie.clear();     // 파이 차트 리스트 초기화
+            pieEntryArrayList.clear();
+            labelsNames_pie.clear();
+
             for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
                 String ex_name = postSnapshot.child("exercise").getValue(String.class);
@@ -98,6 +113,9 @@ public class ChartActivity extends AppCompatActivity {
                     String counts = postSnapshot.child("count").getValue(String.class);
 
                     dateCountsDataArrayList_chest.add(new DateCountsData(date, counts));
+
+                    // 가슴 운동 부위의 운동 횟수 설정
+                    counts_chest += Integer.parseInt(counts);
                 }
 
                 // 운동 이름이 등 운동인 경우
@@ -107,6 +125,9 @@ public class ChartActivity extends AppCompatActivity {
                     String counts = postSnapshot.child("count").getValue(String.class);
 
                     dateCountsDataArrayList_back.add(new DateCountsData(date, counts));
+
+                    // 등 운동 부위의 운동 횟수 설정
+                    counts_back += Integer.parseInt(counts);
                 }
 
                 // 운동 이름이 하체 운동인 경우
@@ -119,6 +140,9 @@ public class ChartActivity extends AppCompatActivity {
                     Log.i("차트 date 확인", "date = " + date);
                     Log.i("차트 counts 확인", "counts = " + counts);
                     dateCountsDataArrayList_lower.add(new DateCountsData(date, counts));
+
+                    // 하체 운동 부위의 운동 횟수 설정
+                    counts_lower += Integer.parseInt(counts);
                 }
             }
 
@@ -129,6 +153,25 @@ public class ChartActivity extends AppCompatActivity {
             fillDateCounts(barChart_back, dateCountsDataArrayList_back, labelsNames_back, barEntryArrayList_back);
             fillDateCounts(barChart_chest, dateCountsDataArrayList_chest, labelsNames_chest, barEntryArrayList_chest);
 
+            // 부위별 운동의 파이 차트 데이터 설정
+            pieEntryArrayList.add(new PieEntry(counts_back, "등"));
+            pieEntryArrayList.add(new PieEntry(counts_lower, "하체"));
+            pieEntryArrayList.add(new PieEntry(counts_chest, "가슴"));
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntryArrayList, "부위별 운동 개수(pieChart)");
+
+            Description description = new Description();
+            description.setText("운동 부위 퍼센트");
+            description.setTextSize(15);
+            pieChart.setDescription(description);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChart.setData(pieData);
+
+            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            pieChart.animateXY(2000, 2000);
+            pieChart.setUsePercentValues(true);     // 퍼센트 값 사용
         }   //onDataChange
 
         @Override
@@ -155,8 +198,8 @@ public class ChartActivity extends AppCompatActivity {
         barChart.setDragXEnabled(true);
         // Y축으로 드래그 불가능
         barChart.setDragYEnabled(false);
-        // 확대 불가능
-        barChart.setScaleEnabled(false);
+        // 차트 확대 가능 여부
+        barChart.setScaleEnabled(true);
         // pinch zoom 가능 (손가락으로 확대축소하는거)
         barChart.setPinchZoom(true);
 
