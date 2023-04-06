@@ -1,17 +1,15 @@
 package com.example.gymbeacon.ui.home.detail
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.*
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.*
+import android.media.MediaRecorder
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.util.Range
@@ -20,6 +18,7 @@ import android.view.TextureView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
@@ -36,6 +35,9 @@ import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -47,7 +49,8 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var model: LiteModelMovenetSingleposeLightningTfliteFloat164
     lateinit var imageProcessor: ImageProcessor
     lateinit var tts : TextToSpeech
-//    lateinit var maxNum : String
+
+    //    lateinit var maxNum : String
     private lateinit var selectedExerciseName : String
 
     var maxNum: String = "999"
@@ -57,6 +60,19 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var previousTtsData: String = ""
     var database = Firebase.database
     val myRef = database.getReference("health/momentum")
+
+
+    // 녹화 관련 (04-05 추가)
+    private lateinit var mMediaRecorder: MediaRecorder
+    private var mNextVideoAbsolutePath: String? = null
+
+    // 원하는 폴더이름 생성
+    private val DETAIL_PATH = "DCIM/Koreatech/"
+    private var cameraDevice: CameraDevice? = null
+    var mCameraCaptureSession: CameraCaptureSession? = null
+    var mCaptureRequestBuilder: CaptureRequest.Builder? = null
+
+    private val requirePermissions = arrayOf(Manifest.permission.RECORD_AUDIO)
 
     private val bodyJoints = listOf(
         Pair(BodyPart.NOSE, BodyPart.LEFT_EYE),
@@ -91,6 +107,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail)
@@ -99,9 +116,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val detailIntent = intent
         selectedExerciseName = detailIntent.getStringExtra("upper")!!
 
+        // 오디오 권한 요청
+        requestPermissions(requirePermissions, REQUEST_RECORD_AUDIO_PERMISSION)
+        //
+
         with(binding) {
             textViewExerciseName.text = selectedExerciseName
         }
+        //setupMediaRecorder()
         initEvent()
 
         imageProcessor =
@@ -115,6 +137,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         paint.setColor(Color.YELLOW)
 
         initTTS()
+
 
         binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
@@ -156,6 +179,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         var circleDrawn = false
                         var circleCount = 0
 
+                        // 원 그리기
                         while (x <= 49) {
                             if (outputFeature0.get(x + 2) > 0.45) {
                                 val circleX = outputFeature0.get(x + 1) * w
@@ -214,7 +238,13 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
         }
 
-
+        // 04-05 추가
+        binding.buttonDetailRecord.setOnClickListener {
+            startRecording()
+        }
+        binding.buttonStopRecording.setOnClickListener {
+            stopRecordingVideo()
+        }
 
     }
 
@@ -245,6 +275,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun initEvent() {
         with (binding) {
             minusButton.setOnClickListener{
@@ -261,6 +292,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             buttonDetailStart.setOnClickListener {
                 maxNum = textViewDetailPageCount.text.toString()
+            }
+
+            buttonDetailRecord.setOnClickListener {
+                startRecording()
+            }
+
+            buttonStopRecording.setOnClickListener {
+                stopRecordingVideo()
             }
         }
     }
@@ -317,10 +356,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     // 종료 시 count 된 값 서버에 전송
     override fun onDestroy() {
         super.onDestroy()
-//        var healthEntity = HealthEntity(CommonUtil.getUid(),
-//            CommonUtil.getTime(System.currentTimeMillis()),count.toString(),selectedExerciseName)
-//        Log.e("test","ondestroy 실행")
-//        myRef.push().setValue(healthEntity)
         tts?.let {
             it.stop()
             it.shutdown()
@@ -328,31 +363,33 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         model.close()
     }
 
+    // 04-05 추가
+    // 권한 요청 결과 함수
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // 다음 두 가지 조건을 만족해야 오디오 권한 요청을 사용자가 허가했다고 판단한다.
+        // 1. 요청 코드가 requestPermissions()의 파라미터로 전달한 요청코드인 경우
+        // 2. 허가한 요청 중 첫 번째 권한을 승인한 경우 (권한이 많으면 grantResult안의 권한은 반복해서 확인해야 함)
+        val audioRecordPermissionGranted =
+            requestCode == REQUEST_RECORD_AUDIO_PERMISSION &&
+                    grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
+
+    }
+
     @SuppressLint("MissingPermission")
     fun openCamera() {
         cameraManager.openCamera(cameraManager.cameraIdList[0],
             object : CameraDevice.StateCallback() {
 
+                @RequiresApi(Build.VERSION_CODES.P)
                 override fun onOpened(p0: CameraDevice) {
-                    var captureRequest = p0.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-
-                    // 최소 및 최대 프레임 속도 설정
-                    captureRequest.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(10, 10))
-
-                    var surface = Surface(binding.textureView.surfaceTexture)
-                    captureRequest.addTarget(surface)
-
-                    p0.createCaptureSession(listOf(surface),
-                        object : CameraCaptureSession.StateCallback() {
-                            override fun onConfigured(p0: CameraCaptureSession) {
-                                p0.setRepeatingRequest(captureRequest.build(), null, null)
-                            }
-
-                            override fun onConfigureFailed(p0: CameraCaptureSession) {
-                            }
-
-                        },
-                        handler)
+                    cameraDevice = p0
+                    startPreview(p0)
                 }
 
                 override fun onDisconnected(p0: CameraDevice) {
@@ -365,13 +402,141 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             handler)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun startPreview(cameraDevice: CameraDevice) {
+        val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
 
+        // 최소 및 최대 프레임 속도 설정
+        captureRequest.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(10, 10))
+
+        val surface = Surface(binding.textureView.surfaceTexture)
+        captureRequest.addTarget(surface)
+
+        // 카메라 미리보기를 위한 CaptureSession 생성
+        cameraDevice.createCaptureSession(listOf(surface),
+            object : CameraCaptureSession.StateCallback() {
+                override fun onConfigured(p0: CameraCaptureSession) {
+                    p0.setRepeatingRequest(captureRequest.build(), null, null)
+                }
+
+                override fun onConfigureFailed(p0: CameraCaptureSession) {
+                }
+
+            },
+            handler)
+    }
+
+    //영상녹화 설정 (04-05 추가)
+    @Throws(IOException::class)
+    private fun setUpMediaRecorder() {
+
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+
+        if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath!!.isEmpty()) {
+            mNextVideoAbsolutePath = getVideoFilePath()
+        }
+        mMediaRecorder.setOutputFile(mNextVideoAbsolutePath)
+        mMediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024)
+        mMediaRecorder.setVideoFrameRate(30)
+        mMediaRecorder.setVideoSize(1920, 1080)
+
+        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mMediaRecorder.setOrientationHint(90);    // 녹화 영상 출력 방향
+
+        mMediaRecorder.prepare()
+        mMediaRecorder.start()
+    }
+
+    //파일 이름 및 저장경로를 생성, 04-05 추가
+    private fun getVideoFilePath(): String {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val dir = Environment.getExternalStorageDirectory().absoluteFile
+        val path = dir.path + "/" + DETAIL_PATH
+        val dst = File(path)
+        if (!dst.exists()) dst.mkdirs()
+
+        return path + timeStamp + ".mp4"
+    }
+
+    // 녹화 시작 04-05 추가
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun startRecording() {
+
+        mMediaRecorder = MediaRecorder()
+
+        try {
+            closePreviewSession()
+            setUpMediaRecorder()
+            val texture: SurfaceTexture = binding.textureView.getSurfaceTexture()!!
+            val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
+
+            mCaptureRequestBuilder = captureRequest
+            val surfaces: ArrayList<Surface> = ArrayList()
+            val previewSurface = Surface(texture)
+            surfaces.add(previewSurface)
+            mCaptureRequestBuilder!!.addTarget(previewSurface)
+            val recordSurface = mMediaRecorder.surface
+            surfaces.add(recordSurface)
+            mCaptureRequestBuilder!!.addTarget(recordSurface)
+
+            binding.buttonDetailRecord.setText("녹화 중..")
+
+            cameraDevice!!.createCaptureSession(surfaces, object : CameraCaptureSession.StateCallback() {
+                override fun onConfigured(session: CameraCaptureSession) {
+                    mCameraCaptureSession = session
+                    mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(), null, null)
+                    Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onConfigureFailed(session: CameraCaptureSession) {
+                }
+            }, handler)
+            //timer()
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    //녹화 중지 04-05 추가
+    private fun stopRecordingVideo() {
+        binding.buttonDetailRecord.setText("녹화 시작")
+        Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()
+        mMediaRecorder.stop()
+        mMediaRecorder.reset()
+
+        mNextVideoAbsolutePath = null
+        cameraDevice?.close()
+        cameraDevice = null
+
+        //2023-04-04 23:23 추가, 녹화 종료 후 카메라 미리보기 재개
+        openCamera()
+
+    }
+
+    // 04-05 추가
+    private fun closePreviewSession() {
+        if (mCameraCaptureSession != null) {
+            mCameraCaptureSession!!.close()
+            mCameraCaptureSession = null
+        }
+    }
 
     fun countSquat(result: Boolean) {
         if (result == true && temp == false) {
             count += 1
         }
         temp = result
+    }
+
+    companion object {
+        //권한 요청 코드
+        private const val REQUEST_RECORD_AUDIO_PERMISSION = 201
     }
 
 }
