@@ -55,7 +55,6 @@ class NaviCalendarFragment : Fragment() {
 
         with(binding) {
             calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
-//                binding.myPageDate.text = "${year}년 ${month + 1}월 ${dayOfMonth}일"
                 setData(year, month + 1, dayOfMonth)
 
                 viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
@@ -91,19 +90,13 @@ class NaviCalendarFragment : Fragment() {
     }
 
     fun setData(year: Int, month: Int, dayOfMonth: Int) {
-        var customMonth = ""
-        if (month < 10) {
-            customMonth = "0" + month.toString()
-        } else {
-            customMonth = month.toString()
-        }
-        val nowTimeStamp = year.toString() + "-" + customMonth + "-" + dayOfMonth.toString()
+        val customMonth = String.format("%02d", month)
         val customDay = String.format("%02d", dayOfMonth)
-        val dateStrForVideo = "${year}${customMonth}${customDay}"
+        val nowTimeStamp = year.toString() + "-" + customMonth + "-" + customDay
 
+        val dateStrForVideo = "${year}${customMonth}${customDay}"
         val folderPath = "${Environment.getExternalStorageDirectory()}/DCIM/Koreatech"
         val folder = File(folderPath)
-
 
         val videoFiles = folder.listFiles { file ->
             file.name.startsWith(dateStrForVideo) && file.extension == "mp4"
@@ -116,7 +109,6 @@ class NaviCalendarFragment : Fragment() {
             }
 
         }
-
         viewModel.getDbData(nowTimeStamp)
     }
 
@@ -131,7 +123,6 @@ class NaviCalendarFragment : Fragment() {
             Log.e("NaviMyPage", "권한 허용됨")
         }
     }
-
 
     companion object {
         fun newInstance(): NaviCalendarFragment {
