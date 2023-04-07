@@ -6,12 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,7 +20,7 @@ import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
 class NaviCalendarFragment : Fragment() {
     lateinit var binding: FragmentNaviCalendarBinding
     lateinit var viewPager: ViewPager2
-    lateinit var viewPagerExerciseCountMap: MutableMap<String, Pair<Int,Int>>
+    lateinit var viewPagerExerciseCountMap: MutableMap<String, Pair<Int, Int>>
     private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
 
     override fun onCreateView(
@@ -33,7 +28,8 @@ class NaviCalendarFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_navi_calendar, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_navi_calendar, container, false)
         return binding.root
     }
 
@@ -43,7 +39,6 @@ class NaviCalendarFragment : Fragment() {
 
         with(binding) {
             calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
-//                binding.myPageDate.text = "${year}년 ${month + 1}월 ${dayOfMonth}일"
                 setData(year, month + 1, dayOfMonth)
 
                 viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
@@ -79,19 +74,10 @@ class NaviCalendarFragment : Fragment() {
     }
 
     fun setData(year: Int, month: Int, dayOfMonth: Int) {
-        var customMonth = ""
-        if (month < 10) {
-            customMonth = "0" + month.toString()
-        } else {
-            customMonth = month.toString()
-        }
-        val nowTimeStamp = year.toString() + "-" + customMonth + "-" + dayOfMonth.toString()
-        val sumCount = mutableListOf<Int>()
-
+        val customMonth = String.format("%02d", month)
+        val customDay = String.format("%02d", dayOfMonth)
+        val nowTimeStamp = year.toString() + "-" + customMonth + "-" + customDay
         viewModel.getDbData(nowTimeStamp)
-        var exerciseCountMap = mutableMapOf<String, Int>()
-        exerciseCountMap = viewModel.getExerciseCountMap()
-
     }
 
     companion object {

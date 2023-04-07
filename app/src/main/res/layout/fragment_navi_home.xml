@@ -30,41 +30,60 @@
                 android:id="@+id/text_view_program"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_222222"
-                android:text="프로그램"
-                app:layout_constraintBottom_toTopOf="@id/text_view_upper_body"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="10dp"
+                app:layout_goneMarginTop="10dp"
+                android:text="@string/text_view_program"
+                android:textColor="@color/color_222222"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="280dp"
                 />
 
             <TextView
+                android:id="@+id/text_view_image_box"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_efeff5_solid_radius_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_program" />
+
+            <ImageView
                 android:id="@+id/text_view_upper_body"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="312dp"
-                android:background="@drawable/gradient_home_menu_background"
+                android:background="@drawable/custom_lower_body"
+                android:clipToOutline="true"
                 android:gravity="center"
-                android:text="상체"
-                android:textAlignment="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/upper"
                 android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@id/text_view_program"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_home" />
+                app:layout_constraintBottom_toBottomOf="@id/text_view_image_box"
+                app:layout_constraintEnd_toStartOf="@id/text_view_lower_body"
+                app:layout_constraintStart_toStartOf="@id/text_view_image_box"
+                app:layout_constraintTop_toTopOf="@id/text_view_image_box" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/text_view_lower_body"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="20sp"
-                android:background="@drawable/gradient_home_menu_background"
+                android:background="@drawable/custom_lower_body"
+                android:clipToOutline="true"
                 android:gravity="center"
-                android:text="하체"
+                android:scaleType="centerCrop"
+                android:src="@drawable/lower"
                 android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_image_box"
                 app:layout_constraintStart_toEndOf="@id/text_view_upper_body"
                 app:layout_constraintTop_toTopOf="@+id/text_view_upper_body" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
