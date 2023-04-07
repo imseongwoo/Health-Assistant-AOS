@@ -253,6 +253,7 @@ class NaviMyPageFragment : Fragment() {
                 chartIncline.setVisibility(View.INVISIBLE)
                 chartLegex.setVisibility(View.INVISIBLE)
                 chartCrossover.setVisibility(View.INVISIBLE)
+                chartNameText.setText("벤치프레스")
             }
             squatBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -261,6 +262,7 @@ class NaviMyPageFragment : Fragment() {
                 chartIncline.setVisibility(View.INVISIBLE)
                 chartLegex.setVisibility(View.INVISIBLE)
                 chartCrossover.setVisibility(View.INVISIBLE)
+                chartNameText.setText("스쿼트")
             }
             deadBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -269,6 +271,7 @@ class NaviMyPageFragment : Fragment() {
                 chartIncline.setVisibility(View.INVISIBLE)
                 chartLegex.setVisibility(View.INVISIBLE)
                 chartCrossover.setVisibility(View.INVISIBLE)
+                chartNameText.setText("데드리프트")
             }
             inclineBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -277,6 +280,7 @@ class NaviMyPageFragment : Fragment() {
                 chartIncline.setVisibility(View.VISIBLE)
                 chartLegex.setVisibility(View.INVISIBLE)
                 chartCrossover.setVisibility(View.INVISIBLE)
+                chartNameText.setText("인클라인 벤치프레스")
             }
             legexBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -285,6 +289,7 @@ class NaviMyPageFragment : Fragment() {
                 chartIncline.setVisibility(View.INVISIBLE)
                 chartLegex.setVisibility(View.VISIBLE)
                 chartCrossover.setVisibility(View.INVISIBLE)
+                chartNameText.setText("레그 익스텐션")
             }
             crossoverBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -293,6 +298,7 @@ class NaviMyPageFragment : Fragment() {
                 chartIncline.setVisibility(View.INVISIBLE)
                 chartLegex.setVisibility(View.INVISIBLE)
                 chartCrossover.setVisibility(View.VISIBLE)
+                chartNameText.setText("케이블 크로스오버")
             }
 
         }

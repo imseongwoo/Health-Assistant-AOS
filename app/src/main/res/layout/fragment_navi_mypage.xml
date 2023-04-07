@@ -140,6 +140,21 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="810dp">
+
+                <TextView
+                    android:id="@+id/chart_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="운동 이름"
+                    android:textAlignment="center"
+                    android:textSize="25sp" />
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -148,6 +163,7 @@
                 android:layout_marginBottom="50dp">
 
                 <FrameLayout
+                    android:id="@+id/frameLayout_Chart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
