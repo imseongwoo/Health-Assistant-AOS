@@ -36,4 +36,5 @@
     <string name="text_view_withdraw"><u>탈퇴하기</u></string>
     <string name="text_view_logout">로그아웃</string>
     <string name="text_view_program">프로그램</string>
+    <string name="text_view_file_name">파일 명 :</string>
 </resources>

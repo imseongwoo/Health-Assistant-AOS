@@ -1,6 +1,7 @@
 package com.example.gymbeacon.ui.home.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -15,11 +16,15 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.gymbeacon.R
 import com.example.gymbeacon.ViewModelFactory
 import com.example.gymbeacon.databinding.FragmentNaviCalendarBinding
+import com.example.gymbeacon.model.Video
+import com.example.gymbeacon.ui.common.VideoPlayerActivity
 import com.example.gymbeacon.ui.home.adapter.MyPageViewPagerAdapter
+import com.example.gymbeacon.ui.home.adapter.VideoAdapter
 import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
 import java.io.File
 
@@ -28,6 +33,7 @@ class NaviCalendarFragment : Fragment() {
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerExerciseCountMap: MutableMap<String, Pair<Int, Int>>
     private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
+    private lateinit var videoAdapter: VideoAdapter
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -101,11 +107,32 @@ class NaviCalendarFragment : Fragment() {
         val videoFiles = folder.listFiles { file ->
             file.name.startsWith(dateStrForVideo) && file.extension == "mp4"
         }
+        // 저장된 동영상이 있을 경우와 없을 경우 처리
         if (videoFiles == null || videoFiles.isEmpty()) {
             Log.d("NaviMyPage", "No video files found for $dateStrForVideo")
-        } else {
+            videoAdapter = VideoAdapter(emptyList()) {
+
+            }
+
+            binding.recyclerViewVideo.layoutManager =LinearLayoutManager(requireContext())
+            binding.recyclerViewVideo.adapter = videoAdapter
+
+            videoAdapter.notifyDataSetChanged()
+        } else {    // 동영상이 있을 경우 동영상의 이름과 저장 경로를 Video data class에 저장 후 adapter로 넘겨줌
+            val videos = videoFiles.map { Video(it.name, it.path) }
+            videoAdapter = VideoAdapter(videos){
+                val video = videos[it]
+                val intent = Intent(requireContext(),VideoPlayerActivity::class.java)
+                intent.putExtra("video_path", video.path)
+                startActivity(intent)
+            }
+
+            binding.recyclerViewVideo.layoutManager =LinearLayoutManager(requireContext())
+            binding.recyclerViewVideo.adapter = videoAdapter
+
+            videoAdapter.notifyDataSetChanged()
             for (file in videoFiles) {
-                Log.d("NaviMyPage", "Video file: ${file.name}")
+                Log.d("NaviMyPage", "Video file: ${file.name}, file path: ${file.path}")
             }
 
         }
