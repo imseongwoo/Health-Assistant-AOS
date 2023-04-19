@@ -37,4 +37,5 @@
     <string name="text_view_logout">로그아웃</string>
     <string name="text_view_program">프로그램</string>
     <string name="text_view_file_name">파일 명 :</string>
+    <string name="text_view_exercise_video">운동 영상</string>
 </resources>
