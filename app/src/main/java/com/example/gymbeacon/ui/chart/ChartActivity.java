@@ -32,13 +32,19 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -49,7 +55,7 @@ public class ChartActivity extends AppCompatActivity {
     Button back_btn;
     PieChart pieChart;
 
-    RadarChart raderChart;   // 레이더 차트
+    //RadarChart radarChart;   // 레이더 차트
 
     // 하체 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_lower = new ArrayList<>();
@@ -74,6 +80,9 @@ public class ChartActivity extends AppCompatActivity {
     int counts_back = 0;
     int counts_chest = 0;
 
+    // 레이더 차트 ArrayList
+    //ArrayList<RadarEntry> raderEntry = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,15 +94,8 @@ public class ChartActivity extends AppCompatActivity {
         barChart_lower = findViewById(R.id.barChart_lower);
         pieChart = findViewById(R.id.pieChart);
 
-        raderChart = findViewById(R.id.raderChart);
+        //radarChart = findViewById(R.id.radarChart);
 
-//        barEntryArrayList_lower = new ArrayList<>();
-//        barEntryArrayList_back = new ArrayList<>();
-//        barEntryArrayList_chest = new ArrayList<>();
-        //labelsNames = new ArrayList<>();
-
-//        barEntryArrayList.clear();
-//        labelsNames.clear();
 
     //  실시간 DB 참조 위치(health/momentum) 설정
     CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.getUid()).addValueEventListener(new ValueEventListener(){
@@ -181,6 +183,7 @@ public class ChartActivity extends AppCompatActivity {
             description.setTextSize(15);
             pieChart.setDescription(description);
 
+            pieDataSet.setValueFormatter(new PercentFormatter(pieChart));
             PieData pieData = new PieData(pieDataSet);
 
             pieChart.setData(pieData);
@@ -191,59 +194,9 @@ public class ChartActivity extends AppCompatActivity {
             // 파이 차트 설정
 
             // 레이더 차트 설정
-            raderChart.setBackgroundColor(Color.rgb(60, 65, 82));
 
-            raderChart.getDescription().setEnabled(false);
-
-            raderChart.setWebLineWidth(1f);
-            raderChart.setWebColor(Color.LTGRAY);
-            raderChart.setWebLineWidthInner(1f);
-            raderChart.setWebColorInner(Color.LTGRAY);
-            raderChart.setWebAlpha(100);
-
-            // create a custom MarkerView (extend MarkerView) and specify the layout
-            // to use for it
-            MarkerView mv = new RadarMarkerView(this, R.layout.radar_markerview);
-            mv.setChartView(raderChart); // For bounds control
-            raderChart.setMarker(mv); // Set the marker to the chart
-
-            raderSetData();
-
-            raderChart.animateXY(1400, 1400, Easing.EaseInOutQuad);
-
-            XAxis xAxis = raderChart.getXAxis();
-            //xAxis.setTypeface(tfLight);
-            xAxis.setTextSize(9f);
-            xAxis.setYOffset(0f);
-            xAxis.setXOffset(0f);
-            xAxis.setValueFormatter(new IAxisValueFormatter() {
-                private final String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
-
-                @Override
-                public String getFormattedValue(float value, AxisBase axis) {
-                    return mActivities[(int) value % mActivities.length];
-                }
-            });
-            xAxis.setTextColor(Color.WHITE);
-
-            YAxis yAxis = raderChart.getYAxis();
-            //yAxis.setTypeface(tfLight);
-            yAxis.setLabelCount(5, false);
-            yAxis.setTextSize(9f);
-            yAxis.setAxisMinimum(0f);
-            yAxis.setAxisMaximum(80f);
-            yAxis.setDrawLabels(false);
-
-            Legend l = raderChart.getLegend();
-            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-            l.setDrawInside(false);
-            //l.setTypeface(tfLight);
-            l.setXEntrySpace(7f);
-            l.setYEntrySpace(5f);
-            l.setTextColor(Color.WHITE);
             //
+
         }   //onDataChange
 
         @Override
@@ -260,7 +213,7 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     //바 차트 기본 설정
-    public void graphInitSetting(BarChart barChart, ArrayList<String> labelsNames){
+    public void graphInitSetting(BarChart barChart, ArrayList<String> labelsNames, ArrayList<DateCountsData> dateCountsDataArrayList){
 
         // 배경 색
         barChart.setBackgroundColor(Color.rgb(254,247,235));
@@ -276,11 +229,30 @@ public class ChartActivity extends AppCompatActivity {
         barChart.setPinchZoom(true);
 
         // 최대 x좌표 기준으로 몇개를 보여줄지 (최소값, 최대값)
-        barChart.setVisibleXRange(1, 7);
+        barChart.setVisibleXRange(1, 10);
 
         // x축 값 포맷
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsNames));
+
+        ArrayList<String> xAxisLabels = new ArrayList<>();
+
+
+        // SimpleDateFormat 객체를 생성하여 원하는 형식 지정
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");        // 년도
+        SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd");  // 월-일
+
+        for (String dateStr : labelsNames) {
+            try {
+                Date date = inputFormat.parse(dateStr);
+                String xAxisLabel = outputFormat.format(date);
+                xAxisLabels.add(xAxisLabel);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
+        xAxis.setLabelCount(xAxisLabels.size());
+        //xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsNames));
 
         // x축 라벨 네임 위치 지정
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -290,21 +262,27 @@ public class ChartActivity extends AppCompatActivity {
         barChart.animateY(2000);
         barChart.invalidate();
 
-//        int max_counts_order = 0;
-//        for (int i = 0; i<dateCountsDataArrayList.size(); i++) {
-//            String max_counts = dateCountsDataArrayList.get(max_counts_order).getCounts();
-//            String next_counts = dateCountsDataArrayList.get(i).getCounts();
-//
-//            if (Integer.parseInt(max_counts) < Integer.parseInt(next_counts)) {
-//                max_counts_order = i;
-//            }
-//        }
-
+        
         // y축 설정
+        int max_counts = Integer.parseInt(dateCountsDataArrayList.get(0).getCounts());  // 최대 개수
+        for (int i = 0; i<dateCountsDataArrayList.size() - 1; i++) {
+            int next_counts = Integer.parseInt(dateCountsDataArrayList.get(i+1).getCounts());
+
+            if ( max_counts < next_counts ) {
+                max_counts = next_counts;
+            }
+        }
+        
         YAxis yAxis = barChart.getAxisLeft();
         barChart.getAxisRight().setEnabled(false);
         yAxis.setAxisMinimum(0f);
-        //yAxis.setAxisMaximum(Integer.parseInt(dateCountsDataArrayList.get(max_counts_order).getCounts()));  // 최대 운동 횟수 만큼 y축 설정
+
+        yAxis.setGranularity(1f);
+        yAxis.setAxisMaximum(max_counts);
+
+        // y축 단위 개수로 변경하는 코드
+        yAxis.setValueFormatter(new yAxisValueFormatter());
+
 //        yAxis.setSpaceMax(1f);
 //        yAxis.setSpaceMin(1f);
     }
@@ -320,6 +298,8 @@ public class ChartActivity extends AppCompatActivity {
 
         BarDataSet barDataSet = new BarDataSet(barEntryArrayList, "운동량");
 
+        barDataSet.setValueFormatter(new CountValueFormatter());
+
         barDataSet.setColors(Color.GRAY);
 
         Description description = new Description();
@@ -331,62 +311,76 @@ public class ChartActivity extends AppCompatActivity {
 
         barChart.setData(barData);
 
-        graphInitSetting(barChart, labelsNames);     // 차트 기본 세팅
+        graphInitSetting(barChart, labelsNames, dateCountsDataArrayList);     // 차트 기본 세팅
 
         // 가장 최근에 추가한 데이터의 위치로 이동처리
         barChart.moveViewToX(barDataSet.getEntryCount());
 
     }
 
-    private void raderSetData() {
-        float mul = 80;
-        float min = 20;
-        int cnt = 5;
+//    private void raderSetData() {
+//        float mul = 80;
+//        float min = 20;
+//        int cnt = 5;
+//
+//        ArrayList<RadarEntry> entries1 = new ArrayList<>();
+//        ArrayList<RadarEntry> entries2 = new ArrayList<>();
+//
+//        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+//        // the chart.
+//        for (int i = 0; i < cnt; i++) {
+//            float val1 = (float) (Math.random() * mul) + min;
+//            entries1.add(new RadarEntry(val1));
+//
+//            float val2 = (float) (Math.random() * mul) + min;
+//            entries2.add(new RadarEntry(val2));
+//        }
+//
+//        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
+//        set1.setColor(Color.rgb(103, 110, 129));
+//        set1.setFillColor(Color.rgb(103, 110, 129));
+//        set1.setDrawFilled(true);
+//        set1.setFillAlpha(180);
+//        set1.setLineWidth(2f);
+//        set1.setDrawHighlightCircleEnabled(true);
+//        set1.setDrawHighlightIndicators(false);
+//
+//        RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
+//        set2.setColor(Color.rgb(121, 162, 175));
+//        set2.setFillColor(Color.rgb(121, 162, 175));
+//        set2.setDrawFilled(true);
+//        set2.setFillAlpha(180);
+//        set2.setLineWidth(2f);
+//        set2.setDrawHighlightCircleEnabled(true);
+//        set2.setDrawHighlightIndicators(false);
+//
+//        ArrayList<IRadarDataSet> sets = new ArrayList<>();
+//        sets.add(set1);
+//        sets.add(set2);
+//
+//        RadarData data = new RadarData(sets);
+//        //data.setValueTypeface(tfLight);
+//        data.setValueTextSize(8f);
+//        data.setDrawValues(false);
+//        data.setValueTextColor(Color.WHITE);
+//
+//        radarChart.setData(data);
+//        radarChart.invalidate();
+//    }
 
-        ArrayList<RadarEntry> entries1 = new ArrayList<>();
-        ArrayList<RadarEntry> entries2 = new ArrayList<>();
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < cnt; i++) {
-            float val1 = (float) (Math.random() * mul) + min;
-            entries1.add(new RadarEntry(val1));
+}
 
-            float val2 = (float) (Math.random() * mul) + min;
-            entries2.add(new RadarEntry(val2));
-        }
-
-        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
-        set1.setColor(Color.rgb(103, 110, 129));
-        set1.setFillColor(Color.rgb(103, 110, 129));
-        set1.setDrawFilled(true);
-        set1.setFillAlpha(180);
-        set1.setLineWidth(2f);
-        set1.setDrawHighlightCircleEnabled(true);
-        set1.setDrawHighlightIndicators(false);
-
-        RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
-        set2.setColor(Color.rgb(121, 162, 175));
-        set2.setFillColor(Color.rgb(121, 162, 175));
-        set2.setDrawFilled(true);
-        set2.setFillAlpha(180);
-        set2.setLineWidth(2f);
-        set2.setDrawHighlightCircleEnabled(true);
-        set2.setDrawHighlightIndicators(false);
-
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-        sets.add(set1);
-        sets.add(set2);
-
-        RadarData data = new RadarData(sets);
-        //data.setValueTypeface(tfLight);
-        data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
-
-        raderChart.setData(data);
-        raderChart.invalidate();
+class CountValueFormatter extends ValueFormatter {
+    @Override
+    public String getFormattedValue(float value) {
+        return String.format(Locale.getDefault(), "%.0f개", value);
     }
+}
 
-
+class yAxisValueFormatter extends ValueFormatter {
+    @Override
+    public String getFormattedValue(float value) {
+        return String.format(Locale.getDefault(), "%.0f", value);
+    }
 }

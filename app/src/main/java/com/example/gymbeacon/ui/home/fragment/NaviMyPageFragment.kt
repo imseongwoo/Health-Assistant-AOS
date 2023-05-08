@@ -19,15 +19,13 @@ import com.example.gymbeacon.databinding.FragmentNaviMypageBinding
 import com.example.gymbeacon.ui.chart.ChartActivity
 import com.example.gymbeacon.ui.chart.DateCountsData
 import com.example.gymbeacon.ui.common.CommonUtil
-import com.example.gymbeacon.ui.home.adapter.MyPageViewPagerAdapter
 import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -74,6 +72,16 @@ class NaviMyPageFragment : Fragment() {
     var labelsNames_crossover = ArrayList<String>()
     var dateCountsDataArrayList_crossover = ArrayList<DateCountsData>()
 
+    // 레이더차트에 필요한 운동별 count 사이즈
+    var counts_bench = 0
+    var counts_squat = 0
+    var counts_dead = 0
+    var counts_incline = 0
+    var counts_legex = 0
+    var counts_crossover = 0
+
+    val radarDataArrayList = ArrayList<RadarEntry>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -116,6 +124,15 @@ class NaviMyPageFragment : Fragment() {
                         barEntryArrayList_crossover?.clear()
                         labelsNames_crossover.clear()
 
+                        counts_bench = 0
+                        counts_squat = 0
+                        counts_dead = 0
+                        counts_incline = 0
+                        counts_legex = 0
+                        counts_crossover = 0
+
+                        radarDataArrayList.clear()
+
                         for (postSnapshot: DataSnapshot in snapshot.children) {
                             val ex_name = postSnapshot.child("exercise").getValue(
                                 String::class.java
@@ -131,6 +148,8 @@ class NaviMyPageFragment : Fragment() {
                                     String::class.java
                                 )
                                 dateCountsDataArrayList_bench.add(DateCountsData(date, counts))
+
+                                counts_bench += counts!!.toInt()
                             }
                             // 운동 이름이 스쿼트
                             if ("스쿼트" == ex_name) {
@@ -144,6 +163,8 @@ class NaviMyPageFragment : Fragment() {
                                 Log.i("테스트1", "date= " + date)
                                 Log.i("테스트1", "counts= " + counts)
                                 dateCountsDataArrayList_squat.add(DateCountsData(date, counts))
+
+                                counts_squat += counts!!.toInt()
                             }
                             // 운동 이름이 데드리프트
                             if ("데드리프트" == ex_name) {
@@ -155,6 +176,8 @@ class NaviMyPageFragment : Fragment() {
                                     String::class.java
                                 )
                                 dateCountsDataArrayList_dead.add(DateCountsData(date, counts))
+
+                                counts_dead += counts!!.toInt()
                             }
                             // 운동 이름이 인클라인 벤치프레스
                             if ("인클라인 벤치프레스" == ex_name) {
@@ -166,6 +189,8 @@ class NaviMyPageFragment : Fragment() {
                                     String::class.java
                                 )
                                 dateCountsDataArrayList_incline.add(DateCountsData(date, counts))
+
+                                counts_incline += counts!!.toInt()
                             }
                             // 운동 이름이 레그 익스텐션
                             if ("레그 익스텐션" == ex_name) {
@@ -177,6 +202,8 @@ class NaviMyPageFragment : Fragment() {
                                     String::class.java
                                 )
                                 dateCountsDataArrayList_legex.add(DateCountsData(date, counts))
+
+                                counts_legex += counts!!.toInt()
                             }
                             // 운동 이름이 케이블 크로스오버
                             if ("케이블 크로스오버" == ex_name) {
@@ -188,6 +215,8 @@ class NaviMyPageFragment : Fragment() {
                                     String::class.java
                                 )
                                 dateCountsDataArrayList_crossover.add(DateCountsData(date, counts))
+
+                                counts_crossover += counts!!.toInt()
                             }
 
                         }
@@ -240,6 +269,27 @@ class NaviMyPageFragment : Fragment() {
                                 barEntryArrayList_crossover
                             )
                         }
+
+                        // 레이더 차트
+                        radarDataArrayList.add(RadarEntry(counts_bench.toFloat()))
+                        radarDataArrayList.add(RadarEntry(counts_squat.toFloat()))
+                        radarDataArrayList.add(RadarEntry(counts_dead.toFloat()))
+                        radarDataArrayList.add(RadarEntry(counts_incline.toFloat()))
+                        radarDataArrayList.add(RadarEntry(counts_legex.toFloat()))
+                        radarDataArrayList.add(RadarEntry(counts_crossover.toFloat()))
+
+                        val radarDataSet = RadarDataSet(radarDataArrayList, "각가의 운동에 대한 총 운동량")
+                        radarDataSet.color = Color.BLUE
+                        radarDataSet.valueFormatter = CountValueFormatter()     // "10개" 형식으로 변환
+
+                        val radarData = RadarData()
+                        radarData.addDataSet(radarDataSet)
+                        val radarLabels = arrayOf("벤치프레스", "스쿼트", "데드리프트", "인클라인 벤치프레스", "레그 익스텐션", "케이블 크로스오버")
+                        val xAxis_radar = binding.radarChart.xAxis
+                        xAxis_radar.valueFormatter = IndexAxisValueFormatter(radarLabels)
+                        binding.radarChart.data = radarData
+
+                        binding.radarChart.invalidate()
 
                     } //onDataChange
 
@@ -340,19 +390,21 @@ class NaviMyPageFragment : Fragment() {
         }
 
         val barDataSet = BarDataSet(barEntryArrayList, "날짜별 부위별 운동 개수")
-        barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+        barDataSet.valueFormatter = CountValueFormatter()
+
+        barDataSet.setColors(Color.GRAY)
         val description = Description()
         description.text = "날짜"
         barChart.description = description
         val barData = BarData(barDataSet)
         barChart.data = barData
-        barChart.let { graphInitSetting(it, labelsNames) } // 차트 기본 세팅
+        barChart.let { graphInitSetting(it, labelsNames, dateCountsDataArrayList) } // 차트 기본 세팅
 
         // 가장 최근에 추가한 데이터의 위치로 이동처리
         barChart.moveViewToX(barDataSet.entryCount.toFloat())
     }
 
-    fun graphInitSetting(barChart: BarChart, labelsNames: ArrayList<String>) {
+    fun graphInitSetting(barChart: BarChart, labelsNames: ArrayList<String>, dateCountsDataArrayList: ArrayList<DateCountsData>) {
 
         // 배경 색
         barChart.setBackgroundColor(Color.rgb(254, 247, 235))
@@ -368,7 +420,7 @@ class NaviMyPageFragment : Fragment() {
         barChart.setPinchZoom(true)
 
         // 최대 x좌표 기준으로 몇개를 보여줄지 (최소값, 최대값)
-        barChart.setVisibleXRange(1f, 7f)
+        barChart.setVisibleXRange(1f, 10f)
 
         // x축 값 포맷
         val xAxis = barChart.xAxis
@@ -383,11 +435,29 @@ class NaviMyPageFragment : Fragment() {
         barChart.invalidate()
 
         // y축 설정
+
+
+        // y축 설정
+        //var max_counts: Int = dateCountsDataArrayList.get(0).getCounts().toInt() // 최대 개수
+        var countsList = ArrayList<Int>()
+
+        //Log.d("최댓값 확인 : ", dateCountsDataArrayList.get(0).counts)
+        for (dateCounts in dateCountsDataArrayList) {
+            countsList.add(dateCounts.counts.toInt())
+        }
+        var max_counts = countsList.maxOrNull()
+
         val yAxis = barChart.axisLeft
         barChart.axisRight.isEnabled = false
         yAxis.axisMinimum = 0f
-        yAxis.spaceMax = 1f
-        yAxis.spaceMin = 1f
+        if (max_counts != null) {
+            yAxis.axisMaximum = max_counts.toFloat()
+        }
+
+        yAxis.granularity = 1f
+        yAxis.valueFormatter = yAxisValueFormatter()
+//        yAxis.spaceMax = 1f
+//        yAxis.spaceMin = 1f
     }
 
     companion object {
@@ -398,5 +468,17 @@ class NaviMyPageFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+}
+
+class CountValueFormatter : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return String.format(Locale.getDefault(), "%.0f개", value)
+    }
+}
+
+class yAxisValueFormatter : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return String.format(Locale.getDefault(), "%.0f", value)
     }
 }

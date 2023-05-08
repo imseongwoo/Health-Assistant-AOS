@@ -9,17 +9,19 @@ import android.graphics.*
 import android.hardware.camera2.*
 import android.media.MediaRecorder
 import android.os.*
-import androidx.appcompat.app.AppCompatActivity
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.util.Range
 import android.view.Surface
 import android.view.TextureView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
 import com.example.gymbeacon.ml.LiteModelMovenetSingleposeLightningTfliteFloat164
@@ -49,6 +51,10 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var model: LiteModelMovenetSingleposeLightningTfliteFloat164
     lateinit var imageProcessor: ImageProcessor
     lateinit var tts : TextToSpeech
+
+    // 안내창 다이어로그
+    private var infoDialog: InfoDialogActivity? = null
+    //private var dialog_gif: ImageView? = null
 
     //    lateinit var maxNum : String
     private lateinit var selectedExerciseName : String
@@ -113,8 +119,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail)
         binding.lifecycleOwner = this
 
+
         val detailIntent = intent
         selectedExerciseName = detailIntent.getStringExtra("upper")!!
+
+
+        // 안내창 다이어로그 띄어주기
+        infoDialog = InfoDialogActivity(this, selectedExerciseName, getString(R.string.dialog_common_text) + getString(R.string.dialog_squat_text))
+        infoDialog!!.show()
 
         // 오디오 권한 요청
         requestPermissions(requirePermissions, REQUEST_RECORD_AUDIO_PERMISSION)
