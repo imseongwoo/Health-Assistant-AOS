@@ -1,25 +1,28 @@
 package com.example.gymbeacon.ui.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.ViewModelFactory
 import com.example.gymbeacon.databinding.ActivityLowerBodyCategoryBinding
 import com.example.gymbeacon.ui.category.LowerBodyCategoryViewModel
 import com.example.gymbeacon.ui.home.adapter.LowerBodyAdapter
-import com.example.gymbeacon.ui.home.adapter.UpperBodyAdapter
 import com.example.gymbeacon.ui.home.detail.DetailActivity
+import com.example.gymbeacon.ui.home.detail.InfoDialogActivity
+
 
 class LowerBodyCategoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLowerBodyCategoryBinding
     // viewmodel 변경 필요
     private val viewModel: LowerBodyCategoryViewModel by viewModels { ViewModelFactory() }
     val lowerBodyAdapter = LowerBodyAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

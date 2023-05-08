@@ -11,45 +11,77 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymbeacon.R;
 import com.example.gymbeacon.ui.common.CommonUtil;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class ChartActivity extends AppCompatActivity {
 
+    // 차트 선언
     BarChart barChart_chest;
     BarChart barChart_back;
     BarChart barChart_lower;
     Button back_btn;
+    PieChart pieChart;
+
+    //RadarChart radarChart;   // 레이더 차트
 
     // 하체 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_lower = new ArrayList<>();
     ArrayList<String> labelsNames_lower = new ArrayList<>();
-
     ArrayList<DateCountsData> dateCountsDataArrayList_lower = new ArrayList<>();
 
     // 등 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_back = new ArrayList<>();
     ArrayList<String> labelsNames_back = new ArrayList<>();
-
     ArrayList<DateCountsData> dateCountsDataArrayList_back = new ArrayList<>();
 
     // 가슴 운동 데이터 ArrayList
     ArrayList<BarEntry> barEntryArrayList_chest = new ArrayList<>();
     ArrayList<String> labelsNames_chest = new ArrayList<>();
-
     ArrayList<DateCountsData> dateCountsDataArrayList_chest = new ArrayList<>();
+
+    // 파이 차트 ArrayList
+    ArrayList<PieEntry> pieEntryArrayList = new ArrayList<>();
+    ArrayList<String> labelsNames_pie = new ArrayList<>();
+    ArrayList<DateCountsData> dateCountsDataArrayList_pie = new ArrayList<>();
+    int counts_lower = 0;
+    int counts_back = 0;
+    int counts_chest = 0;
+
+    // 레이더 차트 ArrayList
+    //ArrayList<RadarEntry> raderEntry = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +92,12 @@ public class ChartActivity extends AppCompatActivity {
         barChart_chest = findViewById(R.id.barChart_chest);
         barChart_back = findViewById(R.id.barChart_back);
         barChart_lower = findViewById(R.id.barChart_lower);
+        pieChart = findViewById(R.id.pieChart);
 
-//        barEntryArrayList_lower = new ArrayList<>();
-//        barEntryArrayList_back = new ArrayList<>();
-//        barEntryArrayList_chest = new ArrayList<>();
-        //labelsNames = new ArrayList<>();
+        //radarChart = findViewById(R.id.radarChart);
 
-//        barEntryArrayList.clear();
-//        labelsNames.clear();
 
-//  실시간 DB 참조 위치(health/momentum) 설정
+    //  실시간 DB 참조 위치(health/momentum) 설정
     CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.getUid()).addValueEventListener(new ValueEventListener(){
 
         @Override
@@ -87,6 +115,10 @@ public class ChartActivity extends AppCompatActivity {
             barEntryArrayList_back.clear();
             labelsNames_back.clear();
 
+            dateCountsDataArrayList_pie.clear();     // 파이 차트 리스트 초기화
+            pieEntryArrayList.clear();
+            labelsNames_pie.clear();
+
             for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
                 String ex_name = postSnapshot.child("exercise").getValue(String.class);
@@ -98,6 +130,9 @@ public class ChartActivity extends AppCompatActivity {
                     String counts = postSnapshot.child("count").getValue(String.class);
 
                     dateCountsDataArrayList_chest.add(new DateCountsData(date, counts));
+
+                    // 가슴 운동 부위의 운동 횟수 설정
+                    counts_chest += Integer.parseInt(counts);
                 }
 
                 // 운동 이름이 등 운동인 경우
@@ -107,6 +142,9 @@ public class ChartActivity extends AppCompatActivity {
                     String counts = postSnapshot.child("count").getValue(String.class);
 
                     dateCountsDataArrayList_back.add(new DateCountsData(date, counts));
+
+                    // 등 운동 부위의 운동 횟수 설정
+                    counts_back += Integer.parseInt(counts);
                 }
 
                 // 운동 이름이 하체 운동인 경우
@@ -119,6 +157,9 @@ public class ChartActivity extends AppCompatActivity {
                     Log.i("차트 date 확인", "date = " + date);
                     Log.i("차트 counts 확인", "counts = " + counts);
                     dateCountsDataArrayList_lower.add(new DateCountsData(date, counts));
+
+                    // 하체 운동 부위의 운동 횟수 설정
+                    counts_lower += Integer.parseInt(counts);
                 }
             }
 
@@ -128,6 +169,33 @@ public class ChartActivity extends AppCompatActivity {
             fillDateCounts(barChart_lower, dateCountsDataArrayList_lower, labelsNames_lower, barEntryArrayList_lower);
             fillDateCounts(barChart_back, dateCountsDataArrayList_back, labelsNames_back, barEntryArrayList_back);
             fillDateCounts(barChart_chest, dateCountsDataArrayList_chest, labelsNames_chest, barEntryArrayList_chest);
+
+            // 부위별 운동의 파이 차트 데이터 설정
+            pieEntryArrayList.add(new PieEntry(counts_back, "등"));
+            pieEntryArrayList.add(new PieEntry(counts_lower, "하체"));
+            pieEntryArrayList.add(new PieEntry(counts_chest, "가슴"));
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntryArrayList, " ← 운동 부위 ");
+            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+            Description description = new Description();
+            description.setText("부위별 운동량");
+            description.setTextSize(15);
+            pieChart.setDescription(description);
+
+            pieDataSet.setValueFormatter(new PercentFormatter(pieChart));
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChart.setData(pieData);
+
+            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            pieChart.animateXY(2000, 2000);
+            pieChart.setUsePercentValues(true);     // 퍼센트 값 사용
+            // 파이 차트 설정
+
+            // 레이더 차트 설정
+
+            //
 
         }   //onDataChange
 
@@ -145,7 +213,7 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     //바 차트 기본 설정
-    public void graphInitSetting(BarChart barChart, ArrayList<String> labelsNames){
+    public void graphInitSetting(BarChart barChart, ArrayList<String> labelsNames, ArrayList<DateCountsData> dateCountsDataArrayList){
 
         // 배경 색
         barChart.setBackgroundColor(Color.rgb(254,247,235));
@@ -155,17 +223,36 @@ public class ChartActivity extends AppCompatActivity {
         barChart.setDragXEnabled(true);
         // Y축으로 드래그 불가능
         barChart.setDragYEnabled(false);
-        // 확대 불가능
+        // 차트 확대 가능 여부
         barChart.setScaleEnabled(false);
         // pinch zoom 가능 (손가락으로 확대축소하는거)
         barChart.setPinchZoom(true);
 
         // 최대 x좌표 기준으로 몇개를 보여줄지 (최소값, 최대값)
-        barChart.setVisibleXRange(1, 7);
+        barChart.setVisibleXRange(1, 10);
 
         // x축 값 포맷
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsNames));
+
+        ArrayList<String> xAxisLabels = new ArrayList<>();
+
+
+        // SimpleDateFormat 객체를 생성하여 원하는 형식 지정
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");        // 년도
+        SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd");  // 월-일
+
+        for (String dateStr : labelsNames) {
+            try {
+                Date date = inputFormat.parse(dateStr);
+                String xAxisLabel = outputFormat.format(date);
+                xAxisLabels.add(xAxisLabel);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
+        xAxis.setLabelCount(xAxisLabels.size());
+        //xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsNames));
 
         // x축 라벨 네임 위치 지정
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -175,12 +262,29 @@ public class ChartActivity extends AppCompatActivity {
         barChart.animateY(2000);
         barChart.invalidate();
 
+        
         // y축 설정
+        int max_counts = Integer.parseInt(dateCountsDataArrayList.get(0).getCounts());  // 최대 개수
+        for (int i = 0; i<dateCountsDataArrayList.size() - 1; i++) {
+            int next_counts = Integer.parseInt(dateCountsDataArrayList.get(i+1).getCounts());
+
+            if ( max_counts < next_counts ) {
+                max_counts = next_counts;
+            }
+        }
+        
         YAxis yAxis = barChart.getAxisLeft();
         barChart.getAxisRight().setEnabled(false);
         yAxis.setAxisMinimum(0f);
-        yAxis.setSpaceMax(1f);
-        yAxis.setSpaceMin(1f);
+
+        yAxis.setGranularity(1f);
+        yAxis.setAxisMaximum(max_counts);
+
+        // y축 단위 개수로 변경하는 코드
+        yAxis.setValueFormatter(new yAxisValueFormatter());
+
+//        yAxis.setSpaceMax(1f);
+//        yAxis.setSpaceMin(1f);
     }
 
     public void fillDateCounts(BarChart barChart, ArrayList<DateCountsData> dateCountsDataArrayList, ArrayList<String> labelsNames, ArrayList<BarEntry> barEntryArrayList) {
@@ -192,9 +296,11 @@ public class ChartActivity extends AppCompatActivity {
             labelsNames.add(date);
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntryArrayList, "날짜별 부위별 운동 개수");
+        BarDataSet barDataSet = new BarDataSet(barEntryArrayList, "운동량");
 
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setValueFormatter(new CountValueFormatter());
+
+        barDataSet.setColors(Color.GRAY);
 
         Description description = new Description();
         description.setText("날짜");
@@ -205,10 +311,76 @@ public class ChartActivity extends AppCompatActivity {
 
         barChart.setData(barData);
 
-        graphInitSetting(barChart, labelsNames);     // 차트 기본 세팅
+        graphInitSetting(barChart, labelsNames, dateCountsDataArrayList);     // 차트 기본 세팅
 
         // 가장 최근에 추가한 데이터의 위치로 이동처리
         barChart.moveViewToX(barDataSet.getEntryCount());
 
+    }
+
+//    private void raderSetData() {
+//        float mul = 80;
+//        float min = 20;
+//        int cnt = 5;
+//
+//        ArrayList<RadarEntry> entries1 = new ArrayList<>();
+//        ArrayList<RadarEntry> entries2 = new ArrayList<>();
+//
+//        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+//        // the chart.
+//        for (int i = 0; i < cnt; i++) {
+//            float val1 = (float) (Math.random() * mul) + min;
+//            entries1.add(new RadarEntry(val1));
+//
+//            float val2 = (float) (Math.random() * mul) + min;
+//            entries2.add(new RadarEntry(val2));
+//        }
+//
+//        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
+//        set1.setColor(Color.rgb(103, 110, 129));
+//        set1.setFillColor(Color.rgb(103, 110, 129));
+//        set1.setDrawFilled(true);
+//        set1.setFillAlpha(180);
+//        set1.setLineWidth(2f);
+//        set1.setDrawHighlightCircleEnabled(true);
+//        set1.setDrawHighlightIndicators(false);
+//
+//        RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
+//        set2.setColor(Color.rgb(121, 162, 175));
+//        set2.setFillColor(Color.rgb(121, 162, 175));
+//        set2.setDrawFilled(true);
+//        set2.setFillAlpha(180);
+//        set2.setLineWidth(2f);
+//        set2.setDrawHighlightCircleEnabled(true);
+//        set2.setDrawHighlightIndicators(false);
+//
+//        ArrayList<IRadarDataSet> sets = new ArrayList<>();
+//        sets.add(set1);
+//        sets.add(set2);
+//
+//        RadarData data = new RadarData(sets);
+//        //data.setValueTypeface(tfLight);
+//        data.setValueTextSize(8f);
+//        data.setDrawValues(false);
+//        data.setValueTextColor(Color.WHITE);
+//
+//        radarChart.setData(data);
+//        radarChart.invalidate();
+//    }
+
+
+}
+
+class CountValueFormatter extends ValueFormatter {
+    @Override
+    public String getFormattedValue(float value) {
+        return String.format(Locale.getDefault(), "%.0f개", value);
+    }
+}
+
+class yAxisValueFormatter extends ValueFormatter {
+    @Override
+    public String getFormattedValue(float value) {
+        return String.format(Locale.getDefault(), "%.0f", value);
     }
 }
