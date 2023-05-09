@@ -14,14 +14,12 @@ import android.util.Log
 import android.util.Range
 import android.view.Surface
 import android.view.TextureView
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
 import com.example.gymbeacon.ml.LiteModelMovenetSingleposeLightningTfliteFloat164
@@ -50,14 +48,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var bitmap: Bitmap
     lateinit var model: LiteModelMovenetSingleposeLightningTfliteFloat164
     lateinit var imageProcessor: ImageProcessor
-    lateinit var tts : TextToSpeech
+    lateinit var tts: TextToSpeech
 
     // 안내창 다이어로그
     private var infoDialog: InfoDialogActivity? = null
     //private var dialog_gif: ImageView? = null
 
     //    lateinit var maxNum : String
-    private lateinit var selectedExerciseName : String
+    private lateinit var selectedExerciseName: String
 
     var maxNum: String = "999"
     val paint = Paint()
@@ -104,8 +102,8 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
 
-        if (it.resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
-            tts = TextToSpeech(this,this)
+        if (it.resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+            tts = TextToSpeech(this, this)
         } else {
             val installIntent: Intent = Intent()
             installIntent.action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
@@ -116,7 +114,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         binding.lifecycleOwner = this
 
 
@@ -125,7 +123,9 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
         // 안내창 다이어로그 띄어주기
-        infoDialog = InfoDialogActivity(this, selectedExerciseName, getString(R.string.dialog_common_text) + getString(R.string.dialog_squat_text))
+        infoDialog = InfoDialogActivity(this,
+            selectedExerciseName,
+            getString(R.string.dialog_common_text) + getString(R.string.dialog_squat_text))
         infoDialog!!.show()
 
         // 오디오 권한 요청
@@ -161,7 +161,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onSurfaceTextureDestroyed(p0: SurfaceTexture): Boolean {
-                Log.e("test","onSurfaceTextureDestroyed 실행")
+                Log.e("test", "onSurfaceTextureDestroyed 실행")
                 return false
             }
 
@@ -193,14 +193,15 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                         // 원 그리기
                         while (x <= 49) {
-                            if (outputFeature0.get(x + 2) > 0.45) {
+                            if (outputFeature0.get(x + 2) > 0.35) {
                                 val circleX = outputFeature0.get(x + 1) * w
                                 val circleY = outputFeature0.get(x) * h
                                 canvas.drawCircle(circleX, circleY, 10f, paint)
                                 circleDrawn = true
                                 circleCount += 1
                             } else {
-                                Log.d("Circle not drawn", "outputFeature0[$x+2] = ${outputFeature0.get(x + 2)}")
+                                Log.d("Circle not drawn",
+                                    "outputFeature0[$x+2] = ${outputFeature0.get(x + 2)}")
                             }
                             x += 3
                         }
@@ -209,7 +210,8 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         val circleCoordinates = mutableMapOf<Int, Pair<Float, Float>>()
                         for (i in 0 until 51 step 3) {
                             if (outputFeature0[i + 2] > 0.45) {
-                                circleCoordinates[i] = Pair(outputFeature0[i + 1] * w, outputFeature0[i] * h)
+                                circleCoordinates[i] =
+                                    Pair(outputFeature0[i + 1] * w, outputFeature0[i] * h)
                             }
                         }
 
@@ -232,13 +234,29 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                         // 원이 그려지고 그려진 원의 수가 3개 이상일 때 스쿼트 탐지 함수 실행
                         if (circleDrawn && circleCount >= 3) {
-                            if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(47) > 0.3 && outputFeature0.get(50) > 0.3) {
-                                val result = PoseDetector.detectSquatByAngle(outputFeature0)
+                            if (selectedExerciseName == "스쿼트") {
+                                if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
+                                        41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
+                                        47) > 0.3 && outputFeature0.get(50) > 0.3
+                                ) {
+                                    var result = PoseDetector.detectSquatByAngle(outputFeature0)
+
+                                    val intent: Intent = Intent()
+                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
+
+                                    countExercise(result)
+                                    activityResult.launch(intent)
+                                    Log.e("result", "${result},${count}")
+                                }
+                            } else if (selectedExerciseName == "랫 풀 다운") {
+                                var result = PoseDetector.detectLatPullDown(outputFeature0)
+
                                 val intent: Intent = Intent()
                                 intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
-                                countSquat(result)
+
+                                countExercise(result)
                                 activityResult.launch(intent)
-                                Log.e("result","${result},${count}")
+                                Log.e("result", "${result},${count}")
                             }
                         }
 
@@ -266,15 +284,16 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (status == TextToSpeech.SUCCESS) {
                 val languageStatus: Int = tts.setLanguage(Locale.KOREAN)
 
-                if(languageStatus == TextToSpeech.LANG_MISSING_DATA ||
-                    languageStatus == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(this,"언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                if (languageStatus == TextToSpeech.LANG_MISSING_DATA ||
+                    languageStatus == TextToSpeech.LANG_NOT_SUPPORTED
+                ) {
+                    Toast.makeText(this, "언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     val data: String = count.toString()
                     var speechStatus: Int = 0
 
                     if (data != previousTtsData && data != "0") {
-                        speechStatus = tts.speak(data,TextToSpeech.QUEUE_FLUSH,null,null)
+                        speechStatus = tts.speak(data, TextToSpeech.QUEUE_FLUSH, null, null)
                         if (speechStatus == TextToSpeech.ERROR) {
                             Toast.makeText(this, "음성전환 에러입니다.", Toast.LENGTH_SHORT).show()
                         }
@@ -289,8 +308,8 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     @RequiresApi(Build.VERSION_CODES.P)
     private fun initEvent() {
-        with (binding) {
-            minusButton.setOnClickListener{
+        with(binding) {
+            minusButton.setOnClickListener {
                 val currentCount = textViewDetailPageCount.text.toString()
                 val nowCount = currentCount.toInt() - 1
                 textViewDetailPageCount.text = nowCount.toString()
@@ -327,16 +346,17 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (status == TextToSpeech.SUCCESS) {
             val languageStatus: Int = tts.setLanguage(Locale.KOREAN)
 
-            if(languageStatus == TextToSpeech.LANG_MISSING_DATA ||
-                languageStatus == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Toast.makeText(this,"언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            if (languageStatus == TextToSpeech.LANG_MISSING_DATA ||
+                languageStatus == TextToSpeech.LANG_NOT_SUPPORTED
+            ) {
+                Toast.makeText(this, "언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 val data: String = count.toString()
                 var speechStatus: Int = 0
 
                 if (data != previousTtsData && data != "0") {
                     if (data.toInt() >= maxNum.toInt()) {
-                        tts.speak("세트가 끝났습니다",TextToSpeech.QUEUE_FLUSH,null,null)
+                        tts.speak("세트가 끝났습니다", TextToSpeech.QUEUE_FLUSH, null, null)
                         GlobalScope.launch {
                             delay(2000) // 2초 대기
 //                            finish() // 종료
@@ -345,7 +365,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         }
 
                     } else {
-                        speechStatus = tts.speak(data,TextToSpeech.QUEUE_FLUSH,null,null)
+                        speechStatus = tts.speak(data, TextToSpeech.QUEUE_FLUSH, null, null)
                         if (speechStatus == TextToSpeech.ERROR) {
                             Toast.makeText(this, "음성전환 에러입니다.", Toast.LENGTH_SHORT).show()
                         }
@@ -360,7 +380,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     fun initCount() {
         val healthEntity = HealthEntity(CommonUtil.getUid(),
-            CommonUtil.getTime(System.currentTimeMillis()),count.toString(),selectedExerciseName)
+            CommonUtil.getTime(System.currentTimeMillis()), count.toString(), selectedExerciseName)
         myRef.push().setValue(healthEntity)
         count = 0
     }
@@ -380,7 +400,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -483,7 +503,8 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             closePreviewSession()
             setUpMediaRecorder()
             val texture: SurfaceTexture = binding.textureView.getSurfaceTexture()!!
-            val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
+            val captureRequest =
+                cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
 
             mCaptureRequestBuilder = captureRequest
             val surfaces: ArrayList<Surface> = ArrayList()
@@ -496,16 +517,20 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             binding.buttonDetailRecord.setText("녹화 중..")
 
-            cameraDevice!!.createCaptureSession(surfaces, object : CameraCaptureSession.StateCallback() {
-                override fun onConfigured(session: CameraCaptureSession) {
-                    mCameraCaptureSession = session
-                    mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(), null, null)
-                    Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()
-                }
+            cameraDevice!!.createCaptureSession(surfaces,
+                object : CameraCaptureSession.StateCallback() {
+                    override fun onConfigured(session: CameraCaptureSession) {
+                        mCameraCaptureSession = session
+                        mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(),
+                            null,
+                            null)
+                        Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()
+                    }
 
-                override fun onConfigureFailed(session: CameraCaptureSession) {
-                }
-            }, handler)
+                    override fun onConfigureFailed(session: CameraCaptureSession) {
+                    }
+                },
+                handler)
             //timer()
         } catch (e: CameraAccessException) {
             e.printStackTrace()
@@ -539,7 +564,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-    fun countSquat(result: Boolean) {
+    fun countExercise(result: Boolean) {
         if (result == true && temp == false) {
             count += 1
         }
@@ -547,7 +572,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     companion object {
-        //권한 요청 코드
         private const val REQUEST_RECORD_AUDIO_PERMISSION = 201
     }
 
