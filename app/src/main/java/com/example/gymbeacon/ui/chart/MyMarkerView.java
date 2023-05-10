@@ -13,12 +13,19 @@ import com.github.mikephil.charting.utils.Utils;
 
 public class MyMarkerView extends MarkerView {
     private TextView lineChartContent;
-    
+//    private static Context context;
+
     public MyMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
+
+//        this.context = context;
         lineChartContent = (TextView) findViewById(R.id.lineChartContentHead);
 
     }
+
+//    public MyMarkerView() {
+//        super(MyMarkerView.context, R.layout.custom_marker_view);
+//    }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the
     // content (user-interface)
