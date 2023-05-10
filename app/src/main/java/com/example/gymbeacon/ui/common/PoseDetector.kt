@@ -1,5 +1,6 @@
 package com.example.gymbeacon.ui.common
 
+import android.util.Log
 import kotlin.math.PI
 import kotlin.math.acos
 import kotlin.math.pow
@@ -7,8 +8,18 @@ import kotlin.math.sqrt
 
 object PoseDetector {
     fun detectSquatByAngle(outputFeature0: FloatArray): Boolean {
-        val squatAngleLeft = calculateAngle(outputFeature0.get(33),outputFeature0.get(34),outputFeature0.get(39),outputFeature0.get(40),outputFeature0.get(45),outputFeature0.get(46))
-        val squatAngleRight = calculateAngle(outputFeature0.get(36),outputFeature0.get(37),outputFeature0.get(42),outputFeature0.get(43),outputFeature0.get(48),outputFeature0.get(49))
+        val squatAngleLeft = calculateAngle(outputFeature0.get(33),
+            outputFeature0.get(34),
+            outputFeature0.get(39),
+            outputFeature0.get(40),
+            outputFeature0.get(45),
+            outputFeature0.get(46))
+        val squatAngleRight = calculateAngle(outputFeature0.get(36),
+            outputFeature0.get(37),
+            outputFeature0.get(42),
+            outputFeature0.get(43),
+            outputFeature0.get(48),
+            outputFeature0.get(49))
         val squatLowThreshold = 60f
         val squatHighThreshold = 125f
 
@@ -17,6 +28,7 @@ object PoseDetector {
         val isSquat = isLeft || isRight
         return isSquat
     }
+
     // 거리를 계산하는 함수입니다.
     fun calculateDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
         return sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2))
@@ -28,5 +40,32 @@ object PoseDetector {
         val b = calculateDistance(x2, y2, x3, y3)
         val c = calculateDistance(x3, y3, x1, y1)
         return acos((a.pow(2) + b.pow(2) - c.pow(2)) / (2 * a * b)) * 180 / PI.toFloat()
+    }
+
+    fun detectLatPullDown(outputFeature0: FloatArray): Boolean {
+        Log.e("test", "detect lat pull down")
+        val latPullDownLeftAngle = calculateAngle(outputFeature0.get(27),
+            outputFeature0.get(28),
+            outputFeature0.get(21),
+            outputFeature0.get(22),
+            outputFeature0.get(15),
+            outputFeature0.get(16))
+
+        val latPullDownRightAngle = calculateAngle(outputFeature0.get(30),
+            outputFeature0.get(31),
+            outputFeature0.get(24),
+            outputFeature0.get(25),
+            outputFeature0.get(18),
+            outputFeature0.get(19))
+
+        Log.e("test", "${latPullDownLeftAngle}, ${latPullDownRightAngle}")
+        val latPullDownLowThreshold = 30f
+        val latPullDownHighThreshold = 90f
+        val isLeftLatPullDown =
+            (latPullDownLeftAngle > latPullDownLowThreshold && latPullDownLeftAngle < latPullDownHighThreshold)
+        val isRightLatPullDown =
+            (latPullDownRightAngle > latPullDownLowThreshold && latPullDownRightAngle < latPullDownHighThreshold)
+        val isLatPullDown = isLeftLatPullDown && isRightLatPullDown
+        return isLatPullDown
     }
 }

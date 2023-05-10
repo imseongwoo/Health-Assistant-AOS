@@ -48,7 +48,6 @@ class NaviHomeFragment : Fragment() {
     var counts_back = 0
     var counts_chest = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,10 +87,8 @@ class NaviHomeFragment : Fragment() {
             .addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                //dateCountsDataArrayList_pie.clear() // 파이 차트 리스트 초기화
                 pieEntryArrayList.clear()
                 entityArrayList.clear()
-                //labelsNames_pie.clear()
 
                 for(shot in snapshot.children) {
                     val uid = shot.child("uid").getValue(String::class.java)
@@ -217,16 +214,11 @@ class NaviHomeFragment : Fragment() {
                 binding.pieChart.animateXY(2000, 2000)
                 binding.pieChart.setUsePercentValues(true)
 
-
             }
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
-//        Log.d("최근 날짜2 : ", dateArrayList.get(0))
-//        Log.d("최근 날짜 : ", recently_date.toString())
-//        binding.textViewExerciseRecentlyDate2.text = recently_date
-
 
 
         with(binding) {
@@ -247,7 +239,6 @@ class NaviHomeFragment : Fragment() {
     fun goToLowerBodyCategoryActivity() {
         Intent(activity, LowerBodyCategoryActivity::class.java).also { startActivity(it) }
     }
-
 
 
     companion object {
