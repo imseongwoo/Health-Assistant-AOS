@@ -13,7 +13,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 public class MyMarkerView extends MarkerView {
     private TextView lineChartContent;
-
+    
     public MyMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
         lineChartContent = (TextView) findViewById(R.id.lineChartContentHead);
