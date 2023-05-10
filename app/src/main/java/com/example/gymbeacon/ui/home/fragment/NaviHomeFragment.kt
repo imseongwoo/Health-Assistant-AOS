@@ -240,6 +240,7 @@ class NaviHomeFragment : Fragment() {
         Intent(activity, LowerBodyCategoryActivity::class.java).also { startActivity(it) }
     }
 
+
     companion object {
         fun newInstance(): NaviHomeFragment {
             val args = Bundle().apply {

@@ -13,27 +13,25 @@ import com.bumptech.glide.Glide;
 import com.example.gymbeacon.R;
 
 public class InfoDialogActivity extends Dialog {
-    private TextView dialog_text;
-    private Button dialog_ok_btn;
-    private TextView dialog_title;
-
-    private ImageView dialog_gif;
+    private TextView dialog_text;       // 다이어로그 내용
+    private Button dialog_ok_btn;       // 확인 버튼
+    private TextView dialog_title;      // 다이어로그 제목
+    private ImageView dialog_gif;       // 다이어로그에 들어가는 이미지
 
     public InfoDialogActivity(@NonNull Context context, String title, String contents) {
         super(context);
         setContentView(R.layout.activity_info_dialog);
 
-        dialog_title = findViewById(R.id.dialog_title);
+        dialog_title = findViewById(R.id.dialog_title);         // 다이어로그 제목 설정
         dialog_title.setText(title);
 
-        dialog_text = findViewById(R.id.dialog_text);
-        dialog_text.setText(contents);
+        dialog_text = findViewById(R.id.dialog_text);           // 다이어로그 내용 설정
+        dialog_text.setText(contents);                          
 
         dialog_ok_btn = findViewById(R.id.dialog_ok_btn);
-        dialog_ok_btn.setOnClickListener(v -> dismiss());
+        dialog_ok_btn.setOnClickListener(v -> dismiss());       // 확인 버튼을 누르면 사라지기
 
-        dialog_gif = (ImageView)findViewById(R.id.dialog_gif); //GIF ImageView연결
-        Glide.with(dialog_gif.getContext()).load(R.raw.squat_dialog).into(dialog_gif); //R.raw.loading GIF파일 load
-
+        dialog_gif = (ImageView)findViewById(R.id.dialog_gif);  //GIF ImageView와 연결
+        Glide.with(dialog_gif.getContext()).load(R.raw.squat_dialog).into(dialog_gif);  //R.raw에 저장된 GIF파일 불러오기
     }
 }
