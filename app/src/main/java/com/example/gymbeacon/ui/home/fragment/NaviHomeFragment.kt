@@ -48,36 +48,6 @@ class NaviHomeFragment : Fragment() {
     var counts_back = 0
     var counts_chest = 0
 
-    // 라인 차트 데이터 담을 리스트
-//    // 가슴 운동
-//    val chestDateList = mutableListOf<String>()
-//    val chestCountList = mutableListOf<String>()
-//    var chestCount: Int = 0
-//
-//    // 등 운동
-//    val backDateList = mutableListOf<String>()
-//    val backCountList = mutableListOf<String>()
-//    var backCount: Int = 0
-//
-//    // 하체 운동
-//    val lowerDateList = mutableListOf<String>()
-//    val lowerCountList = mutableListOf<String>()
-//    var lowerCount: Int = 0
-//
-//    val dateList = mutableListOf<String>()
-//    val countList = mutableListOf<String>()
-//
-//    var chartData = LineData()
-//
-//    val chestEntry = ArrayList<Entry>()
-//    val chestLabels = ArrayList<String>()
-//    val lowerEntry = ArrayList<Entry>()
-//    val lowerLabels = ArrayList<String>()
-//    val backEntry = ArrayList<Entry>()
-//    val backLabels = ArrayList<String>()
-//
-//    // 범례
-//    lateinit var legend: Legend
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -136,14 +106,6 @@ class NaviHomeFragment : Fragment() {
                         entityArrayList.add(p)
                     }
 
-//                    // 라인 차트에 쓸 데이터 담기
-//                    if (date != null) {
-//                        dateList.add(date)
-//                    }
-//
-//                    if (count != null) {
-//                        countList.add(count)
-//                    }
                     // 하체
                     if (exercise == "스쿼트" || exercise == "레그 익스텐션") {
                         if (count != null) {
@@ -163,35 +125,6 @@ class NaviHomeFragment : Fragment() {
                         }
                     }
 
-                    // 하체
-//                    if (exercise == "스쿼트" || exercise == "레그 익스텐션") {
-//                        if (count != null) {
-//                            lowerCountList.add(count)
-//                        }
-//                        if (date != null) {
-//                            lowerDateList.add(date)
-//                        }
-//                    }
-//                    // 가슴
-//                    if (exercise == "벤치프레스" || exercise == "인클라인 벤치프레스" || exercise == "케이블 크로스오버") {
-//                        if (count != null) {
-//                            chestCountList.add(count)
-//                        }
-//                        if (date != null) {
-//                            chestDateList.add(date)
-//                        }
-//                    }
-//                    //등
-//                    if (exercise == "데드리프트") {
-//                        if (count != null) {
-//                            backCountList.add(count)
-//                        }
-//                        if (date != null) {
-//                            backDateList.add(date)
-//                        }
-//                    }
-
-                    //
                 }
 
                 var recently_index = 0
@@ -201,9 +134,6 @@ class NaviHomeFragment : Fragment() {
                     LocalDate.parse(entityArrayList.get(1).timestamp, formatter).toString()
                 )
                 for(i in 0 until entityArrayList.size-1) {
-                    //if (LocalDate.parse(dateArrayList.get(i), formatter) > LocalDate.parse(dateArrayList.get(i+1), formatter)) {
-                    //    recently_date = dateArrayList.get(i)
-                    //}
                     if (LocalDate.parse(entityArrayList.get(i).timestamp, formatter).isBefore(LocalDate.parse(entityArrayList.get(i+1).timestamp, formatter))) {
                         recently_date = entityArrayList.get(i+1).timestamp
                         recently_index = i+1
@@ -288,52 +218,6 @@ class NaviHomeFragment : Fragment() {
                 binding.pieChart.setUsePercentValues(true)
 
 
-                // 라인 차트
-//                var lineChart: LineChart = binding.lineChart
-//
-//                LineChartDesign(lineChart)
-//
-//                //val entries = ArrayList<Entry>()
-//
-//                setChartData(chestEntry, chestLabels, lineChart, "가슴", chartData)
-//                setChartData(backEntry, backLabels, lineChart, "등", chartData)
-//                setChartData(lowerEntry, lowerLabels, lineChart, "하체", chartData)
-//
-//                prepareChartData(chartData, lineChart)
-
-//                for(i in 0 until countList.size){
-//                    entries.add( Entry(i.toFloat(), countList[i].toFloat() ))
-//                }
-//
-//                val labels = ArrayList<String>()
-//                for(i in 0 until dateList.size) {
-//                    labels.add(dateList[i])
-//                }
-//
-//                val dataSet = LineDataSet(entries, "")
-//
-//                lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-
-                //클릭시 x축 label 출력
-//                lineChart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener {
-//                    override fun onValueSelected(e: Entry, h: Highlight){
-//                        val xAxisLabel = e.x.let{
-//                            lineChart.xAxis.valueFormatter.getAxisLabel(it, lineChart.xAxis)
-//                        }
-//                        binding.test.text= xAxisLabel
-//                    }
-//                    override fun onNothingSelected() {
-//                    }
-//                })
-
-//                lineChart.getTransformer(YAxis.AxisDependency.LEFT)
-//                lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-//                val data = LineData(dataSet)
-//
-//                lineChart.data = data
-//                lineChart.invalidate()
-
             }
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
@@ -364,157 +248,7 @@ class NaviHomeFragment : Fragment() {
         Intent(activity, LowerBodyCategoryActivity::class.java).also { startActivity(it) }
     }
 
-    // 라인 차트 설정 함수
-//    fun LineChartDesign(lineChart: LineChart) {
-//        lineChart.setExtraBottomOffset(15f) // 간격
-//        lineChart.description.isEnabled = false // chart 밑에 description 표시 유무
-//
-//        // Legend는 차트의 범례
-//        legend = lineChart.legend
-//        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-//        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-//        legend.form = Legend.LegendForm.CIRCLE
-//        legend.formSize = 10f
-//        legend.textSize = 13f
-//        legend.textColor = Color.parseColor("#A3A3A3")
-//        legend.orientation = Legend.LegendOrientation.VERTICAL
-//        //legend.isDrawInside = false
-//        legend.yEntrySpace = 5f
-//        legend.isWordWrapEnabled = true
-//        legend.xOffset = 80f
-//        legend.yOffset = 20f
-//        legend.calculatedLineSizes
-//
-//        // XAxis (아래쪽) - 선 유무, 사이즈, 색상, 축 위치 설정
-//        val xAxis = lineChart.xAxis
-//        xAxis.setDrawAxisLine(false)
-//        xAxis.setDrawGridLines(false)
-//        xAxis.position = XAxis.XAxisPosition.BOTTOM // x축 데이터 표시 위치
-//        xAxis.granularity = 1f
-//        xAxis.textSize = 14f
-//        xAxis.textColor = Color.rgb(118, 118, 118)
-//        xAxis.spaceMin = 0.1f // Chart 맨 왼쪽 간격 띄우기
-//        xAxis.spaceMax = 0.1f // Chart 맨 오른쪽 간격 띄우기
-//
-//        // YAxis(Right) (왼쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
-//        val yAxisLeft = lineChart.axisLeft
-//        yAxisLeft.textSize = 14f
-//        yAxisLeft.textColor = Color.rgb(163, 163, 163)
-//        yAxisLeft.setDrawAxisLine(false)
-//        yAxisLeft.axisLineWidth = 2f
-//        yAxisLeft.axisMinimum = 0f // 최솟값
-//        //yAxisLeft.axisMaximum = RANGE[0][range].toFloat() // 최댓값
-//        //yAxisLeft.granularity = RANGE[1][range].toFloat()
-//
-//        // YAxis(Left) (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
-//        val yAxis = lineChart.axisRight
-//        yAxis.setDrawLabels(false) // label 삭제
-//        yAxis.textColor = Color.rgb(163, 163, 163)
-//        yAxis.setDrawAxisLine(false)
-//        yAxis.axisLineWidth = 2f
-//        yAxis.axisMinimum = 0f // 최솟값
-//        //yAxis.axisMaximum = RANGE[0][range].toFloat() // 최댓값
-//        //yAxis.granularity = RANGE[1][range].toFloat()
-//
-//        // XAxis에 원하는 String 설정하기 (날짜)
-////        xAxis.valueFormatter = object : ValueFormatter() {
-////
-////            override fun getFormattedValue(value: Float): String {
-////                return LABEL[range][value.toInt()]
-////            }
-////        }
-//    }
 
-//    fun setChartData(entry: ArrayList<Entry>, labels: ArrayList<String>, lineChart: LineChart, check_exercise: String, chartData: LineData) {
-//
-////      val chartData = LineData()
-//
-//        for(i in 0 until countList.size){
-//            entry.add( Entry(i.toFloat(), countList[i].toFloat() ))
-//        }
-//
-//        //val labels = ArrayList<String>()
-//        for(i in 0 until dateList.size) {
-//            labels.add(dateList[i])
-//        }
-//
-//        //val dataSet = LineDataSet(entry, "")
-//
-//        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-//        lineChart.getTransformer(YAxis.AxisDependency.LEFT)
-//        lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-//
-//        // 4개 앱의 DataSet 추가 및 선 커스텀
-//
-//        var lineDataSet: LineDataSet? = null
-//
-//        // line 데이터 운동 별 설정
-//        if (check_exercise == "등"){
-//            lineDataSet = LineDataSet(entry, "등 운동")
-//            lineDataSet?.color = Color.rgb(255, 155, 155)
-//            lineDataSet?.setCircleColor(Color.rgb(255, 155, 155))
-//        }
-//        if (check_exercise == "가슴"){
-//            lineDataSet = LineDataSet(entry, "가슴 운동")
-//            lineDataSet?.color = Color.rgb(178, 223, 138)
-//            lineDataSet?.setCircleColor(Color.rgb(178, 223, 138))
-//        }
-//        if (check_exercise == "하체"){
-//            lineDataSet = LineDataSet(entry, "하체 운동")
-//            lineDataSet?.color = Color.rgb(166, 208, 227)
-//            lineDataSet?.setCircleColor(Color.rgb(166, 208, 227))
-//        }
-//
-//        //val lineDataSet = LineDataSet(entry, "")
-//        chartData.addDataSet(lineDataSet)
-//
-//        lineDataSet?.lineWidth = 3f
-//        lineDataSet?.circleRadius = 6f
-//        lineDataSet?.setDrawValues(false)
-//        lineDataSet?.setDrawCircleHole(true)
-//        lineDataSet?.setDrawCircles(true)
-//        lineDataSet?.setDrawHorizontalHighlightIndicator(false)
-//        lineDataSet?.setDrawHighlightIndicators(false)
-//        //lineDataSet?.color = Color.rgb(255, 155, 155)
-////        lineDataSet?.color = Color.rgb(255, 155, 155)
-////        lineDataSet?.setCircleColor(Color.rgb(255, 155, 155))
-//
-//        // 앱2
-////        val lineDataSet2 = LineDataSet(entry2, APPS[1])
-////        chartData.addDataSet(lineDataSet2)
-////
-////        lineDataSet2.lineWidth = 3f
-////        lineDataSet2.circleRadius = 6f
-////        lineDataSet2.setDrawValues(false)
-////        lineDataSet2.setDrawCircleHole(true)
-////        lineDataSet2.setDrawCircles(true)
-////        lineDataSet2.setDrawHorizontalHighlightIndicator(false)
-////        lineDataSet2.setDrawHighlightIndicators(false)
-////        lineDataSet2.color = Color.rgb(178, 223, 138)
-////        lineDataSet2.circleColor = Color.rgb(178, 223, 138)
-////
-////        // 앱3
-////        val lineDataSet3 = LineDataSet(entry3, APPS[2])
-////        chartData.addDataSet(lineDataSet3)
-////
-////        lineDataSet3.lineWidth = 3f
-////        lineDataSet3.circleRadius = 6f
-////        lineDataSet3.setDrawValues(false)
-////        lineDataSet3.setDrawCircleHole(true)
-////        lineDataSet3.setDrawCircles(true)
-////        lineDataSet3.setDrawHorizontalHighlightIndicator(false)
-////        lineDataSet3.setDrawHighlightIndicators(false)
-////        lineDataSet3.color = Color.rgb(166, 208, 227)
-////        lineDataSet3.circleColor = Color.rgb(166, 208, 227)
-//
-//        chartData.setValueTextSize(15F)
-//        //return chartData
-//    }
-
-//    fun prepareChartData(data: LineData, lineChart: LineChart) {
-//        lineChart.data = data // LineData 전달
-//        lineChart.invalidate() // LineChart 갱신해 데이터 표시
-//    }
 
     companion object {
         fun newInstance(): NaviHomeFragment {

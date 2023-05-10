@@ -125,7 +125,9 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
         // 안내창 다이어로그 띄어주기
-        infoDialog = InfoDialogActivity(this, selectedExerciseName, getString(R.string.dialog_common_text) + getString(R.string.dialog_squat_text))
+        infoDialog = InfoDialogActivity(this, selectedExerciseName,
+            getString(R.string.dialog_common_text) +
+                    getString(R.string.dialog_squat_text))
         infoDialog!!.show()
 
         // 오디오 권한 요청
@@ -477,39 +479,39 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     @RequiresApi(Build.VERSION_CODES.P)
     fun startRecording() {
 
-        mMediaRecorder = MediaRecorder()
+        mMediaRecorder = MediaRecorder()        // 미디어레코더 객체 생성
 
         try {
             closePreviewSession()
-            setUpMediaRecorder()
-            val texture: SurfaceTexture = binding.textureView.getSurfaceTexture()!!
-            val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 클래스 레벨 변수에 저장된 CameraDevice 객체 사용
+            setUpMediaRecorder()                // 미디어레코더를 통한 비디오, 오디오 출력 형식, 스트림 등 설정
+            val texture: SurfaceTexture = binding.textureView.getSurfaceTexture()!!     // textureView의 SurfaceTexture 가져옴
+            val captureRequest = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_RECORD) // 카메라 장치에서 비디오 녹화를 위한 요청 생성
 
-            mCaptureRequestBuilder = captureRequest
-            val surfaces: ArrayList<Surface> = ArrayList()
-            val previewSurface = Surface(texture)
-            surfaces.add(previewSurface)
-            mCaptureRequestBuilder!!.addTarget(previewSurface)
-            val recordSurface = mMediaRecorder.surface
-            surfaces.add(recordSurface)
-            mCaptureRequestBuilder!!.addTarget(recordSurface)
+            mCaptureRequestBuilder = captureRequest         // 요청을 빌드하기 위해 캡처 요청 빌더 설정
+            val surfaces: ArrayList<Surface> = ArrayList()  // Surface 목록을 가지는 ArrayList 객체 생성
+            val previewSurface = Surface(texture)       // SurfaceTexture를 가지고 미리보기 Surface 생성
+            surfaces.add(previewSurface)        // 미리보기 Surface 목록에 추가
+            mCaptureRequestBuilder!!.addTarget(previewSurface)  // 빌드를 위해 미리보기 Surface를 캡처 요청 빌더에 추가
+            val recordSurface = mMediaRecorder.surface      // 미디어레코더의 Surface를 가져옴
+            surfaces.add(recordSurface)     // 녹화된 화면을 저장할 Surface 목록에 추가
+            mCaptureRequestBuilder!!.addTarget(recordSurface)   // 빌드를 위해 MediaRecorder Surface를 캡처 요청 빌더에 추가
 
             binding.buttonDetailRecord.setText("녹화 중..")
 
             cameraDevice!!.createCaptureSession(surfaces, object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
-                    mCameraCaptureSession = session
-                    mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(), null, null)
-                    Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()
+                    mCameraCaptureSession = session     // 생성된 세션을 클래스 변수에 저장
+                    mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(), null, null)  // 세션에서 지속적으로 비디오 프레임을 캡처하도록 반복 요청 설정
+                    Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()   // 녹화 시작 버튼을 누르면 "녹화 중"이라는 메세지 출력
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
                 }
             }, handler)
             //timer()
-        } catch (e: CameraAccessException) {
+        } catch (e: CameraAccessException) {    // 카메라 접근 권한 예외 처리
             e.printStackTrace()
-        } catch (e: IOException) {
+        } catch (e: IOException) {      // 파일 입출력 예외 처리
             e.printStackTrace()
         }
     }
@@ -517,16 +519,16 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     //녹화 중지 04-05 추가
     private fun stopRecordingVideo() {
         binding.buttonDetailRecord.setText("녹화 시작")
-        Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()
-        Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()
-        mMediaRecorder.stop()
-        mMediaRecorder.reset()
+        Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()                 // 녹화 종료 메세지
+        Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()     // 저장 메세지 출력
+        mMediaRecorder.stop()               // 미디어레코더 녹음 중지
+        mMediaRecorder.reset()              
 
         mNextVideoAbsolutePath = null
         cameraDevice?.close()
         cameraDevice = null
 
-        //2023-04-04 23:23 추가, 녹화 종료 후 카메라 미리보기 재개
+        //녹화 종료 후 카메라 미리보기 재개
         openCamera()
 
     }
