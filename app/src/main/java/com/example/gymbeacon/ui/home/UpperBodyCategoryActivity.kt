@@ -33,7 +33,7 @@ class UpperBodyCategoryActivity : AppCompatActivity() {
                 Log.e("test", position.toString())
                 when(position) {
                     0 -> goToDetailActivity("벤치프레스")
-                    1 -> goToDetailActivity("케이블 크로스오버")
+                    1 -> goToDetailActivity("랫 풀 다운")
                     2 -> goToDetailActivity("인클라인 벤치프레스")
                 }
             }
