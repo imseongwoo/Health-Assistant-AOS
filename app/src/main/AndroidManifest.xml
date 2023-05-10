@@ -22,12 +22,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymBeacon"
         tools:targetApi="31">
+
         <activity
             android:name=".ui.common.VideoPlayerActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.chart.MyMarkerView"
-            android:exported="false" />
+
         <activity
             android:name=".ui.chart.ChartActivity"
             android:exported="false" />
