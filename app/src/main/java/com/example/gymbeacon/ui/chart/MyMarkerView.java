@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.Utils;
 public class MyMarkerView extends MarkerView {
     private TextView lineChartContent;
 //    private static Context context;
-
+    // 버그 수정
     public MyMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
 

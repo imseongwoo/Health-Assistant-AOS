@@ -18,9 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymBeacon"
         tools:targetApi="31">
+
+        <!-- 수정 부분 -->
 <!--        <activity-->
 <!--            android:name=".ui.chart.MyMarkerView"-->
 <!--            android:exported="false" />-->
+
         <activity
             android:name=".ui.chart.ChartActivity"
             android:exported="false" />
