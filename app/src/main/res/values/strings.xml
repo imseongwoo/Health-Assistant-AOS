@@ -58,4 +58,7 @@
     <string name="dialog_squat_text"> 1. 두 발이 일직선 상이 되도록 놓는다.\n 2. 발은 어깨 넓이로 벌린다.\n 3. 무릎은 발끝을 나오지 않게끔!!\n 4. 발 뒤꿈치에 힘을주고, 엉덩이로 밀어 올린다는 느낌으로 일어난다.</string>
     <string name="text_view_file_name">파일 명 :</string>
     <string name="text_view_exercise_video">운동 영상</string>
+    <string name="text_view_email">이메일</string>
+    <string name="text_view_password">비밀번호</string>
+    <string name="text_sign_up">가입하기</string>
 </resources>
