@@ -322,7 +322,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 textViewDetailPageCount.text = nowCount.toString()
             }
 
-            buttonDetailStart.setOnClickListener {
+            imageViewDetailStart.setOnClickListener {
                 maxNum = textViewDetailPageCount.text.toString()
             }
 

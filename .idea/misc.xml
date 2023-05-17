@@ -5,18 +5,23 @@
       <map>
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/background_bluegrey.xml" value="0.1785" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/ic_my_page.xml" value="0.1" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/ic_splash.xml" value="0.1075" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/drawable/layerlist_button_naver.xml" value="0.1865" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_damheon_gym.xml" value="0.3045977011494253" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_detail.xml" value="0.264" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_device_control.xml" value="0.196875" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_lower_body_category.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_main_page.xml" value="0.25" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_new_gym_detail.xml" value="0.22" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_splash.xml" value="0.152" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_upper_body_category.xml" value="0.1" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/activity_yeasol_gym_detail.xml" value="0.25" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/fragment_navi_calendar.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/fragment_navi_home.xml" value="0.25" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/fragment_navi_mypage.xml" value="0.33" />
         <entry key="..\:/Users/seong/AndroidStudioProjects/GymBeacon/app/src/main/res/layout/fragment_navi_setting.xml" value="0.33" />
