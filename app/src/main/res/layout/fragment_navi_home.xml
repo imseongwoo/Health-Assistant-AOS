@@ -189,7 +189,7 @@
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/view_pager"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="180dp"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="2dp"
@@ -210,9 +210,8 @@
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/pieChart"
-                        android:layout_width="180dp"
+                        android:layout_width="match_parent"
                         android:layout_height="180dp"
-                        android:layout_marginEnd="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/rectangle_radius"
                         app:layout_constraintTop_toTopOf="parent"
@@ -367,15 +366,14 @@
                     >
 
                 <!-- 벤치프레스 -->
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/bench_box"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rectangle_radius">
 
                     <ImageView
@@ -407,17 +405,16 @@
                         android:textColor="@color/color_222222" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
                 <!-- 랫풀다운 -->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/latpulldown_box"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rectangle_radius">
 
                 <ImageView
@@ -450,16 +447,15 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
                 <!-- 인클라인 벤치프레스 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/incline_box"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rectangle_radius">
 
                 <ImageView
@@ -491,10 +487,6 @@
                     android:textColor="@color/color_222222" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
                 </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -541,15 +533,14 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <!-- 레그 익스텐션 -->
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/legex_box"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rectangle_radius">
 
                         <ImageView
@@ -581,18 +572,15 @@
                             android:textColor="@color/color_222222" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
                     <!-- 스쿼트 -->
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/squat_box"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rectangle_radius">
 
                         <ImageView
@@ -625,17 +613,15 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
                     <!-- 데드리프트 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/dead_lift_box"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="160dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rectangle_radius">
 
                         <ImageView
@@ -667,10 +653,7 @@
                             android:textColor="@color/color_222222" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 <!--                <TextView-->
