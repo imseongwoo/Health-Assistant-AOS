@@ -122,12 +122,44 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         selectedExerciseName = detailIntent.getStringExtra("upper")!!
 
 
-        // 안내창 다이어로그 띄어주기
-        infoDialog = InfoDialogActivity(this, selectedExerciseName,
-            getString(R.string.dialog_common_text) +
-                    getString(R.string.dialog_squat_text))
+        // 운동별로 안내창 다이어로그 띄어주기
 
+        if (selectedExerciseName == "벤치프레스") {
+            infoDialog = InfoDialogActivity(this, selectedExerciseName,
+                getString(R.string.dialog_common_text) +
+                        getString(R.string.dialog_bench_text))
+        }
+        else if (selectedExerciseName == "랫 풀 다운") {
+            infoDialog = InfoDialogActivity(this, selectedExerciseName,
+                getString(R.string.dialog_common_text) +
+                        getString(R.string.dialog_latpulldown_text))
+        }
+        else if (selectedExerciseName == "인클라인 벤치프레스") {
+            infoDialog = InfoDialogActivity(this, selectedExerciseName,
+                getString(R.string.dialog_common_text) +
+                        getString(R.string.dialog_incline_text))
+        }
+        else if (selectedExerciseName == "스쿼트") {
+            infoDialog = InfoDialogActivity(this, selectedExerciseName,
+                getString(R.string.dialog_common_text) +
+                        getString(R.string.dialog_squat_text))
+        }
+        else if (selectedExerciseName == "데드리프트") {
+            infoDialog = InfoDialogActivity(this, selectedExerciseName,
+                getString(R.string.dialog_common_text) +
+                        getString(R.string.dialog_dead_text))
+        }
+        else if (selectedExerciseName == "레그 익스텐션") {
+            infoDialog = InfoDialogActivity(this, selectedExerciseName,
+                getString(R.string.dialog_common_text) +
+                        getString(R.string.dialog_legex_text))
+        }
         infoDialog!!.show()
+
+//        infoDialog = InfoDialogActivity(this, selectedExerciseName,
+//            getString(R.string.dialog_common_text) +
+//                    getString(R.string.dialog_squat_text))
+//        infoDialog!!.show()
 
         // 오디오 권한 요청
         requestPermissions(requirePermissions, REQUEST_RECORD_AUDIO_PERMISSION)

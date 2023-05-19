@@ -2,6 +2,7 @@ package com.example.gymbeacon.ui.home.detail;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,6 +33,27 @@ public class InfoDialogActivity extends Dialog {
         dialog_ok_btn.setOnClickListener(v -> dismiss());       // 확인 버튼을 누르면 사라지기
 
         dialog_gif = (ImageView)findViewById(R.id.dialog_gif);  //GIF ImageView와 연결
-        Glide.with(dialog_gif.getContext()).load(R.raw.squat_dialog).into(dialog_gif);  //R.raw에 저장된 GIF파일 불러오기
+
+        Log.d("title 제목: ", title);
+
+        if (title.equals("벤치프레스")) {
+            Glide.with(dialog_gif.getContext()).load(R.raw.bench_press_dialog).into(dialog_gif);
+        }
+        else if (title.equals("랫 풀 다운")) {
+            Glide.with(dialog_gif.getContext()).load(R.raw.lat_pull_down_dialog).into(dialog_gif);
+        }
+        else if (title.equals("인클라인 벤치프레스")) {
+            Glide.with(dialog_gif.getContext()).load(R.raw.incline_dialog).into(dialog_gif);
+        }
+        else if (title.equals("스쿼트")) {
+            Glide.with(dialog_gif.getContext()).load(R.raw.squat_dialog).into(dialog_gif);
+        }
+        else if (title.equals("데드리프트")) {
+            Glide.with(dialog_gif.getContext()).load(R.raw.deadlift_dialog).into(dialog_gif);
+        }
+        else if (title.equals("레그 익스텐션")) {
+            Glide.with(dialog_gif.getContext()).load(R.raw.legex_dialog).into(dialog_gif);
+        }
+        // Glide.with(dialog_gif.getContext()).load(R.raw.squat_dialog).into(dialog_gif);  //R.raw에 저장된 GIF파일 불러오기
     }
 }
