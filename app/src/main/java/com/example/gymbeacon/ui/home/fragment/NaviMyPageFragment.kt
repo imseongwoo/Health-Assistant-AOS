@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -48,46 +49,16 @@ class NaviMyPageFragment : Fragment() {
     var returnCount = 1
     private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
 
-
-    // bench 차트 데이터 ArrayList
-    var barEntryArrayList_bench: ArrayList<BarEntry?>? = ArrayList()
-    var labelsNames_bench = ArrayList<String>()
-    var dateCountsDataArrayList_bench = ArrayList<DateCountsData>()
-
-//    // squat 차트 데이터 ArrayList
-    var barEntryArrayList_squat: ArrayList<BarEntry?>? = ArrayList()
-    var labelsNames_squat = ArrayList<String>()
-    var dateCountsDataArrayList_squat = ArrayList<DateCountsData>()
-
-    // dead 차트 데이터 ArrayList
-    var barEntryArrayList_dead: ArrayList<BarEntry?>? = ArrayList()
-    var labelsNames_dead = ArrayList<String>()
-    var dateCountsDataArrayList_dead = ArrayList<DateCountsData>()
-
-    // incline 차트 데이터 ArrayList
-    var barEntryArrayList_incline: ArrayList<BarEntry?>? = ArrayList()
-    var labelsNames_incline = ArrayList<String>()
-    var dateCountsDataArrayList_incline = ArrayList<DateCountsData>()
-
-    // legex 차트 데이터 ArrayList
-    var barEntryArrayList_legex: ArrayList<BarEntry?>? = ArrayList()
-    var labelsNames_legex = ArrayList<String>()
-    var dateCountsDataArrayList_legex = ArrayList<DateCountsData>()
-
-    // crossover 차트 데이터 ArrayList
-    var barEntryArrayList_crossover: ArrayList<BarEntry?>? = ArrayList()
-    var labelsNames_crossover = ArrayList<String>()
-    var dateCountsDataArrayList_crossover = ArrayList<DateCountsData>()
-
     // 레이더차트에 필요한 운동별 count 사이즈
     var counts_bench = 0
     var counts_squat = 0
     var counts_dead = 0
     var counts_incline = 0
     var counts_legex = 0
-    var counts_crossover = 0
+    var counts_latpulldown = 0
 
-    val radarDataArrayList = ArrayList<RadarEntry>()
+    var radarDataArrayList = ArrayList<RadarEntry>()
+    //val radarDataArrayList2 = ArrayList<RadarEntry>()
 
     // 파이 차트 데이터
     val pieEntryArrayList = ArrayList<PieEntry>()
@@ -95,20 +66,6 @@ class NaviMyPageFragment : Fragment() {
     var counts_back = 0
     var counts_chest = 0
 
-    // 라인 차트 데이터
-    var entry_bench = ArrayList<Entry>()
-    var entry_squat = ArrayList<Entry>()
-    var entry_dead = ArrayList<Entry>()
-    var entry_incline = ArrayList<Entry>()
-    var entry_legex = ArrayList<Entry>()
-    var entry_crossover = ArrayList<Entry>()
-
-    var lineData_bench = LineData()
-    var lineData_squat = LineData()
-    var lineData_dead = LineData()
-    var lineData_incline = LineData()
-    var lineData_legex = LineData()
-    var lineData_crossover = LineData()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,6 +73,29 @@ class NaviMyPageFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_navi_mypage, container, false)
+
+
+        binding.totalChartBtn.isSelected = true
+        binding.totalChartBtn.setOnClickListener {
+            // 이미 Fragment total Chart를 표시하고 있으므로 추가 작업이 필요하지 않음
+            binding.totalChartBtn.isSelected = true
+        }
+
+        // partBtn 클릭 이벤트 리스너 설정
+        binding.partChartBtn.setOnClickListener {
+            binding.totalChartBtn.isSelected = false
+            binding.partChartBtn.isSelected = true
+
+            // partBtn 클릭 시 Fragment part chart로 전환
+            val fragmentPart = PartChartFragment()
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+
+            fragmentTransaction.replace(R.id.fragmentContainer, fragmentPart)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+
+        }
+
         return binding.root
     }
 
@@ -125,34 +105,15 @@ class NaviMyPageFragment : Fragment() {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
 
         with(binding) {
-            chartBtn.setOnClickListener {
-                goToChartActivity()
-            }
+//            chartBtn.setOnClickListener {
+//                goToChartActivity()
+//            }
 
         //  실시간 DB 참조 위치(health/momentum) 설정
             CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.uid)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
-                        // 각 운동별 데이터 arrayList
-                        dateCountsDataArrayList_bench.clear() // 리스트 초기화
-                        barEntryArrayList_bench?.clear()
-                        labelsNames_bench.clear()
-                        dateCountsDataArrayList_squat.clear() // 리스트 초기화
-                        barEntryArrayList_squat?.clear()
-                        labelsNames_squat.clear()
-                        dateCountsDataArrayList_dead.clear() // 리스트 초기화
-                        barEntryArrayList_dead?.clear()
-                        labelsNames_dead.clear()
-                        dateCountsDataArrayList_incline.clear() // 리스트 초기화
-                        barEntryArrayList_incline?.clear()
-                        labelsNames_incline.clear()
-                        dateCountsDataArrayList_legex.clear() // 리스트 초기화
-                        barEntryArrayList_legex?.clear()
-                        labelsNames_legex.clear()
-                        dateCountsDataArrayList_crossover.clear() // 리스트 초기화
-                        barEntryArrayList_crossover?.clear()
-                        labelsNames_crossover.clear()
 
                         // 레이더 차트 arrayList
                         counts_bench = 0
@@ -160,7 +121,7 @@ class NaviMyPageFragment : Fragment() {
                         counts_dead = 0
                         counts_incline = 0
                         counts_legex = 0
-                        counts_crossover = 0
+                        counts_latpulldown = 0
 
                         radarDataArrayList.clear()
 
@@ -170,19 +131,6 @@ class NaviMyPageFragment : Fragment() {
                         counts_lower = 0
                         counts_chest = 0
 
-                        // 라인 차트 arrayList
-                        entry_bench.clear()
-                        entry_squat.clear()
-                        entry_dead.clear()
-                        entry_incline.clear()
-                        entry_legex.clear()
-                        entry_crossover.clear()
-                        lineData_bench.clearValues()
-                        lineData_squat.clearValues()
-                        lineData_dead.clearValues()
-                        lineData_incline.clearValues()
-                        lineData_legex.clearValues()
-                        lineData_crossover.clearValues()
 
                         for (postSnapshot: DataSnapshot in snapshot.children) {
                             val ex_name = postSnapshot.child("exercise").getValue(
@@ -198,7 +146,7 @@ class NaviMyPageFragment : Fragment() {
                                 val counts = postSnapshot.child("count").getValue(
                                     String::class.java
                                 )
-                                dateCountsDataArrayList_bench.add(DateCountsData(date, counts))
+                                //dateCountsDataArrayList_bench.add(DateCountsData(date, counts))
 
                                 counts_bench += counts!!.toInt()
                                 counts_chest += counts!!.toInt()
@@ -214,7 +162,7 @@ class NaviMyPageFragment : Fragment() {
                                 )
                                 Log.i("테스트1", "date= " + date)
                                 Log.i("테스트1", "counts= " + counts)
-                                dateCountsDataArrayList_squat.add(DateCountsData(date, counts))
+                                //dateCountsDataArrayList_squat.add(DateCountsData(date, counts))
 
                                 counts_squat += counts!!.toInt()
                                 counts_lower += counts!!.toInt()
@@ -228,7 +176,7 @@ class NaviMyPageFragment : Fragment() {
                                 val counts = postSnapshot.child("count").getValue(
                                     String::class.java
                                 )
-                                dateCountsDataArrayList_dead.add(DateCountsData(date, counts))
+                                //dateCountsDataArrayList_dead.add(DateCountsData(date, counts))
 
                                 counts_dead += counts!!.toInt()
                                 counts_back += counts!!.toInt()
@@ -242,7 +190,7 @@ class NaviMyPageFragment : Fragment() {
                                 val counts = postSnapshot.child("count").getValue(
                                     String::class.java
                                 )
-                                dateCountsDataArrayList_incline.add(DateCountsData(date, counts))
+                                //DateCountsDataArrayList_incline.add(DateCountsData(date, counts))
 
                                 counts_incline += counts!!.toInt()
                                 counts_chest += counts!!.toInt()
@@ -256,13 +204,13 @@ class NaviMyPageFragment : Fragment() {
                                 val counts = postSnapshot.child("count").getValue(
                                     String::class.java
                                 )
-                                dateCountsDataArrayList_legex.add(DateCountsData(date, counts))
+                                //dateCountsDataArrayList_legex.add(DateCountsData(date, counts))
 
                                 counts_legex += counts!!.toInt()
                                 counts_lower += counts!!.toInt()
                             }
-                            // 운동 이름이 케이블 크로스오버
-                            if ("케이블 크로스오버" == ex_name) {
+                            // 운동 이름이 랫 풀 다운
+                            if ("랫 풀 다운" == ex_name) {
                                 //데이터 가져오기(count, timestamp 이름으로 된 값)
                                 val date = postSnapshot.child("timestamp").getValue(
                                     String::class.java
@@ -270,70 +218,22 @@ class NaviMyPageFragment : Fragment() {
                                 val counts = postSnapshot.child("count").getValue(
                                     String::class.java
                                 )
-                                dateCountsDataArrayList_crossover.add(DateCountsData(date, counts))
+                                //dateCountsDataArrayList_crossover.add(DateCountsData(date, counts))
 
-                                counts_crossover += counts!!.toInt()
-                                counts_chest += counts!!.toInt()
+                                counts_latpulldown += counts!!.toInt()
+                                counts_back += counts!!.toInt()
                             }
 
                         }
 
-                        chartBench.let {
-                            fillDateCounts(
-                                it,
-                                dateCountsDataArrayList_bench,
-                                labelsNames_bench,
-                                barEntryArrayList_bench
-                            )
-                        }
-                        chartSquat.let {
-                            fillDateCounts(
-                                it,
-                                dateCountsDataArrayList_squat,
-                                labelsNames_squat,
-                                barEntryArrayList_squat
-                            )
-                        }
-                        chartDead.let {
-                            fillDateCounts(
-                                it,
-                                dateCountsDataArrayList_dead,
-                                labelsNames_dead,
-                                barEntryArrayList_dead
-                            )
-                        }
-                        chartIncline.let {
-                            fillDateCounts(
-                                it,
-                                dateCountsDataArrayList_incline,
-                                labelsNames_incline,
-                                barEntryArrayList_incline
-                            )
-                        }
-                        chartLegex.let {
-                            fillDateCounts(
-                                it,
-                                dateCountsDataArrayList_legex,
-                                labelsNames_legex,
-                                barEntryArrayList_legex
-                            )
-                        }
-                        chartCrossover.let {
-                            fillDateCounts(
-                                it,
-                                dateCountsDataArrayList_crossover,
-                                labelsNames_crossover,
-                                barEntryArrayList_crossover
-                            )
-                        }
-
                         // 레이더 차트
                         radarDataArrayList.add(RadarEntry(counts_bench.toFloat()))
+                        radarDataArrayList.add(RadarEntry(counts_latpulldown.toFloat()))
                         radarDataArrayList.add(RadarEntry(counts_squat.toFloat()))
                         radarDataArrayList.add(RadarEntry(counts_dead.toFloat()))
                         radarDataArrayList.add(RadarEntry(counts_incline.toFloat()))
                         radarDataArrayList.add(RadarEntry(counts_legex.toFloat()))
-                        radarDataArrayList.add(RadarEntry(counts_crossover.toFloat()))
+
 
                         val radarDataSet = RadarDataSet(radarDataArrayList, "운동 횟수")
                         radarDataSet.color = Color.BLUE
@@ -341,10 +241,18 @@ class NaviMyPageFragment : Fragment() {
 
                         val radarData = RadarData()
                         radarData.addDataSet(radarDataSet)
-                        val radarLabels = arrayOf("벤치프레스", "스쿼트", "데드리프트", "인클라인 벤치프레스", "레그 익스텐션", "케이블 크로스오버")
+                        val radarLabels = arrayOf("벤치프레스", "랫 풀 다운", "스쿼트", "데드리프트", "인클라인 벤치프레스", "레그 익스텐션")
+
                         val xAxis_radar = binding.radarChart.xAxis
                         xAxis_radar.valueFormatter = IndexAxisValueFormatter(radarLabels)
                         binding.radarChart.data = radarData
+
+                        val yAxis_radar = binding.radarChart.yAxis
+                        yAxis_radar.axisMinimum = 0f
+
+                        val legend_radar = radarChart.legend
+                        legend_radar.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                        legend_radar.form = Legend.LegendForm.CIRCLE
 
                         val description_radar = Description()
                         description_radar.text = ""
@@ -365,7 +273,7 @@ class NaviMyPageFragment : Fragment() {
                             pieEntryArrayList.add(PieEntry(counts_chest.toFloat(), "가슴"))
                         }
 
-                        val pieDataSet = PieDataSet(pieEntryArrayList, " ← 부위 ")
+                        val pieDataSet = PieDataSet(pieEntryArrayList, "")
                         pieDataSet.valueTextSize = 18f
                         if (pieEntryArrayList != null) {
                             val pieChartColors =
@@ -382,146 +290,21 @@ class NaviMyPageFragment : Fragment() {
                         pieDataSet.valueFormatter = PercentFormatter(binding.pieChart)
                         pieDataSet.valueTextSize = 18f
 
+                        val legend_pie = pieChart.legend
+                        legend_pie.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                        legend_radar.form = Legend.LegendForm.CIRCLE
+
                         binding.pieChart.data = pieData
 
                         binding.pieChart.animateXY(1000, 1000)
                         binding.pieChart.setUsePercentValues(true)
                         // 파이 차트//////////////////////////////////////////////
 
-                        // 라인 차트
-                        lineChartCreateData(binding.lineChartBench, labelsNames_bench, dateCountsDataArrayList_bench, entry_bench)
-                        lineChartCreateData(binding.lineChartSquat, labelsNames_squat, dateCountsDataArrayList_squat, entry_squat)
-                        lineChartCreateData(binding.lineChartDead, labelsNames_dead, dateCountsDataArrayList_dead, entry_dead)
-                        lineChartCreateData(binding.lineChartIncline, labelsNames_incline, dateCountsDataArrayList_incline, entry_incline)
-                        lineChartCreateData(binding.lineChartLegex, labelsNames_legex, dateCountsDataArrayList_legex, entry_legex)
-                        lineChartCreateData(binding.lineChartCrossover, labelsNames_crossover, dateCountsDataArrayList_crossover, entry_crossover)
-
-                        // 라인 차트//////////////////////////////////////////////
 
                     } //onDataChange
 
                     override fun onCancelled(error: DatabaseError) {} //onCancelled
                 }) //addValueEventListener
-
-            chartBench.setVisibility(View.INVISIBLE)
-            chartSquat.setVisibility(View.INVISIBLE)
-            chartDead.setVisibility(View.INVISIBLE)
-            chartIncline.setVisibility(View.INVISIBLE)
-            chartLegex.setVisibility(View.INVISIBLE)
-            chartCrossover.setVisibility(View.INVISIBLE)
-            chartNameText.setText("운동을 선택하세요.")
-            lineChartBench.setVisibility(View.INVISIBLE)
-            lineChartSquat.setVisibility(View.INVISIBLE)
-            lineChartDead.setVisibility(View.INVISIBLE)
-            lineChartIncline.setVisibility(View.INVISIBLE)
-            lineChartLegex.setVisibility(View.INVISIBLE)
-            lineChartCrossover.setVisibility(View.INVISIBLE)
-
-            val animation = AlphaAnimation(0f, 1f)
-            animation.duration = 1000
-
-            benchBtn.setOnClickListener {
-                chartBench.setVisibility(View.VISIBLE)
-                chartBench.animation = animation
-                chartSquat.setVisibility(View.INVISIBLE)
-                chartDead.setVisibility(View.INVISIBLE)
-                chartIncline.setVisibility(View.INVISIBLE)
-                chartLegex.setVisibility(View.INVISIBLE)
-                chartCrossover.setVisibility(View.INVISIBLE)
-                chartNameText.setText("벤치프레스")
-                lineChartBench.setVisibility(View.VISIBLE)
-                lineChartBench.animation = animation
-                lineChartSquat.setVisibility(View.INVISIBLE)
-                lineChartDead.setVisibility(View.INVISIBLE)
-                lineChartIncline.setVisibility(View.INVISIBLE)
-                lineChartLegex.setVisibility(View.INVISIBLE)
-                lineChartCrossover.setVisibility(View.INVISIBLE)
-            }
-            squatBtn.setOnClickListener {
-                chartBench.setVisibility(View.INVISIBLE)
-                chartSquat.setVisibility(View.VISIBLE)
-                chartSquat.animation = animation
-                chartDead.setVisibility(View.INVISIBLE)
-                chartIncline.setVisibility(View.INVISIBLE)
-                chartLegex.setVisibility(View.INVISIBLE)
-                chartCrossover.setVisibility(View.INVISIBLE)
-                chartNameText.setText("스쿼트")
-                lineChartBench.setVisibility(View.INVISIBLE)
-                lineChartSquat.setVisibility(View.VISIBLE)
-                lineChartSquat.animation = animation
-                lineChartDead.setVisibility(View.INVISIBLE)
-                lineChartIncline.setVisibility(View.INVISIBLE)
-                lineChartLegex.setVisibility(View.INVISIBLE)
-                lineChartCrossover.setVisibility(View.INVISIBLE)
-            }
-            deadBtn.setOnClickListener {
-                chartBench.setVisibility(View.INVISIBLE)
-                chartSquat.setVisibility(View.INVISIBLE)
-                chartDead.setVisibility(View.VISIBLE)
-                chartDead.animation = animation
-                chartIncline.setVisibility(View.INVISIBLE)
-                chartLegex.setVisibility(View.INVISIBLE)
-                chartCrossover.setVisibility(View.INVISIBLE)
-                chartNameText.setText("데드리프트")
-                lineChartBench.setVisibility(View.INVISIBLE)
-                lineChartSquat.setVisibility(View.INVISIBLE)
-                lineChartDead.setVisibility(View.VISIBLE)
-                lineChartDead.animation = animation
-                lineChartIncline.setVisibility(View.INVISIBLE)
-                lineChartLegex.setVisibility(View.INVISIBLE)
-                lineChartCrossover.setVisibility(View.INVISIBLE)
-            }
-            inclineBtn.setOnClickListener {
-                chartBench.setVisibility(View.INVISIBLE)
-                chartSquat.setVisibility(View.INVISIBLE)
-                chartDead.setVisibility(View.INVISIBLE)
-                chartIncline.setVisibility(View.VISIBLE)
-                chartIncline.animation = animation
-                chartLegex.setVisibility(View.INVISIBLE)
-                chartCrossover.setVisibility(View.INVISIBLE)
-                chartNameText.setText("인클라인 벤치프레스")
-                lineChartBench.setVisibility(View.INVISIBLE)
-                lineChartSquat.setVisibility(View.INVISIBLE)
-                lineChartDead.setVisibility(View.INVISIBLE)
-                lineChartIncline.setVisibility(View.VISIBLE)
-                lineChartIncline.animation = animation
-                lineChartLegex.setVisibility(View.INVISIBLE)
-                lineChartCrossover.setVisibility(View.INVISIBLE)
-            }
-            legexBtn.setOnClickListener {
-                chartBench.setVisibility(View.INVISIBLE)
-                chartSquat.setVisibility(View.INVISIBLE)
-                chartDead.setVisibility(View.INVISIBLE)
-                chartIncline.setVisibility(View.INVISIBLE)
-                chartLegex.setVisibility(View.VISIBLE)
-                chartLegex.animation = animation
-                chartCrossover.setVisibility(View.INVISIBLE)
-                chartNameText.setText("레그 익스텐션")
-                lineChartBench.setVisibility(View.INVISIBLE)
-                lineChartSquat.setVisibility(View.INVISIBLE)
-                lineChartDead.setVisibility(View.INVISIBLE)
-                lineChartIncline.setVisibility(View.INVISIBLE)
-                lineChartLegex.setVisibility(View.VISIBLE)
-                lineChartLegex.animation = animation
-                lineChartCrossover.setVisibility(View.INVISIBLE)
-            }
-            crossoverBtn.setOnClickListener {
-                chartBench.setVisibility(View.INVISIBLE)
-                chartSquat.setVisibility(View.INVISIBLE)
-                chartDead.setVisibility(View.INVISIBLE)
-                chartIncline.setVisibility(View.INVISIBLE)
-                chartLegex.setVisibility(View.INVISIBLE)
-                chartCrossover.setVisibility(View.VISIBLE)
-                chartCrossover.animation = animation
-                chartNameText.setText("케이블 크로스오버")
-                lineChartBench.setVisibility(View.INVISIBLE)
-                lineChartSquat.setVisibility(View.INVISIBLE)
-                lineChartDead.setVisibility(View.INVISIBLE)
-                lineChartIncline.setVisibility(View.INVISIBLE)
-                lineChartLegex.setVisibility(View.INVISIBLE)
-                lineChartCrossover.setVisibility(View.VISIBLE)
-                lineChartCrossover.animation = animation
-            }
 
         }
 

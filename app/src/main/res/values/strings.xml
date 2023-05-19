@@ -13,16 +13,25 @@
     <string name="button_plus">+</string>
     <string name="detail_start_button">start</string>
     <string name="detail_text_view_first_num">5</string>
-    <string name="text_view_total_count">운동 총 횟수 :</string>
-    <string name="text_view_total_set">운동 총 세트 :</string>
-    <string name="text_view_average_count">세트 별 평균 횟수 :</string>
+    <string name="text_view_total_count">운동 총 횟수 : </string>
+    <string name="text_view_total_set">운동 총 세트 : </string>
+    <string name="text_view_average_count">세트 별 평균 횟수 : </string>
     <string name="check_part_chart">부위 별 차트 확인</string>
-    <string name="button_bench">bench</string>
+    <string name="button_bench">Bench press</string>
     <string name="button_squat">squat</string>
-    <string name="button_deadlift">dead</string>
-    <string name="button_incline_bench">incline</string>
-    <string name="button_legex">legex</string>
-    <string name="button_crossover">crossover</string>
+    <string name="button_deadlift">Deadlift</string>
+    <string name="button_incline_bench">incline bench</string>
+    <string name="button_legex">Leg_ex</string>
+    <string name="button_latpulldown">Lat Pull Down</string>
+
+    <string name="home_upper_text">상체</string>
+    <string name="home_lower_text">하체</string>
+    <string name="text_view_bench">벤치프레스</string>
+    <string name="text_view_latpulldown">랫 풀 다운</string>
+    <string name="text_view_incline">인클라인 벤치프레스</string>
+    <string name="text_view_legex">레그 익스텐션</string>
+    <string name="text_view_squat">스쿼트</string>
+    <string name="text_view_dead">데드리프트</string>
 
     <string name="text_view_setting">설정</string>
     <string name="text_view_account_administration">계정 관리</string>
@@ -46,7 +55,7 @@
 
     <string name="mypage_title">사용자님의 운동량 분석하기</string>
     <string name="mypage_radarchart_title">강점 및 취약한 운동 확인</string>
-    <string name="mypage_piechart_title">부위(가슴, 등, 하체)별 운동 비율은?</string>
+    <string name="mypage_piechart_title">부위 별 운동 비율</string>
     <string name="mypage_barchart_each_exercise_title">각 운동별 운동량 확인</string>
     <string name="mypage_barchart_back_title">등 운동량</string>
     <string name="mypage_barchart_lower_title">하체 운동량</string>
@@ -55,7 +64,14 @@
 
     <!-- dialog strings -->
     <string name="dialog_common_text">※사용자의 전신이 나올 수 있도록 카메라를 설정하세요.※ \n\n</string>
-    <string name="dialog_squat_text"> 1. 두 발이 일직선 상이 되도록 놓는다.\n 2. 발은 어깨 넓이로 벌린다.\n 3. 무릎은 발끝을 나오지 않게끔!!\n 4. 발 뒤꿈치에 힘을주고, 엉덩이로 밀어 올린다는 느낌으로 일어난다.</string>
+    <string name="dialog_squat_text"> 1. 두 발이 일직선 상이 되도록 놓는다.\n2. 발은 어깨 넓이로 벌린다.\n3. 무릎은 발끝을 나오지 않게끔!!\n4. 발 뒤꿈치에 힘을주고, 엉덩이로 밀어 올린다는 느낌으로 일어난다.</string>
+    <string name="dialog_bench_text"> 1. 바가 자신의 목 위치 즈음에 오도록 누워준다. 발바닥이 지면이 모두 닿도록 무릎은 직각 정도 유지.\n2. 어깨보다 승모근을 뒤로 조인다는 느낌으로 모아주고, 귀와 가까워지지 않도록 주의한다.\n3. 허리를 띄어서 벤치와 허리 사이에 공간을 만들어준다.\n4. 엉덩이와 승모근으로 상체를 지탱하고, 바는 자신의 어깨보다 살짝 넓게 잡아준다.\n5. 팔은 모두 피지 않은 상태로 손목을 세운 상태로 바를 들고, 자신의 가슴 중앙에 오도록 위치한다.</string>
+    <string name="dialog_latpulldown_text"> 1. 견갑골과 상완을 아래로 내리고 고정시킨 후, 바가 쇄골 또는 가슴 상부에 닿을 때까지 내린다. 렛풀다운 운동 동안에 몸통은 바드시 고정된 상태에서 진행한다.\n2. 바가 쇄골 or 가슴 상부까지 내려왔을 때, 즉 최종 위치에서 등근육을 짜주듯이 최대한 수축시켜 준 후 천천히 바를 다시 올린다. 근육의 긴장감은 유지시킨 상태에서 진행하는 것이 중요하다.</string>
+    <string name="dialog_incline_text"> 1. 각도가 조절이 되는 벤치를 30~45도로 맞춘 후 누워 양발을 땅에 단단히 고정을 한다.\n2. 호흡을 들이마시면서 가슴을 천천히 바벨쪽으로 밀어낸다\n3. 바벨을 윗가슴-쇄골쪽으로 내린다.\n4. 숨을 참고 바벨을 밀어낸다. 이때 가슴근육에 최대한 집중한다.\n5. 팔꿈치 관절을 튕기지 않도록 한다 (반동금지)</string>
+    <string name="dialog_dead_text"> 1. 어깨 너비 정도로 보폭을 잡고 바로 선다. 가슴을 펴고 등과 허리, 코어, 엉덩이에 힘을 주어 바른 자세를 유지한다.\n2. 손을 다리에 붙이고 엉덩이를 위로 빼면서 천천히 상체를 숙인다. 동시에 자연스러운 움직임을 위해 무릎을 살짝 굽혀준다.\n3. 손이 무릎 아래 정도까지 왔으면 처음 자세로 돌아간다. </string>
+    <string name="dialog_legex_text"> 1. 우선 자신의 몸에 맞게 머신을 조절해야 한다.\n2. 엉덩이와 등을 떼지 않는다.\n3. 공차듯이 냅다 발끝을 뻥 차지 않는다.\n4. 근육은 끝까지 수축시키되 뼈는 끝까지 펴지말고, 이완시킬때에도 긴장을 놔버릴때까지 완전히 펴지 않는다. </string>
+
+
     <string name="text_view_file_name">파일 명 :</string>
     <string name="text_view_exercise_video">운동 영상</string>
 </resources>
