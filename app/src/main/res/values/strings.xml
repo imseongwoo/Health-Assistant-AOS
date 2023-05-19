@@ -17,12 +17,12 @@
     <string name="text_view_total_set">운동 총 세트 : </string>
     <string name="text_view_average_count">세트 별 평균 횟수 : </string>
     <string name="check_part_chart">부위 별 차트 확인</string>
-    <string name="button_bench">bench</string>
+    <string name="button_bench">Bench press</string>
     <string name="button_squat">squat</string>
-    <string name="button_deadlift">dead</string>
-    <string name="button_incline_bench">incline</string>
-    <string name="button_legex">legex</string>
-    <string name="button_crossover">crossover</string>
+    <string name="button_deadlift">Deadlift</string>
+    <string name="button_incline_bench">incline bench</string>
+    <string name="button_legex">Leg_ex</string>
+    <string name="button_latpulldown">Lat Pull Down</string>
 
     <string name="home_upper_text">상체</string>
     <string name="home_lower_text">하체</string>
@@ -55,7 +55,7 @@
 
     <string name="mypage_title">사용자님의 운동량 분석하기</string>
     <string name="mypage_radarchart_title">강점 및 취약한 운동 확인</string>
-    <string name="mypage_piechart_title">부위(가슴, 등, 하체)별 운동 비율은?</string>
+    <string name="mypage_piechart_title">부위 별 운동 비율</string>
     <string name="mypage_barchart_each_exercise_title">각 운동별 운동량 확인</string>
     <string name="mypage_barchart_back_title">등 운동량</string>
     <string name="mypage_barchart_lower_title">하체 운동량</string>

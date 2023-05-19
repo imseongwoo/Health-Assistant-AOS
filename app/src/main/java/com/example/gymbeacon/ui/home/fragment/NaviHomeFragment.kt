@@ -93,7 +93,7 @@ class NaviHomeFragment : Fragment() {
             var email_split = email?.split("@")
             val user_id = email_split?.get(0)
 
-            binding.textViewUserHello.text = "${String(Character.toChars(userEmojiUnicode))} " + user_id + "님"
+            binding.textViewUserHello.text = "${String(Character.toChars(userEmojiUnicode))}" + user_id + "님"
             binding.textViewUserRecently.text = "마지막 운동 기록"
 
         // 전체 운동 기록(표) (뺄 예정임) 2023-05-15
@@ -111,6 +111,8 @@ class NaviHomeFragment : Fragment() {
 
                 pieEntryArrayList.clear()
                 entityArrayList.clear()
+
+                recently_date = null
 
                 for(shot in snapshot.children) {
                     val uid = shot.child("uid").getValue(String::class.java)

@@ -27,8 +27,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:title="Home"
-                    app:titleTextColor="@color/color_222222" />
+                    app:title=""
+                    app:titleTextColor="@color/color_222222">
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/pofit_logo" />
+
+                </androidx.appcompat.widget.Toolbar>
 
 <!--                <TextView-->
 <!--                    android:id="@+id/text_view_user_hello"-->
