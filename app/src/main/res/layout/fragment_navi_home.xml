@@ -63,7 +63,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginTop="10dp"
                     android:paddingBottom="20dp"
-                    android:background="@drawable/shape_rect_efeff5_solid_radius_20"
+                    android:background="@drawable/rectangle_radius"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -132,7 +132,7 @@
                         android:id="@+id/text_view_exercise_recently_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="30dp"
                         android:layout_marginStart="10dp"
                         android:textSize="16sp"
                         android:textColor="@color/black"
@@ -159,7 +159,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/shape_rect_efeff5_solid_radius_20"
+                        android:background="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -183,27 +183,47 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="180dp"
                                 android:layout_weight="1"
                                 >
 
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="@drawable/rectangle_radius"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    >
+
+
+                                    <TextView
+                                        android:id="@+id/text_view_recently_info"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:text=""
+                                        android:textColor="@color/black"/>
+
+                                </LinearLayout>
+
+<!--                    <androidx.viewpager2.widget.ViewPager2-->
+<!--                        android:id="@+id/view_pager"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="180dp"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        android:layout_marginStart="2dp"-->
+<!--                        android:layout_marginEnd="2dp"-->
+<!--                        android:background="@drawable/rectangle_radius"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="180dp"
                                 android:layout_weight="1"
                                 >
 
@@ -213,7 +233,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:background="@drawable/rectangle_radius"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         >
@@ -347,7 +366,6 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_rect_efeff5_solid_radius_20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -358,7 +376,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/shape_rect_efeff5_solid_radius_20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -515,7 +532,6 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/shape_rect_efeff5_solid_radius_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -526,7 +542,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/shape_rect_efeff5_solid_radius_20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"

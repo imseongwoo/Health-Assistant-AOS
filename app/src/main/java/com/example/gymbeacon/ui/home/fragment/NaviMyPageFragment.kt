@@ -179,7 +179,7 @@ class NaviMyPageFragment : Fragment() {
                                 //dateCountsDataArrayList_dead.add(DateCountsData(date, counts))
 
                                 counts_dead += counts!!.toInt()
-                                counts_back += counts!!.toInt()
+                                counts_lower += counts!!.toInt()
                             }
                             // 운동 이름이 인클라인 벤치프레스
                             if ("인클라인 벤치프레스" == ex_name) {
@@ -236,7 +236,10 @@ class NaviMyPageFragment : Fragment() {
 
 
                         val radarDataSet = RadarDataSet(radarDataArrayList, "운동 횟수")
-                        radarDataSet.color = Color.BLUE
+                        radarDataSet.color = Color.rgb(187, 233, 213)
+                        radarDataSet.lineWidth = 2f
+                        radarDataSet.setDrawFilled(true)
+                        radarDataSet.fillColor = Color.rgb(187, 233, 213)
                         radarDataSet.valueFormatter = CountValueFormatter()     // "10개" 형식으로 변환
 
                         val radarData = RadarData()
@@ -275,10 +278,16 @@ class NaviMyPageFragment : Fragment() {
 
                         val pieDataSet = PieDataSet(pieEntryArrayList, "")
                         pieDataSet.valueTextSize = 18f
-                        if (pieEntryArrayList != null) {
-                            val pieChartColors =
-                                ColorTemplate.COLORFUL_COLORS.copyOf(pieEntryArrayList.size).toList()
-                            pieDataSet.colors = pieChartColors
+
+                        // 색상 추가하기
+                        val colors_pie = listOf(
+                            Color.rgb(111, 87, 233),  // 등 영역의 색상
+                            Color.rgb(2, 204, 204),  // 하체 영역의 색상
+                            Color.rgb(233, 93, 132)   // 가슴 영역의 색상
+                        )
+                        pieDataSet.apply {
+                            colors = colors_pie
+                            valueTextColor = Color.BLACK
                         }
 
                         val description_pie = Description()

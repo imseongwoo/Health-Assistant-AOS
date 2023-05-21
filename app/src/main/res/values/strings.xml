@@ -17,12 +17,12 @@
     <string name="text_view_total_set">운동 총 세트 : </string>
     <string name="text_view_average_count">세트 별 평균 횟수 : </string>
     <string name="check_part_chart">부위 별 차트 확인</string>
-    <string name="button_bench">Bench press</string>
-    <string name="button_squat">squat</string>
-    <string name="button_deadlift">Deadlift</string>
-    <string name="button_incline_bench">incline bench</string>
-    <string name="button_legex">Leg_ex</string>
-    <string name="button_latpulldown">Lat Pull Down</string>
+    <string name="button_bench">BENCH PRESS</string>
+    <string name="button_squat">SQUAT</string>
+    <string name="button_deadlift">DEADLIFT</string>
+    <string name="button_incline_bench">INCLINE BENCH</string>
+    <string name="button_legex">LEG EXTENSION</string>
+    <string name="button_latpulldown">LAT PULL DOWN</string>
 
     <string name="home_upper_text">상체</string>
     <string name="home_lower_text">하체</string>
