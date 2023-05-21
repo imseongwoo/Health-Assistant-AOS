@@ -368,13 +368,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-//    fun goToCameraActivity() {
-//        val intent = Intent(this, CameraActivity::class.java)
-//        intent.putExtra("maxnum",binding.textViewDetailPageCount.text)
-//        intent.putExtra("selectedExerciseName",selectedExerciseName)
-//        startActivity(intent)
-//    }
-
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val languageStatus: Int = tts.setLanguage(Locale.KOREAN)
@@ -500,7 +493,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
 
         if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath!!.isEmpty()) {
-            mNextVideoAbsolutePath = getVideoFilePath()
+            mNextVideoAbsolutePath = getVideoFilePath(binding.textViewExerciseName.text.toString())
         }
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath)
         mMediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024)
@@ -516,14 +509,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     //파일 이름 및 저장경로를 생성, 04-05 추가
-    private fun getVideoFilePath(): String {
+    private fun getVideoFilePath(exerciseName: String): String {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val dir = Environment.getExternalStorageDirectory().absoluteFile
         val path = dir.path + "/" + DETAIL_PATH
         val dst = File(path)
         if (!dst.exists()) dst.mkdirs()
 
-        return path + timeStamp + ".mp4"
+        return path + timeStamp + "_" + exerciseName + ".mp4"
     }
 
     // 녹화 시작 04-05 추가
@@ -574,7 +567,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()                 // 녹화 종료 메세지
         Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()     // 저장 메세지 출력
         mMediaRecorder.stop()               // 미디어레코더 녹음 중지
-        mMediaRecorder.reset()              
+        mMediaRecorder.reset()
 
         mNextVideoAbsolutePath = null
         cameraDevice?.close()
