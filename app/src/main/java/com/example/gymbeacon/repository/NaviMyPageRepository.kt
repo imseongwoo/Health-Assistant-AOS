@@ -16,7 +16,8 @@ class NaviMyPageRepository {
         val mutableData = MutableLiveData<MutableList<HealthEntity>>()
         val exerciseCountMap = mutableMapOf<String, Int>()
 
-        CommonUtil.myRef.addValueEventListener(object : ValueEventListener {
+        CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.uid).
+        addValueEventListener(object : ValueEventListener {
             val listData: MutableList<HealthEntity> = mutableListOf<HealthEntity>()
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()){

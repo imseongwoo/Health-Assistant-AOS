@@ -17,7 +17,7 @@
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_efeff5"
+            android:background="@color/white"
             tools:context=".ui.home.fragment.NaviMyPageFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,39 +91,60 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/bench_btn"
                             android:layout_width="120dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/button_selector"
                             android:text="@string/button_bench"
+                            android:gravity="center"
                             android:textSize="14sp" />
+
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/bench_btn"-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="48dp"-->
+<!--                            android:text="@string/button_bench"-->
+<!--                            android:textSize="14sp" />-->
 
                         <Space
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/squat_btn"
                             android:layout_width="120dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/button_selector"
                             android:text="@string/button_squat"
+                            android:gravity="center"
                             android:textSize="14sp" />
+
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/squat_btn"-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="48dp"-->
+<!--                            android:text="@string/button_squat"-->
+<!--                            android:textSize="14sp" />-->
 
                         <Space
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/dead_btn"
                             android:layout_width="120dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/button_selector"
                             android:text="@string/button_deadlift"
+                            android:gravity="center"
                             android:textSize="14sp" />
+
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/dead_btn"-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="48dp"-->
+<!--                            android:text="@string/button_deadlift"-->
+<!--                            android:textSize="14sp" />-->
 
                         <Space
                             android:layout_width="wrap_content"
@@ -142,39 +163,60 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/incline_btn"
                             android:layout_width="120dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/button_selector"
                             android:text="@string/button_incline_bench"
+                            android:gravity="center"
                             android:textSize="14sp" />
+
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/incline_btn"-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="48dp"-->
+<!--                            android:text="@string/button_incline_bench"-->
+<!--                            android:textSize="14sp" />-->
 
                         <Space
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/legex_btn"
                             android:layout_width="120dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/button_selector"
                             android:text="@string/button_legex"
-                            android:textSize="14sp"/>
+                            android:gravity="center"
+                            android:textSize="14sp" />
+
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/legex_btn"-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="48dp"-->
+<!--                            android:text="@string/button_legex"-->
+<!--                            android:textSize="14sp"/>-->
 
                         <Space
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/latpull_btn"
                             android:layout_width="120dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/button_selector"
                             android:text="@string/button_latpulldown"
+                            android:gravity="center"
                             android:textSize="14sp" />
+
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/latpull_btn"-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="48dp"-->
+<!--                            android:text="@string/button_latpulldown"-->
+<!--                            android:textSize="14sp" />-->
 
                         <Space
                             android:layout_width="wrap_content"
@@ -200,6 +242,7 @@
                         android:layout_weight="1"
                         android:text="운동 이름"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="25sp" />
                 </LinearLayout>
 

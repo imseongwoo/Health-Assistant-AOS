@@ -328,6 +328,13 @@ class PartChartFragment : Fragment() {
             lineChartLegex.setVisibility(View.INVISIBLE)
             lineChartLatpulldown.setVisibility(View.INVISIBLE)
 
+            benchBtn.setTextColor(Color.argb(128, 0, 0, 0))
+            squatBtn.setTextColor(Color.argb(128, 0, 0, 0))
+            deadBtn.setTextColor(Color.argb(128, 0, 0, 0))
+            inclineBtn.setTextColor(Color.argb(128, 0, 0, 0))
+            legexBtn.setTextColor(Color.argb(128, 0, 0, 0))
+            latpullBtn.setTextColor(Color.argb(128, 0, 0, 0))
+
             val animation = AlphaAnimation(0f, 1f)
             animation.duration = 1000
 
@@ -349,11 +356,17 @@ class PartChartFragment : Fragment() {
                 lineChartLatpulldown.setVisibility(View.INVISIBLE)
 
                 benchBtn.isSelected = true
+                benchBtn.setTextColor(Color.parseColor("#000000"))
                 squatBtn.isSelected = false
                 deadBtn.isSelected = false
                 inclineBtn.isSelected = false
                 legexBtn.isSelected = false
                 latpullBtn.isSelected = false
+                latpullBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                squatBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                deadBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                inclineBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                legexBtn.setTextColor(Color.argb(128, 0, 0, 0))
             }
             squatBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -374,10 +387,16 @@ class PartChartFragment : Fragment() {
 
                 benchBtn.isSelected = false
                 squatBtn.isSelected = true
+                squatBtn.setTextColor(Color.parseColor("#000000"))
                 deadBtn.isSelected = false
                 inclineBtn.isSelected = false
                 legexBtn.isSelected = false
                 latpullBtn.isSelected = false
+                benchBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                latpullBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                deadBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                inclineBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                legexBtn.setTextColor(Color.argb(128, 0, 0, 0))
             }
             deadBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -399,9 +418,15 @@ class PartChartFragment : Fragment() {
                 benchBtn.isSelected = false
                 squatBtn.isSelected = false
                 deadBtn.isSelected = true
+                deadBtn.setTextColor(Color.parseColor("#000000"))
                 inclineBtn.isSelected = false
                 legexBtn.isSelected = false
                 latpullBtn.isSelected = false
+                benchBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                squatBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                latpullBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                inclineBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                legexBtn.setTextColor(Color.argb(128, 0, 0, 0))
             }
             inclineBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -424,8 +449,14 @@ class PartChartFragment : Fragment() {
                 squatBtn.isSelected = false
                 deadBtn.isSelected = false
                 inclineBtn.isSelected = true
+                inclineBtn.setTextColor(Color.parseColor("#000000"))
                 legexBtn.isSelected = false
                 latpullBtn.isSelected = false
+                benchBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                squatBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                deadBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                latpullBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                legexBtn.setTextColor(Color.argb(128, 0, 0, 0))
             }
             legexBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -449,7 +480,13 @@ class PartChartFragment : Fragment() {
                 deadBtn.isSelected = false
                 inclineBtn.isSelected = false
                 legexBtn.isSelected = true
+                legexBtn.setTextColor(Color.parseColor("#000000"))
                 latpullBtn.isSelected = false
+                benchBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                squatBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                deadBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                inclineBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                latpullBtn.setTextColor(Color.argb(128, 0, 0, 0))
             }
             latpullBtn.setOnClickListener {
                 chartBench.setVisibility(View.INVISIBLE)
@@ -469,11 +506,17 @@ class PartChartFragment : Fragment() {
                 lineChartLatpulldown.animation = animation
 
                 benchBtn.isSelected = false
+                benchBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                squatBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                deadBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                inclineBtn.setTextColor(Color.argb(128, 0, 0, 0))
+                legexBtn.setTextColor(Color.argb(128, 0, 0, 0))
                 squatBtn.isSelected = false
                 deadBtn.isSelected = false
                 inclineBtn.isSelected = false
                 legexBtn.isSelected = false
                 latpullBtn.isSelected = true
+                latpullBtn.setTextColor(Color.parseColor("#000000"))
             }
 
     }
@@ -511,11 +554,13 @@ class PartChartFragment : Fragment() {
         val barDataSet = BarDataSet(barEntryArrayList, "날짜별 운동 횟수")
         barDataSet.valueFormatter = CountValueFormatter()
 
-        barDataSet.color = Color.rgb(31, 120, 180)
+        barDataSet.color = Color.rgb(111, 87, 233)
         val description = Description()
         description.text = "날짜"
         barChart.description = description
         val barData = BarData(barDataSet)
+        barData.barWidth = 0.5f
+
         barChart.data = barData
         barChart.let { graphInitSetting(it, labelsNames, dateCountsDataArrayList) } // 차트 기본 세팅
 
@@ -526,7 +571,7 @@ class PartChartFragment : Fragment() {
     fun graphInitSetting(barChart: BarChart, labelsNames: ArrayList<String>, dateCountsDataArrayList: ArrayList<DateCountsData>) {
 
         // 배경 색
-        barChart.setBackgroundColor(Color.parseColor("#E6E6FA"))
+        barChart.setBackgroundColor(Color.parseColor("#FFFFFF"))
         // 그래프 터치 가능
         barChart.setTouchEnabled(true)
         // X축으로 드래그 가능
@@ -612,15 +657,15 @@ class PartChartFragment : Fragment() {
 
     fun lineDataSetSetting(lineDataSet: LineDataSet, lineChart: LineChart, labelsNames: ArrayList<String>, dateCountsDataArrayList: ArrayList<DateCountsData>) {
 
-        lineDataSet.color = Color.rgb(31, 120, 180)
-        lineDataSet.setCircleColor(Color.rgb(31, 120, 180))
+        lineDataSet.color = Color.rgb(111, 87, 233)
+        lineDataSet.setCircleColor(Color.rgb(111, 87, 233))
 
         val lineData = LineData(lineDataSet)
         lineChart.data = lineData
         lineChartSetting(lineChart, labelsNames, dateCountsDataArrayList)
 
 //        lineDataSet.valueFormatter = CountValueFormatter()
-        lineDataSet.lineWidth = 3f
+        lineDataSet.lineWidth = 2f
         lineDataSet.circleRadius = 6f
         lineDataSet.setDrawValues(false)
         lineDataSet.setDrawCircleHole(true)
@@ -636,7 +681,7 @@ class PartChartFragment : Fragment() {
     fun lineChartSetting(lineChart: LineChart, labelsNames: ArrayList<String>, dateCountsDataArrayList: ArrayList<DateCountsData>) {
         lineChart.extraBottomOffset = 15f // 간격
         lineChart.description.isEnabled = false // chart 밑에 description 표시 유무
-        lineChart.setBackgroundColor(Color.parseColor("#E6E6FA"))      // 배경색
+        lineChart.setBackgroundColor(Color.parseColor("#FFFFFF"))      // 배경색
         lineChart.setVisibleXRange(1f, 5f)
         lineChart.animateXY(1000, 1000)
 
@@ -693,7 +738,7 @@ class PartChartFragment : Fragment() {
         val yAxisLeft = lineChart.axisLeft
         yAxisLeft.textColor = Color.BLACK
         yAxisLeft.setDrawAxisLine(true)
-        yAxisLeft.axisLineWidth = 2f
+        yAxisLeft.axisLineWidth = 1f
         yAxisLeft.axisMinimum = 0f // 최솟값
 //        yAxisLeft.axisMaximum = RANGE[0][range].toFloat() // 최댓값
 //        yAxisLeft.granularity = RANGE[1][range].toFloat()

@@ -53,6 +53,8 @@ class NaviHomeFragment : Fragment() {
     lateinit var databaseReference: DatabaseReference
     lateinit var entityArrayList : ArrayList<HealthEntity>
     var recently_date: String? = "test"
+    // 최근 날짜를 찾기 위한 변수
+    var maxDate: LocalDate? = null
 
     // 홈 화면 세트, 횟수, 평균 횟수 등
     private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
@@ -82,7 +84,7 @@ class NaviHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val userEmojiUnicode = 0x1F6B9
+        val userEmojiUnicode = 0x1F464
         // 사용자 최근 정보 불러오기
         auth = FirebaseAuth.getInstance()
         val user = auth?.currentUser
@@ -128,19 +130,19 @@ class NaviHomeFragment : Fragment() {
                     }
 
                     // 하체
-                    if (exercise == "스쿼트" || exercise == "레그 익스텐션") {
+                    if (exercise == "스쿼트" || exercise == "레그 익스텐션" || exercise == "데드리프트") {
                         if (count != null) {
                             counts_lower += count.toInt()
                         }
                     }
                     // 가슴
-                    if (exercise == "벤치프레스" || exercise == "인클라인 벤치프레스" || exercise == "케이블 크로스오버") {
+                    if (exercise == "벤치프레스" || exercise == "인클라인 벤치프레스") {
                         if (count != null) {
                             counts_chest += count.toInt()
                         }
                     }
                     //등
-                    if (exercise == "데드리프트") {
+                    if (exercise == "랫 풀 다운") {
                         if (count != null) {
                             counts_back += count.toInt()
                         }
@@ -148,17 +150,29 @@ class NaviHomeFragment : Fragment() {
 
                 }
 
-                var recently_index = 0
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
                 Log.d("날짜 포맷 : ",
                     LocalDate.parse(entityArrayList.get(1).timestamp, formatter).toString()
                 )
+
+                val recently_exercises = mutableListOf<String>()    // 최근 운동 날짜에 대한 운동명들
+
                 for(i in 0 until entityArrayList.size-1) {
-                    if (LocalDate.parse(entityArrayList.get(i).timestamp, formatter).isBefore(LocalDate.parse(entityArrayList.get(i+1).timestamp, formatter))) {
-                        recently_date = entityArrayList.get(i+1).timestamp
-                        recently_index = i+1
+                    val currentDate = LocalDate.parse(entityArrayList[i].timestamp, formatter)
+                    val nextDate = LocalDate.parse(entityArrayList[i+1].timestamp, formatter)
+
+                    // 현재 날짜와 다음 날짜를 비교하여 최대 날짜를 갱신
+                    if (currentDate.isBefore(nextDate) && (maxDate == null || nextDate.isAfter(maxDate)) && entityArrayList[i+1].count?.toInt() != 0 ) {
+                        maxDate = nextDate
+                        recently_exercises.clear() // 이전에 저장된 exercise들을 모두 제거
+                        entityArrayList[i+1].exercise?.let { recently_exercises.add(it) } // 새로운 exercise 추가
+                    } else if (maxDate != null && nextDate.isEqual(maxDate) && entityArrayList[i+1].count?.toInt() != 0) {
+                        entityArrayList[i+1].exercise?.let { recently_exercises.add(it) } // 같은 날짜의 exercise 추가
                     }
+//                    if (LocalDate.parse(entityArrayList.get(i).timestamp, formatter).isBefore(LocalDate.parse(entityArrayList.get(i+1).timestamp, formatter))) {
+//                        recently_date = entityArrayList.get(i+1).timestamp
+//                    }
                 }
 
                 Log.d("날짜 비교 : ",
@@ -167,12 +181,17 @@ class NaviHomeFragment : Fragment() {
                 )
                 entityArrayList.get(0).timestamp?.let { Log.d("최근 날짜2 : ", it) }
                 Log.d("최근 날짜 : ", recently_date.toString())
-                binding.textViewExerciseRecentlyDate2.text = recently_date
+                binding.textViewExerciseRecentlyDate2.text = maxDate.toString()
+                Log.d("최근 운동 명 불러오기 : ", recently_exercises.get(0))
+                // 최근 날짜에 해당하는 exercise들 출력
+                for (exercise in recently_exercises) {
+                    println(exercise)
+                }
                 //binding.textViewExerciseRecentlyName2.text = entityArrayList.get(recently_index).exercise
 
 
                 // 최근 운동 이름과 횟수, 세트, 평균 횟수 나타내기
-                recently_date?.let { viewModel.getDbData(it) }
+                maxDate.toString()?.let { viewModel.getDbData(it) }
 
                 viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
                     val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
@@ -187,17 +206,21 @@ class NaviHomeFragment : Fragment() {
                         }
                     }
 
+                    val stringBuilder = StringBuilder()
                     for ((exercise, countPair) in exerciseCountMap) {
                         val (sum, num) = countPair
                         val average = if (num > 0) sum / num else 0
                         Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
+                        stringBuilder.append("$exercise : $num 세트\n")
                     }
 
-                    viewPagerExerciseCountMap = exerciseCountMap
+                    binding.textViewRecentlyInfo.text = stringBuilder.toString()
 
-                    this@NaviHomeFragment.viewPager2 = binding.viewPager
-                    viewPager2.adapter = MyPageViewPagerAdapter(exerciseCountMap)
-                    viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                    //viewPagerExerciseCountMap = exerciseCountMap
+
+//                    this@NaviHomeFragment.viewPager2 = binding.viewPager
+//                    viewPager2.adapter = MyPageViewPagerAdapter(exerciseCountMap)
+//                    viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
                 }
                 // 최근 운동 정보
@@ -257,19 +280,18 @@ class NaviHomeFragment : Fragment() {
 //                    pieDataSet.colors = pieChartColors
 //                }
 
-                // add a lot of colors
-                val colorsItems = ArrayList<Int>()
-                //for (c in ColorTemplate.VORDIPLOM_COLORS) colorsItems.add(c)
-                //for (c in ColorTemplate.JOYFUL_COLORS) colorsItems.add(c)
-                //for (c in COLORFUL_COLORS) colorsItems.add(c)
-                for (c in ColorTemplate.LIBERTY_COLORS) colorsItems.add(c)
-                //for (c in ColorTemplate.PASTEL_COLORS) colorsItems.add(c)
-                //colorsItems.add(ColorTemplate.getHoloBlue())
+                // 색상 추가하기
+                val colors_pie = listOf(
+                    Color.rgb(111, 87, 233),  // 등 영역의 색상
+                    Color.rgb(2, 204, 204),  // 하체 영역의 색상
+                    Color.rgb(233, 93, 132)   // 가슴 영역의 색상
+                )
 
                 pieDataSet.apply {
-                    colors = colorsItems
-                    valueTextSize = 15f
+                    colors = colors_pie
+                    valueTextSize = 14f
                     valueTextColor = Color.BLACK
+                    sliceSpace = 5f
                 }
 
                 val legend_pie = binding.pieChart.legend
@@ -341,6 +363,43 @@ class NaviHomeFragment : Fragment() {
         intent.putExtra("upper",posValue)
         startActivity(intent)
     }
+
+//    fun getDbData(date: String, uid: String) {
+//        CommonUtil.myRef.orderByChild("date").equalTo(date)
+//            .orderByChild("uid").equalTo(uid)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                @RequiresApi(Build.VERSION_CODES.N)
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    // 데이터 처리 로직
+//                    val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
+//
+//                    for (dataSnapshot in snapshot.children) {
+//                        val healthEntity = dataSnapshot.getValue(HealthEntity::class.java)
+//                        val exercise = healthEntity?.exercise
+//                        val count = healthEntity?.count?.toIntOrNull() ?: 0
+//
+//                        if (exercise != null && exercise.isNotEmpty()) {
+//                            val (sum, num) = exerciseCountMap.getOrDefault(exercise, Pair(0, 0))
+//                            exerciseCountMap[exercise] = Pair(sum + count, num + 1)
+//                        }
+//                    }
+//
+//                    val stringBuilder = StringBuilder()
+//                    for ((exercise, countPair) in exerciseCountMap) {
+//                        val (sum, num) = countPair
+//                        val average = if (num > 0) sum / num else 0
+//                        Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
+//                        stringBuilder.append("$exercise : $num 세트\n")
+//                    }
+//
+//                    binding.textViewRecentlyInfo.text = stringBuilder.toString()
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    // 오류 처리 로직
+//                }
+//            })
+//    }
 
     companion object {
         fun newInstance(): NaviHomeFragment {
