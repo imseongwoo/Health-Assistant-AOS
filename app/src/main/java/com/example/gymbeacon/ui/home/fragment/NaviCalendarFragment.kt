@@ -23,10 +23,13 @@ import com.example.gymbeacon.ViewModelFactory
 import com.example.gymbeacon.databinding.FragmentNaviCalendarBinding
 import com.example.gymbeacon.model.Video
 import com.example.gymbeacon.ui.common.VideoPlayerActivity
-import com.example.gymbeacon.ui.home.adapter.MyPageViewPagerAdapter
 import com.example.gymbeacon.ui.home.adapter.VideoAdapter
 import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
 import java.io.File
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class NaviCalendarFragment : Fragment() {
     lateinit var binding: FragmentNaviCalendarBinding
@@ -59,10 +62,16 @@ class NaviCalendarFragment : Fragment() {
 
         checkPermission()
 
+        val currentDate = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("MM.dd", Locale.getDefault())
+        val currentDateFormatted = formatter.format(currentDate)
+
+        binding.textViewExerciseVideo.text = "$currentDateFormatted 운동"
+
         with(binding) {
             calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
                 setData(year, month + 1, dayOfMonth)
-
+                textViewExerciseVideo.setText("${month+1}.${dayOfMonth} 운동")
                 viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
                     val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
 
@@ -84,9 +93,9 @@ class NaviCalendarFragment : Fragment() {
 
                     viewPagerExerciseCountMap = exerciseCountMap
 
-                    this@NaviCalendarFragment.viewPager = binding.viewPager
-                    viewPager.adapter = MyPageViewPagerAdapter(exerciseCountMap)
-                    viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+//                    this@NaviCalendarFragment.viewPager = binding.viewPager
+//                    viewPager.adapter = MyPageViewPagerAdapter(exerciseCountMap)
+//                    viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
                 }
 
@@ -119,13 +128,18 @@ class NaviCalendarFragment : Fragment() {
 
             videoAdapter.notifyDataSetChanged()
         } else {    // 동영상이 있을 경우 동영상의 이름과 저장 경로를 Video data class에 저장 후 adapter로 넘겨줌
-            val videos = videoFiles.map { Video(it.name, it.path) }
+            val videos = videoFiles.map { file ->
+                val exerciseName = file.name.substringBeforeLast(".mp4").substringAfterLast("_")
+                Video(exerciseName, file.path)
+            }
+
             videoAdapter = VideoAdapter(videos){
                 val video = videos[it]
                 val intent = Intent(requireContext(),VideoPlayerActivity::class.java)
                 intent.putExtra("video_path", video.path)
                 startActivity(intent)
             }
+
 
             binding.recyclerViewVideo.layoutManager =LinearLayoutManager(requireContext())
             binding.recyclerViewVideo.adapter = videoAdapter

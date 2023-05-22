@@ -6,138 +6,149 @@
     <data>
 
     </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.home.detail.DetailActivity">
 
+            <ImageView
+                android:id="@+id/toolbar_camera"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="-30dp"
+                android:background="@drawable/mainlogo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_view_exercise_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:textAlignment="center"
                 android:textColor="@color/color_111111"
-                android:textSize="40sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_camera"
                 tools:text="운동 명" />
 
             <FrameLayout
                 android:id="@+id/camera_frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="430dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="610dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_view_exercise_name">
 
-                <TextureView
-                    android:id="@+id/texture_view"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/image_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    <TextureView
+                        android:id="@+id/texture_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/image_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/image_view_detail_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="23dp"
+                        android:background="@drawable/camera_circle"
+                        app:layout_constraintBottom_toTopOf="@id/text_view_detail_page_count"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_view_detail_page_count"
+                        android:layout_width="44dp"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center"
+                        android:text="@string/detail_text_view_first_num"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/minus_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/left_arrow"
+                        android:text="@string/button_minus"
+                        app:layout_constraintEnd_toStartOf="@+id/text_view_detail_page_count"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count" />
+
+                    <ImageView
+                        android:id="@+id/plus_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/right_arrow"
+                        android:text="@string/button_plus"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/text_view_detail_page_count"
+                        app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </FrameLayout>
 
-
             <TextView
-                android:id="@+id/text_view_detail_page_count"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="3dp"
-                android:background="@drawable/background_detail_textview"
-                android:gravity="center"
-                android:text="@string/detail_text_view_first_num"
-                android:textAlignment="center"
-                android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/button_detail_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="18dp"
+                android:paddingBottom="20sp"
+                android:text="녹화 시작"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@id/button_stop_recording"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/camera_frame_layout" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/minus_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="26dp"
-                android:background="@drawable/shape_circ_stroke_66ffff"
-                android:text="@string/button_minus"
-                app:layout_constraintEnd_toStartOf="@+id/text_view_detail_page_count"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/plus_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="26dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/shape_circ_stroke_66ffff"
-                android:text="@string/button_plus"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/text_view_detail_page_count"
-                app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_detail_start"
+            <TextView
+                android:id="@+id/button_stop_recording"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/selector_circ_detail_button"
-                android:text="@string/detail_start_button"
-                app:layout_constraintEnd_toEndOf="@id/text_view_detail_page_count"
-                app:layout_constraintTop_toBottomOf="@id/text_view_detail_page_count" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="140dp"
-                app:layout_constraintTop_toBottomOf="@id/text_view_detail_page_count"
-                app:layout_constraintTop_toTopOf="@+id/text_view_detail_page_count">
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_detail_record"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:background="@drawable/selector_circ_detail_button"
-                    android:text="녹화 시작" />
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_stop_recording"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_circ_detail_button"
-                    android:text="녹화 중지" />
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-            </LinearLayout>
+                android:layout_marginTop="18dp"
+                android:paddingBottom="20sp"
+                android:text="녹화 중지"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/button_detail_record"
+                app:layout_constraintTop_toBottomOf="@id/camera_frame_layout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
