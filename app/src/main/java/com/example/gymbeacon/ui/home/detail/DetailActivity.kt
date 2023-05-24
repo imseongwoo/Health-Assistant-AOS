@@ -60,7 +60,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     var maxNum: String = "999"
     val paint = Paint()
     var count = 0
-    var temp = false
     private var previousTtsData: String = ""
     var database = Firebase.database
     val myRef = database.getReference("health/momentum")
@@ -157,7 +156,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         getString(R.string.dialog_legex_text))
         }
         infoDialog!!.show()
-
 
         // 오디오 권한 요청
         requestPermissions(requirePermissions, REQUEST_RECORD_AUDIO_PERMISSION)
@@ -270,7 +268,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                         41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
                                         47) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectSquatByAngle(outputFeature0)
+                                    var result = PoseDetector.detectSquatByAngle(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
@@ -280,73 +278,11 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                     Log.e("result", "${result},${count}")
                                 }
                             } else if (selectedExerciseName == "랫 풀 다운") {
-                                if (outputFeature0.get(29) > 0.3 && outputFeature0.get(23) > 0.3 && outputFeature0.get(
-                                        17) > 0.3 && outputFeature0.get(32) > 0.3 && outputFeature0.get(
-                                        26) > 0.3 && outputFeature0.get(20) > 0.3
-                                ) {
-                                    var result = PoseDetector.detectLatPullDown(outputFeature0)
-
-                                    val intent: Intent = Intent()
-                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
-
-                                    countExercise(result)
-                                    activityResult.launch(intent)
-                                    Log.e("result", "${result},${count}")
-                                }
-                            }
-                            else if (selectedExerciseName == "레그 익스텐션") {
                                 if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
                                         41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
                                         47) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectLegExtension(outputFeature0)
-
-                                    val intent: Intent = Intent()
-                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
-
-                                    countExercise(result)
-                                    activityResult.launch(intent)
-                                    Log.e("result", "${result},${count}")
-                                }
-                            }
-                            else if (selectedExerciseName == "데드리프트") {
-                                if (outputFeature0.get(17) > 0.3 && outputFeature0.get(20) > 0.3 && outputFeature0.get(
-                                        35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
-                                        41) > 0.3 && outputFeature0.get(44) > 0.3
-                                ) {
-                                    var result = PoseDetector.detectDeadLift(outputFeature0)
-
-                                    val intent: Intent = Intent()
-                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
-
-                                    countExercise(result)
-                                    activityResult.launch(intent)
-                                    Log.e("result", "${result},${count}")
-                                }
-                            }
-                            else if (selectedExerciseName == "벤치프레스") {
-                                if ( outputFeature0.get(17) > 0.3 && outputFeature0.get(23) > 0.3 && outputFeature0.get(29) > 0.3 &&
-                                    outputFeature0.get(20) > 0.3 && outputFeature0.get(26) > 0.3 && outputFeature0.get(32) > 0.3 &&
-                                    outputFeature0.get(35) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(47) > 0.3 &&
-                                    outputFeature0.get(38) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(50) > 0.3
-                                ) {
-                                    var result = PoseDetector.detectBenchPress(outputFeature0)
-
-                                    val intent: Intent = Intent()
-                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
-
-                                    countExercise(result)
-                                    activityResult.launch(intent)
-                                    Log.e("result", "${result},${count}")
-                                }
-                            }
-                            else if (selectedExerciseName == "인클라인 벤치프레스") {
-                                if ( outputFeature0.get(17) > 0.3 && outputFeature0.get(23) > 0.3 && outputFeature0.get(29) > 0.3 &&
-                                    outputFeature0.get(20) > 0.3 && outputFeature0.get(26) > 0.3 && outputFeature0.get(32) > 0.3 &&
-                                    outputFeature0.get(35) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(47) > 0.3 &&
-                                    outputFeature0.get(38) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(50) > 0.3
-                                ) {
-                                    var result = PoseDetector.detectInclineBenchPress(outputFeature0)
+                                    var result = PoseDetector.detectLatPullDown(outputFeature0)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
@@ -652,10 +588,9 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     fun countExercise(result: Boolean) {
-        if (result == true && temp == false) {
+        if (result) {
             count += 1
         }
-        temp = result
     }
 
     companion object {
