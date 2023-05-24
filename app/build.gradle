@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.gms.google-services'
+    //id 'com.google.gms.google-services'
 }
 android {
     compileSdk 32
@@ -37,6 +37,7 @@ android {
     dataBinding{
         enabled = true
     }
+    namespace 'com.example.gymbeacon'
 }
 
 dependencies {
@@ -78,3 +79,4 @@ dependencies {
     //MPAndroidChart : v3.1.0
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
+apply plugin: 'com.google.gms.google-services'

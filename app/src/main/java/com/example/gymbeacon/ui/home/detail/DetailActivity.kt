@@ -60,7 +60,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     var maxNum: String = "999"
     val paint = Paint()
     var count = 0
-    var temp = false
     private var previousTtsData: String = ""
     var database = Firebase.database
     val myRef = database.getReference("health/momentum")
@@ -240,7 +239,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                         41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
                                         47) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectSquatByAngle(outputFeature0)
+                                    var result = PoseDetector.detectSquatByAngle(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
@@ -250,14 +249,19 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                     Log.e("result", "${result},${count}")
                                 }
                             } else if (selectedExerciseName == "랫 풀 다운") {
-                                var result = PoseDetector.detectLatPullDown(outputFeature0)
+                                if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
+                                        41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
+                                        47) > 0.3 && outputFeature0.get(50) > 0.3
+                                ) {
+                                    var result = PoseDetector.detectLatPullDown(outputFeature0)
 
-                                val intent: Intent = Intent()
-                                intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
+                                    val intent: Intent = Intent()
+                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
 
-                                countExercise(result)
-                                activityResult.launch(intent)
-                                Log.e("result", "${result},${count}")
+                                    countExercise(result)
+                                    activityResult.launch(intent)
+                                    Log.e("result", "${result},${count}")
+                                }
                             }
                         }
 
@@ -562,10 +566,9 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     fun countExercise(result: Boolean) {
-        if (result == true && temp == false) {
+        if (result) {
             count += 1
         }
-        temp = result
     }
 
     companion object {

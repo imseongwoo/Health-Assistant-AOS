@@ -52,7 +52,6 @@ class CameraActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     val paint = Paint()
     var count = 0
-    var temp = false
     private var previousTtsData: String = ""
     var database = Firebase.database
     val myRef = database.getReference("health/momentum")
@@ -236,10 +235,9 @@ class CameraActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
     fun countSquat(result: Boolean) {
-        if (result == true && temp == false) {
+        if (result) {
             count += 1
         }
-        temp = result
     }
 
     override fun onInit(status: Int) {
