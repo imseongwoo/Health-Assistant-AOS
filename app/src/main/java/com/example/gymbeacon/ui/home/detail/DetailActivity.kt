@@ -178,6 +178,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         handler = Handler(handlerThread.looper)
 
         paint.setColor(Color.YELLOW)
+        paint.strokeWidth = 5f      // 선 두께 설정
 
         initTTS()
 
@@ -512,6 +513,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 @RequiresApi(Build.VERSION_CODES.P)
                 override fun onOpened(p0: CameraDevice) {
                     cameraDevice = p0
+
                     startPreview(p0)
                 }
 

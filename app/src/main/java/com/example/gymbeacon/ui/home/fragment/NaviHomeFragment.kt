@@ -98,8 +98,6 @@ class NaviHomeFragment : Fragment() {
             binding.textViewUserHello.text = "${String(Character.toChars(userEmojiUnicode))}" + user_id + "님"
             binding.textViewUserRecently.text = "마지막 운동 기록"
 
-        // 전체 운동 기록(표) (뺄 예정임) 2023-05-15
-//            binding.textViewTotalExercise.text = user_id + "님의 전체 운동 기록"
         }
 
         entityArrayList = arrayListOf<HealthEntity>()
@@ -206,15 +204,33 @@ class NaviHomeFragment : Fragment() {
                         }
                     }
 
-                    val stringBuilder = StringBuilder()
-                    for ((exercise, countPair) in exerciseCountMap) {
-                        val (sum, num) = countPair
-                        val average = if (num > 0) sum / num else 0
-                        Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
-                        stringBuilder.append("$exercise : $num 세트\n")
+
+                    val exerciseSet = ArrayList<Pair<String, Int>>()
+                    val exerciseList = listOf("벤치프레스", "인클라인 벤치프레스", "랫 풀 다운", "스쿼트", "데드리프트", "레그 익스텐션")
+                    val layoutIds = listOf(R.id.text_view_exercise_info1, R.id.text_view_exercise_info2, R.id.text_view_exercise_info3,
+                        R.id.text_view_exercise_info4, R.id.text_view_exercise_info5, R.id.text_view_exercise_info6)
+
+                    for (exercise in exerciseList) {
+                        val countPair = exerciseCountMap[exercise]
+                        val num = countPair?.second ?: 0 // 해당 운동의 num 값 또는 0을 가져옴
+
+                        val exerciseSetPair = Pair(exercise, num)
+                        exerciseSet.add(exerciseSetPair)
                     }
 
-                    binding.textViewRecentlyInfo.text = stringBuilder.toString()
+                    // 텍스트뷰에 exercise와 num 값을 넣어주는 작업
+                    for (i in exerciseSet.indices) {
+                        val exercise = if (i < exerciseSet.size) exerciseSet[i].first else exerciseList[i]
+                        val num = if (i < exerciseSet.size) exerciseSet[i].second else 0
+
+                        val exerciseTextView = view.findViewById<TextView>(layoutIds[i])
+                        if (num != 0) {
+                            exerciseTextView.text = " " + exercise + " : " + num.toString() + "세트"
+                        } else {
+                            exerciseTextView.text = "· " + exercise + " : -"
+                        }
+
+                    }
 
                     //viewPagerExerciseCountMap = exerciseCountMap
 
@@ -225,42 +241,6 @@ class NaviHomeFragment : Fragment() {
                 }
                 // 최근 운동 정보
 
-                // 전체 운동 기록 (뺄 예정임) 2023-05-15
-//                // 최근 운동 정보
-//                for(i in entityArrayList.size-1 downTo 0) {
-//                    val tableRow = TableRow(context)
-//                    tableRow?.layoutParams = TableRow.LayoutParams(
-//                        ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT
-//                    )
-//
-//                    val textView_date = TextView(context)
-//                    val textView_name = TextView(context)
-//                    val textView_count = TextView(context)
-//                    textView_date?.text = entityArrayList.get(i).timestamp
-//                    textView_name?.text = entityArrayList.get(i).exercise
-//                    textView_count?.text = entityArrayList.get(i).count + "회"
-//
-//                    textView_date.gravity = Gravity.CENTER
-//                    textView_date.textSize = 16f
-//                    textView_name.gravity = Gravity.CENTER
-//                    textView_name.textSize = 16f
-//                    textView_count.gravity = Gravity.CENTER
-//                    textView_count.textSize = 16f
-//                    textView_date.setBackgroundResource(R.drawable.table_inside)
-//                    textView_name.setBackgroundResource(R.drawable.table_inside)
-//                    textView_count.setBackgroundResource(R.drawable.table_inside)
-//
-//                    textView_date.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1F)
-//                    textView_name.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1F)
-//                    textView_count.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1F)
-//
-//                    tableRow?.addView(textView_date)
-//                    tableRow?.addView(textView_name)
-//                    tableRow?.addView(textView_count)
-//
-////                    binding.tableExerciseInfo.addView(tableRow)
-//                }
 
                 // 파이 차트
                 if (counts_back != 0) {
@@ -274,11 +254,6 @@ class NaviHomeFragment : Fragment() {
                 }
 
                 val pieDataSet = PieDataSet(pieEntryArrayList, "")
-//                if (pieEntryArrayList != null) {
-//                    val pieChartColors =
-//                        ColorTemplate.COLORFUL_COLORS.copyOf(pieEntryArrayList.size).toList()
-//                    pieDataSet.colors = pieChartColors
-//                }
 
                 // 색상 추가하기
                 val colors_pie = listOf(
@@ -363,43 +338,6 @@ class NaviHomeFragment : Fragment() {
         intent.putExtra("upper",posValue)
         startActivity(intent)
     }
-
-//    fun getDbData(date: String, uid: String) {
-//        CommonUtil.myRef.orderByChild("date").equalTo(date)
-//            .orderByChild("uid").equalTo(uid)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                @RequiresApi(Build.VERSION_CODES.N)
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    // 데이터 처리 로직
-//                    val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
-//
-//                    for (dataSnapshot in snapshot.children) {
-//                        val healthEntity = dataSnapshot.getValue(HealthEntity::class.java)
-//                        val exercise = healthEntity?.exercise
-//                        val count = healthEntity?.count?.toIntOrNull() ?: 0
-//
-//                        if (exercise != null && exercise.isNotEmpty()) {
-//                            val (sum, num) = exerciseCountMap.getOrDefault(exercise, Pair(0, 0))
-//                            exerciseCountMap[exercise] = Pair(sum + count, num + 1)
-//                        }
-//                    }
-//
-//                    val stringBuilder = StringBuilder()
-//                    for ((exercise, countPair) in exerciseCountMap) {
-//                        val (sum, num) = countPair
-//                        val average = if (num > 0) sum / num else 0
-//                        Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
-//                        stringBuilder.append("$exercise : $num 세트\n")
-//                    }
-//
-//                    binding.textViewRecentlyInfo.text = stringBuilder.toString()
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    // 오류 처리 로직
-//                }
-//            })
-//    }
 
     companion object {
         fun newInstance(): NaviHomeFragment {
