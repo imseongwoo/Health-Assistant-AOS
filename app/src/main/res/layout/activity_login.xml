@@ -98,44 +98,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:paddingBottom="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_sign_up">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_kakao_login"
-                    android:layout_width="39.3dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="25dp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    android:background="@drawable/shape_circ_fee500_stroke_efd54f_solid"
-                    android:drawableStart="@drawable/layerlist_button_kakao"
-                    android:paddingStart="13.33dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/button_naver_login"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_naver_login"
-                    android:layout_width="39.3dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="25dp"
-                    android:background="@drawable/shape_circ_03c75a_stroke_2aab15_solid"
-                    android:drawableStart="@drawable/layerlist_button_naver"
-                    android:paddingStart="15.44dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/button_kakao_login"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
