@@ -15,6 +15,7 @@ object PoseDetector {
     private var minDeep = 0.0f
     private var upDownFlag = true
     private lateinit var tts: TextToSpeech
+    private var messageFlag = true
     fun detectSquatByAngle(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
         val squatAngleLeft = calculateAngle(
             outputFeature0.get(34),
@@ -32,8 +33,8 @@ object PoseDetector {
             outputFeature0.get(49),
             outputFeature0.get(48)
         )
-        val squatLowThreshold = 40f
-        val squatHighThreshold = 140f
+        val squatLowThreshold = 10f
+        val squatHighThreshold = 160f
         var nowDeep = 0.0f
         // 스쿼드 동작 인식
         val isLeftDetected = (squatAngleLeft > squatLowThreshold && squatAngleLeft < squatHighThreshold)
@@ -69,12 +70,14 @@ object PoseDetector {
             Log.e("fun_result_knee", "fun_result_knee=$fun_result_knee")
 
             // 허리 너무 숙였을 때 피드백
-            if(!squatStateGood_Upper(outputFeature0)){
+            if(!squatStateGood_Upper(outputFeature0) && messageFlag){
                 tts.speak("허리를 곧게 펴고 상체를 들어주세요", TextToSpeech.QUEUE_FLUSH, null, null)
+                messageFlag = true
             }
             // 무릎 너무 나왔을 때 피드백
-            if(!squatStateGood_Knee(outputFeature0)){
+            if(!squatStateGood_Knee(outputFeature0) && !messageFlag){
                 tts.speak("몸의 무게중심을 뒤로 당겨주세요", TextToSpeech.QUEUE_FLUSH, null, null)
+                messageFlag = true
             }
 
             // 앉은 자세가 정확한지 확인
@@ -92,19 +95,25 @@ object PoseDetector {
                     return true
                 }else if(!validSquat && !upDownFlag){
                     // 덜 앉았을 때 피드백
-                    if(isLeft){ // 왼쪽
-                        // 엉덩이 높이가 무릎 높이보다 높을 때
-                        if(outputFeature0.get(33) < outputFeature0.get(39)){
-                            tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                        }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
-                            tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                        }
-                    }else{ // 오른쪽
-                        // 엉덩이 높이가 무릎 높이보다 높을 때
-                        if(outputFeature0.get(36) < outputFeature0.get(42)){
-                            tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                        }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
-                            tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    if(!messageFlag){
+                        if(isLeft){ // 왼쪽
+                            // 엉덩이 높이가 무릎 높이보다 높을 때
+                            if(outputFeature0.get(33) < outputFeature0.get(39)){
+                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
+                            }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
+                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
+                            }
+                        }else{ // 오른쪽
+                            // 엉덩이 높이가 무릎 높이보다 높을 때
+                            if(outputFeature0.get(36) < outputFeature0.get(42)){
+                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
+                            }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
+                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
+                            }
                         }
                     }
                     minDeep = 0.0f
@@ -114,6 +123,7 @@ object PoseDetector {
             }
         }else{
             upDownFlag = false
+            messageFlag = false
         }
         return false
     }
@@ -148,7 +158,7 @@ object PoseDetector {
                 outputFeature0.get(40),
                 outputFeature0.get(39),
                 outputFeature0.get(34),
-                outputFeature0.get(39)) < 15f)
+                outputFeature0.get(39)) < 10f)
         } else{ // 오른쪽
             return (calculateAngle(
                 outputFeature0.get(37),
@@ -156,7 +166,7 @@ object PoseDetector {
                 outputFeature0.get(43),
                 outputFeature0.get(42),
                 outputFeature0.get(37),
-                outputFeature0.get(42)) < 15f)
+                outputFeature0.get(42)) < 10f)
         }
     }
 
