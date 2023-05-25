@@ -53,6 +53,7 @@ object PoseDetector {
         val squatLowThreshold = 10f
         val squatHighThreshold = 160f
         var nowDeep = 0.0f
+
         // 스쿼드 동작 인식
         val isLeftDetected = (squatAngleLeft > squatLowThreshold && squatAngleLeft < squatHighThreshold)
         val isRightDetected = (squatAngleRight > squatLowThreshold && squatAngleRight < squatHighThreshold)
@@ -265,8 +266,8 @@ object PoseDetector {
                 }
             }
         }else{
-        upDownFlag = false
-    }
+            upDownFlag = false
+        }
 
         return false
     }
@@ -297,6 +298,7 @@ object PoseDetector {
             outputFeature0.get(33))
         val angleShoulderRight = calculateAngle(
             outputFeature0.get(25),
+
             outputFeature0.get(24),
             outputFeature0.get(19),
             outputFeature0.get(18),
@@ -311,6 +313,7 @@ object PoseDetector {
         }else{
             return (angleShoulderLeft < 60f && angleShoulderRight < 60f)
         }
+
     }
 
     // 랫풀다운에서 상체 기울기가 바른지 확인하는 함수.
@@ -468,6 +471,7 @@ object PoseDetector {
             outputFeature0.get(43)
         )
 
+
         // 벤치프레스 수행 시, 상체, 하체, 벤치 각도를 모두 고려하여 왼쪽/오른쪽 기준으로 자세 판단
         if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
 
@@ -567,6 +571,15 @@ object PoseDetector {
 
 
         return false
+    }
+    // 기울기 계산 함수
+    fun calculateGradient(x1: Float, y1: Float, x2: Float, y2: Float): Float{
+        return (y2 - y1) / (x2 - x1)
+    }
+
+    // tts
+    fun setTTS(ttsEngine: TextToSpeech){
+        tts = ttsEngine
     }
 
 }
