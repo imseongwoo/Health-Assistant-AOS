@@ -176,6 +176,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         handler = Handler(handlerThread.looper)
 
         paint.setColor(Color.YELLOW)
+        paint.strokeWidth = 5f      // 선 두께 설정
 
         initTTS()
 

@@ -46,7 +46,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.home.detail.DetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ui.home.LowerBodyCategoryActivity"
             android:exported="false" />
@@ -55,16 +56,19 @@
             android:exported="false" />
         <activity
             android:name=".ui.home.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name=".ui.signup.SignUpActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
     </application>
 
 </manifest>

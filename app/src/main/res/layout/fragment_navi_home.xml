@@ -20,16 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-<!--                <androidx.appcompat.widget.Toolbar-->
-<!--                    android:id="@+id/toolbar_home"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="60dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:title=""-->
-<!--                    app:titleTextColor="@color/color_222222">-->
-
                     <ImageView
                         android:id="@+id/toolbar_home"
                         android:layout_width="100dp"
@@ -38,24 +28,6 @@
                         android:layout_marginStart="-18dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
-
-<!--                </androidx.appcompat.widget.Toolbar>-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/text_view_user_hello"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="16dp"-->
-<!--                    app:layout_goneMarginTop="5dp"-->
-<!--                    android:text="사용자 인사말"-->
-<!--                    android:textColor="@color/color_222222"-->
-<!--                    android:textSize="20sp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/toolbar_home"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    android:layout_gravity="right"-->
-<!--                    />-->
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -144,16 +116,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/text_view_exercise_recently_name2"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="15dp"-->
-<!--                        android:layout_marginStart="10dp"-->
-<!--                        android:text="운동 이름"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/text_view_exercise_recently_date"-->
-<!--                        app:layout_constraintStart_toEndOf="@id/text_view_exercise_recently_name"-->
-<!--                        />-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/exercise_info_chart_box"
@@ -179,11 +141,6 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent">
 
-<!--                        <Space-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1" />-->
-
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
                                 android:layout_height="180dp"
@@ -195,18 +152,83 @@
                                     android:layout_height="match_parent"
                                     android:orientation="vertical"
                                     >
-
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
 
                                     <TextView
-                                        android:id="@+id/text_view_recently_info"
+                                        android:id="@+id/text_view_exercise_info1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_marginBottom="5dp"
                                         android:text=""
                                         android:textColor="@color/black"/>
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                    <TextView
+                                        android:id="@+id/text_view_exercise_info2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:text=""
+                                        android:textColor="@color/black"/>
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                    <TextView
+                                        android:id="@+id/text_view_exercise_info3"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:text=""
+                                        android:textColor="@color/black"/>
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                    <TextView
+                                        android:id="@+id/text_view_exercise_info4"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:text=""
+                                        android:textColor="@color/black"/>
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                    <TextView
+                                        android:id="@+id/text_view_exercise_info5"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:text=""
+                                        android:textColor="@color/black"/>
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                    <TextView
+                                        android:id="@+id/text_view_exercise_info6"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:text=""
+                                        android:textColor="@color/black"/>
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
 
                                 </LinearLayout>
 
@@ -246,102 +268,6 @@
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- 전체 운동 기록 표 (뺄 예정) -->
-<!--                    <TextView-->
-<!--                        android:id="@+id/text_view_total_exercise"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="10dp"-->
-<!--                        android:layout_marginTop="20dp"-->
-<!--                        android:text="사용자님의 전체 운동 기록"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/pieChart" />-->
-
-<!--                    <TableLayout-->
-<!--                        android:id="@+id/table_exercise_header"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center_horizontal"-->
-<!--                        android:background="@drawable/table_outside"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:layout_marginStart="10dp"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/text_view_total_exercise"-->
-<!--                        android:stretchColumns="*">-->
-
-<!--                        <TableRow-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content">-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/table_exercise_date"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:background="@drawable/table_inside"-->
-<!--                                android:gravity="center"-->
-<!--                                android:text="운동 날짜"-->
-<!--                                android:textColor="@color/black"-->
-<!--                                android:textSize="18sp"-->
-<!--                                android:textStyle="bold"-->
-<!--                                android:layout_weight="1"/>-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/table_exercise_name"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:background="@drawable/table_inside"-->
-<!--                                android:gravity="center"-->
-<!--                                android:text="운동명"-->
-<!--                                android:textColor="@color/black"-->
-<!--                                android:textSize="18sp"-->
-<!--                                android:textStyle="bold"-->
-<!--                                android:layout_weight="1"/>-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/table_exercise_count"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:background="@drawable/table_inside"-->
-<!--                                android:gravity="center"-->
-<!--                                android:text="운동 횟수"-->
-<!--                                android:textColor="@color/black"-->
-<!--                                android:textSize="18sp"-->
-<!--                                android:textStyle="bold"-->
-<!--                                android:layout_weight="1"/>-->
-<!--                        </TableRow>-->
-
-<!--                    </TableLayout>-->
-
-<!--                    <ScrollView-->
-<!--                        android:id="@+id/scroll_view_table"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="170dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:layout_marginStart="10dp"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:layout_marginBottom="10dp"-->
-<!--                        android:contentDescription="전체 운동 기록 표"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/table_exercise_header"-->
-<!--                        >-->
-
-<!--                        <TableLayout-->
-<!--                            android:id="@+id/table_exercise_info"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="170dp"-->
-<!--                            android:layout_gravity="center_horizontal"-->
-<!--                            android:background="@drawable/table_outside"-->
-<!--                            android:orientation="vertical"-->
-<!--                            android:stretchColumns="*">-->
-
-<!--                        </TableLayout>-->
-
-<!--                    </ScrollView>-->
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -674,61 +600,6 @@
 
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-<!--                <TextView-->
-<!--                    android:id="@+id/text_view_lower_box"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="200dp"-->
-<!--                    android:layout_marginStart="5dp"-->
-<!--                    android:layout_marginEnd="5dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:background="@drawable/shape_rect_efeff5_solid_radius_20"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintHorizontal_bias="1.0"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/text_view_home_lower" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/text_view_image_box"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="200dp"-->
-<!--                    android:layout_marginStart="5dp"-->
-<!--                    android:layout_marginEnd="5dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:background="@drawable/shape_rect_efeff5_solid_radius_20"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintHorizontal_bias="1.0"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/text_view_program" />-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/text_view_upper_body"-->
-<!--                    android:layout_width="150dp"-->
-<!--                    android:layout_height="150dp"-->
-<!--                    android:background="@drawable/custom_lower_body"-->
-<!--                    android:clipToOutline="true"-->
-<!--                    android:gravity="center"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    android:src="@drawable/upper"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@id/text_view_image_box"-->
-<!--                    app:layout_constraintEnd_toStartOf="@id/text_view_lower_body"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/text_view_image_box"-->
-<!--                    app:layout_constraintTop_toTopOf="@id/text_view_image_box" />-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/text_view_lower_body"-->
-<!--                    android:layout_width="150dp"-->
-<!--                    android:layout_height="150dp"-->
-<!--                    android:layout_marginStart="20sp"-->
-<!--                    android:background="@drawable/custom_lower_body"-->
-<!--                    android:clipToOutline="true"-->
-<!--                    android:gravity="center"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    android:src="@drawable/lower"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/text_view_image_box"-->
-<!--                    app:layout_constraintStart_toEndOf="@id/text_view_upper_body"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/text_view_upper_body" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
