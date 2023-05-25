@@ -33,8 +33,8 @@ object PoseDetector {
     var status_incline = "initial"      // 상태 = initial or incline
     var isInclineBench = false
 
-    fun detectSquatByAngle(outputFeature0: FloatArray): Boolean {
-        val squatAngleLeft = calculateAngle(outputFeature0.get(33),
+    fun detectSquatByAngle(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
+        val squatAngleLeft = calculateAngle(
             outputFeature0.get(34),
             outputFeature0.get(33),
             outputFeature0.get(40),
@@ -334,11 +334,10 @@ object PoseDetector {
         tts = ttsEngine
     }
 
-    // 레그 익스텐션 추정 함수
+    // 레그 익스텐션 자세 추정 함수
     fun detectLegExtension(outputFeature0: FloatArray) : Boolean {
-        Log.e("test", "detect lat pull down")
 
-        val legExLeftAngle = calculateAngle(
+        val legExLeftAngle = calculateAngle(        // 왼쪽 레그 익스텐션 각도
             outputFeature0.get(33),
             outputFeature0.get(34),
             outputFeature0.get(39),
@@ -347,7 +346,7 @@ object PoseDetector {
             outputFeature0.get(46)
         )
 
-        val legExRightAngle = calculateAngle(
+        val legExRightAngle = calculateAngle(       // 오른쪽 레그 익스텐션 각도
             outputFeature0.get(36),
             outputFeature0.get(37),
             outputFeature0.get(42),
@@ -356,9 +355,8 @@ object PoseDetector {
             outputFeature0.get(49)
             )
 
-        val legExLowThreshold = 60f
-        val legExHighThreshold = 125f
 
+        // 레그 익스텐션의 왼쪽 기준 각도와 오른쪽 기준 각도로 판단
         if ( (legExLeftAngle < 180f && legExLeftAngle > 160f) || (legExRightAngle < 180f && legExRightAngle > 160f) ) {
             status_legex = "legex"
         }
@@ -369,22 +367,15 @@ object PoseDetector {
 
                 return isLegEx
             }
-
         }
 
-//        val isLeftLegEx = legExLeftAngle > legExLowThreshold && legExLeftAngle < legExHighThreshold
-//        val isRightLegEx = legExRightAngle > legExLowThreshold && legExRightAngle < legExHighThreshold
-//
-//        val isLegEx = isLeftLegEx || isRightLegEx
-//
-//        return isLegEx
         return false
     }
 
+    // 데드리프트 자세 추정 함수
     fun detectDeadLift(outputFeature0: FloatArray) : Boolean {
-        Log.e("test", "detect DeadLift")
 
-        val deadLiftLeftAngle = calculateAngle(
+        val deadLiftLeftAngle = calculateAngle(     // 데드리프트 왼쪽 각도
             outputFeature0.get(15),
             outputFeature0.get(16),
             outputFeature0.get(33),
@@ -393,7 +384,7 @@ object PoseDetector {
             outputFeature0.get(40)
         )
 
-        val deadLiftRightAngle = calculateAngle(
+        val deadLiftRightAngle = calculateAngle(    // 데드리프트 오른쪽 각도
             outputFeature0.get(18),
             outputFeature0.get(19),
             outputFeature0.get(36),
@@ -401,10 +392,8 @@ object PoseDetector {
             outputFeature0.get(42),
             outputFeature0.get(43)
         )
-        Log.e("status : ", status_dead)
-        Log.e("dead 각도 : " ,deadLiftLeftAngle.toString())
-        Log.e("isDeadLift : ", isDeadLift.toString())
 
+        // 데드리프트의 왼쪽 기준 각도와 오른쪽 기준 각도로 판단
         if ( deadLiftLeftAngle < 80f || deadLiftRightAngle < 80f ) {
             status_dead = "dead"
         }
@@ -415,32 +404,16 @@ object PoseDetector {
 
                 return isDeadLift
             }
-
         }
-
-        Log.e("status : ", status_dead)
-        Log.e("dead 각도 : " ,deadLiftLeftAngle.toString())
-        Log.e("isDeadLift : ", isDeadLift.toString())
-
-
-//        val deadLiftLowThreshold = 45f
-//        val deadLiftHighThreshold = 180f
-//
-//        val isLeftDeadLift = deadLiftLeftAngle > deadLiftLowThreshold && deadLiftLeftAngle < deadLiftHighThreshold
-//        val isRightDeadLift = deadLiftRightAngle > deadLiftLowThreshold && deadLiftRightAngle < deadLiftHighThreshold
-//
-//        val isDeadLift = isLeftDeadLift || isRightDeadLift
-        //return isDeadLift
 
         return false
     }
 
     // 벤치프레스 자세 추정 함수
     fun detectBenchPress(outputFeature0: FloatArray) : Boolean {
-        Log.e("test", "detect BenchPress")
 
         // 상체 각도
-        val benchUpperLeftAngle = calculateAngle(
+        val benchUpperLeftAngle = calculateAngle(       // 벤치프레스 수행시 상체의 왼쪽 각도
             outputFeature0.get(15),
             outputFeature0.get(16),
             outputFeature0.get(21),
@@ -449,7 +422,7 @@ object PoseDetector {
             outputFeature0.get(28)
         )
 
-        val benchUpperRightAngle = calculateAngle(
+        val benchUpperRightAngle = calculateAngle(      // 벤치프레스 수행시 상체의 오른쪽 각도
             outputFeature0.get(18),
             outputFeature0.get(19),
             outputFeature0.get(24),
@@ -459,7 +432,7 @@ object PoseDetector {
         )
 
         // 하체 각도
-        val benchLowerLeftAngle = calculateAngle(
+        val benchLowerLeftAngle = calculateAngle(       // 벤치프레스 수행시 하체의 왼쪽 각도
             outputFeature0.get(33),
             outputFeature0.get(34),
             outputFeature0.get(39),
@@ -468,7 +441,7 @@ object PoseDetector {
             outputFeature0.get(46)
         )
 
-        val benchLowerRightAngle = calculateAngle(
+        val benchLowerRightAngle = calculateAngle(      // 벤치프레스 수행시 하체의 오른쪽 각도
             outputFeature0.get(36),
             outputFeature0.get(37),
             outputFeature0.get(42),
@@ -477,7 +450,7 @@ object PoseDetector {
             outputFeature0.get(49)
         )
 
-        // 벤치 각도 (인클라인과 구분하기 위함)
+        // 벤치 각도 (인클라인 벤치프레스와 구분하기 위함)
         val benchLeftAngle = calculateAngle(
             outputFeature0.get(15),
             outputFeature0.get(16),
@@ -495,7 +468,7 @@ object PoseDetector {
             outputFeature0.get(43)
         )
 
-
+        // 벤치프레스 수행 시, 상체, 하체, 벤치 각도를 모두 고려하여 왼쪽/오른쪽 기준으로 자세 판단
         if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
 
             if ( (benchLeftAngle > 175f && benchLeftAngle < 185f) || (benchRightAngle > 175f && benchRightAngle < 185f) ) {     // 벤치 각도
@@ -510,17 +483,14 @@ object PoseDetector {
                         return isBenchPress
                     }
                 }
-
             }
         }
-
 
         return false
     }
 
     // 인클라인 벤치프레스 자세 추정 함수
     fun detectInclineBenchPress(outputFeature0: FloatArray) : Boolean {
-        Log.e("test", "detect BenchPress")
 
         // 상체 각도
         val benchUpperLeftAngle = calculateAngle(

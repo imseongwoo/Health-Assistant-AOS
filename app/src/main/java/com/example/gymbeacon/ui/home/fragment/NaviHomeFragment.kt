@@ -225,7 +225,7 @@ class NaviHomeFragment : Fragment() {
 
                         val exerciseTextView = view.findViewById<TextView>(layoutIds[i])
                         if (num != 0) {
-                            exerciseTextView.text = " " + exercise + " : " + num.toString() + "세트"
+                            exerciseTextView.text = "· " + exercise + " : " + num.toString() + "세트"
                         } else {
                             exerciseTextView.text = "· " + exercise + " : -"
                         }
