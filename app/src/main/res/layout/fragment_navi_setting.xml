@@ -187,6 +187,7 @@
                 android:textColor="@color/color_9675f7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_view_app_version"
+                android:text="app version 1.0.0/ 최신 1.0.0"
                 tools:text="app version 1.2.0/ 최신 1.2.0" />
 
             <TextView
