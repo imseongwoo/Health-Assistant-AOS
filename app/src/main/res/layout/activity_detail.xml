@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="23dp"
-                        android:background="@drawable/camera_circle"
+                        android:background="@drawable/selector_camera_button"
                         app:layout_constraintBottom_toTopOf="@id/text_view_detail_page_count"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
