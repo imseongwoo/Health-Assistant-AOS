@@ -571,6 +571,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+
     companion object {
         private const val REQUEST_RECORD_AUDIO_PERMISSION = 201
     }
