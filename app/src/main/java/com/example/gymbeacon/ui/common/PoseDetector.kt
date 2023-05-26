@@ -321,11 +321,6 @@ object PoseDetector {
             outputFeature0.get(15)) < 10f)
     }
 
-    // 기울기 계산 함수
-    fun calculateGradient(x1: Float, y1: Float, x2: Float, y2: Float): Float{
-        return (y2 - y1) / (x2 - x1)
-    }
-
     // tts
     fun setTTS(ttsEngine: TextToSpeech){
         tts = ttsEngine
