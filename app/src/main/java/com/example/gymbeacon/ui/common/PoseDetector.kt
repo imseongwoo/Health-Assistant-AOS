@@ -80,7 +80,7 @@ object PoseDetector {
                     return true
                 }else if(!validSquat && !upDownFlag){
                     // 덜 앉았을 때 피드백
-                    if(!messageFlag){
+                    if(!messageFlag && !squatStateGood_Hip(outputFeature0)){
                         if(isLeft){ // 왼쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
                             if(outputFeature0.get(33) < outputFeature0.get(39)){
@@ -254,7 +254,7 @@ object PoseDetector {
                     return true
                 }else if(!validLatPullDown && !upDownFlag){
                     // 팔 덜 내렸을 때 피드백
-                    if(!messageFlag){
+                    if(!messageFlag && !isLatPullDownStateGood_Shoulder(outputFeature0)){
                         tts.speak("등에 자극이 올 때까지 팔을 더 당겨주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
                         messageFlag = true
                     }
