@@ -420,7 +420,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             it.stop()
             it.shutdown()
         }
-        model.close()
+//        model.close()
     }
 
     // 04-05 추가
