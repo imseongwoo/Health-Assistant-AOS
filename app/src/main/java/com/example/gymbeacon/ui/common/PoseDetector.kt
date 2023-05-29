@@ -28,10 +28,14 @@ object PoseDetector {
     // 벤치프레스
     var status_bench = "initial"      // 상태 = initial or bench
     var isBenchPress = false
+    private var feedback_bench = false   // 벤치프레스 운동 피드백 하는 상태인지 확인용
+    private var bench_counting = true  // 벤치 잘못했을 때 카운팅 안되게
 
     // 인클라인 벤치프레스
     var status_incline = "initial"      // 상태 = initial or incline
     var isInclineBench = false
+    private var feedback_incline = false    //
+    private var incline_counting = true
 
     fun detectSquatByAngle(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
         val squatAngleLeft = calculateAngle(
@@ -403,7 +407,7 @@ object PoseDetector {
     }
 
     // 벤치프레스 자세 추정 함수
-    fun detectBenchPress(outputFeature0: FloatArray) : Boolean {
+    fun detectBenchPress(outputFeature0: FloatArray, tts: TextToSpeech) : Boolean {
 
         // 상체 각도
         val benchUpperLeftAngle = calculateAngle(       // 벤치프레스 수행시 상체의 왼쪽 각도
@@ -461,30 +465,41 @@ object PoseDetector {
             outputFeature0.get(43)
         )
 
-
         // 벤치프레스 수행 시, 상체, 하체, 벤치 각도를 모두 고려하여 왼쪽/오른쪽 기준으로 자세 판단
         if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
-
-            if ( (benchLeftAngle > 175f && benchLeftAngle < 185f) || (benchRightAngle > 175f && benchRightAngle < 185f) ) {     // 벤치 각도
-
-                if ((benchUpperLeftAngle >= 85f && benchUpperLeftAngle <= 100f) || (benchUpperRightAngle >= 85f && benchUpperRightAngle <= 100f)) {
+            if ((benchUpperLeftAngle >= 80f && benchUpperLeftAngle <= 105f) || (benchUpperRightAngle >= 80f && benchUpperRightAngle <= 105f)) {
+//                    status_bench = "bench"
+                // 팔꿈치 높이가 어깨 높이보다 높을 때
+                if ( ((outputFeature0.get(21) > outputFeature0.get(15)) || (outputFeature0.get(24) > outputFeature0.get(18)))) {
+                    bench_counting = false      // 카운팅 안되게 설정
+                    feedback_incline = true
+                    tts.speak("팔꿈치를 어깨까지 더 내리세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                } else if ( bench_counting == true && ((outputFeature0.get(21) <= outputFeature0.get(15)) || (outputFeature0.get(24) <= outputFeature0.get(18)))) {
                     status_bench = "bench"
-                } else if ((benchUpperLeftAngle >= 165f && benchUpperLeftAngle <= 180f) || (benchUpperRightAngle >= 165f && benchUpperRightAngle <= 180f)) {
-                    if (status_bench == "bench") {
-                        isBenchPress = true
-                        status_bench = "initial"
+                }
+                incline_counting = true
+            } else if ((benchUpperLeftAngle >= 165f && benchUpperLeftAngle <= 180f) || (benchUpperRightAngle >= 165f && benchUpperRightAngle <= 180f)) {
+                if (status_bench == "bench") {
+                    isBenchPress = true
+                    status_bench = "initial"
 
+                    if (incline_counting == true) {
                         return isBenchPress
                     }
                 }
             }
         }
 
+
         return false
     }
 
+//    fun isBenchGoodState(outputFeature0: FloatArray): Boolean {
+//
+//    }
+
     // 인클라인 벤치프레스 자세 추정 함수
-    fun detectInclineBenchPress(outputFeature0: FloatArray) : Boolean {
+    fun detectInclineBenchPress(outputFeature0: FloatArray, tts: TextToSpeech) : Boolean {
 
         // 상체 각도
         val benchUpperLeftAngle = calculateAngle(
@@ -543,33 +558,55 @@ object PoseDetector {
         )
 
 
+//        if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
+//
+//            if ( (benchLeftAngle > 125f && benchLeftAngle < 170f) || (benchRightAngle > 125f && benchRightAngle < 170f) ) {     // 벤치 각도
+//                if ((benchUpperLeftAngle >= 85f && benchUpperLeftAngle <= 100f) || (benchUpperRightAngle >= 85f && benchUpperRightAngle <= 100f)) {
+//                    status_incline = "incline"
+//                } else if ((benchUpperLeftAngle >= 165f && benchUpperLeftAngle <= 180f) || (benchUpperRightAngle >= 165f && benchUpperRightAngle <= 180f)) {
+//                    if (status_incline == "incline") {
+//                        isInclineBench = true
+//                        status_incline = "initial"
+//
+//                        return isInclineBench
+//                    }
+//                }
+//            }
+//        }
+
         if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
-
-            if ( (benchLeftAngle > 125f && benchLeftAngle < 170f) || (benchRightAngle > 125f && benchRightAngle < 170f) ) {     // 벤치 각도
-                if ((benchUpperLeftAngle >= 85f && benchUpperLeftAngle <= 100f) || (benchUpperRightAngle >= 85f && benchUpperRightAngle <= 100f)) {
+            if ((benchUpperLeftAngle >= 80f && benchUpperLeftAngle <= 105f) || (benchUpperRightAngle >= 80f && benchUpperRightAngle <= 105f)) {
+//                    status_bench = "bench"
+                // 팔꿈치 높이가 어깨 높이보다 높을 때
+                if ( ((outputFeature0.get(21) > outputFeature0.get(15)) || (outputFeature0.get(24) > outputFeature0.get(18)))) {
+                    incline_counting = false      // 카운팅 안되게 설정
+                    feedback_incline = true
+                    tts.speak("팔꿈치를 어깨까지 더 내리세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                } else if ( incline_counting == true && ((outputFeature0.get(21) <= outputFeature0.get(15)) || (outputFeature0.get(24) <= outputFeature0.get(18)))) {
                     status_incline = "incline"
-                } else if ((benchUpperLeftAngle >= 165f && benchUpperLeftAngle <= 180f) || (benchUpperRightAngle >= 165f && benchUpperRightAngle <= 180f)) {
-                    if (status_incline == "incline") {
-                        isInclineBench = true
-                        status_incline = "initial"
+                }
+                incline_counting = true
+            } else if ((benchUpperLeftAngle >= 165f && benchUpperLeftAngle <= 180f) || (benchUpperRightAngle >= 165f && benchUpperRightAngle <= 180f)) {
+                if (status_bench == "bench") {
+                    isInclineBench = true
+                    status_incline = "initial"
 
+                    if (incline_counting == true) {
                         return isInclineBench
                     }
                 }
             }
         }
-
-
         return false
     }
-    // 기울기 계산 함수
-    fun calculateGradient(x1: Float, y1: Float, x2: Float, y2: Float): Float{
-        return (y2 - y1) / (x2 - x1)
-    }
-
-    // tts
-    fun setTTS(ttsEngine: TextToSpeech){
-        tts = ttsEngine
-    }
+//    // 기울기 계산 함수
+//    fun calculateGradient(x1: Float, y1: Float, x2: Float, y2: Float): Float{
+//        return (y2 - y1) / (x2 - x1)
+//    }
+//
+//    // tts
+//    fun setTTS(ttsEngine: TextToSpeech){
+//        tts = ttsEngine
+//    }
 
 }

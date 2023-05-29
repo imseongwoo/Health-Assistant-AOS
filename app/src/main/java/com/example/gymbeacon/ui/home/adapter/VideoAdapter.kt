@@ -11,6 +11,7 @@ class VideoAdapter(private val videos: List<Video>, val onClick: (Int) -> Unit) 
 
     inner class ViewHolder(private val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
         val titleTextView = binding.textViewFileNameInput
+        val countTextView = binding.textViewFileNameCounting
         val playButton = binding.imageViewVideoPlayButton
     }
 
@@ -22,6 +23,7 @@ class VideoAdapter(private val videos: List<Video>, val onClick: (Int) -> Unit) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val video = videos[position]
         holder.titleTextView.text = video.title
+        holder.countTextView.text = video.count
         holder.playButton.setOnClickListener {
             onClick(position)
         }
