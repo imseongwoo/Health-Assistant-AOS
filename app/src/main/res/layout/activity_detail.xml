@@ -108,19 +108,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <TextView
-                        android:id="@+id/text_view_detail_page_count"
-                        android:layout_width="44dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="16dp"
-                        android:gravity="center"
-                        android:text="@string/detail_text_view_first_num"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
 
 <!--                    <TextView-->
 <!--                        android:id="@+id/text_view_detail_page_count"-->
