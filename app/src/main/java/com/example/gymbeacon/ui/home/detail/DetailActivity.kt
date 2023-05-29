@@ -435,7 +435,6 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 //3. 운동 시작 버튼 눌렀을 때 갯수 카운트 초기화
                 count = 0
                 maxNum = textViewDetailPageCount.text.toString()
-                imageViewDetailStart.text = "기록 중지"
 
                 if (binding.recordToggle.isChecked == true) {
                     startRecording()

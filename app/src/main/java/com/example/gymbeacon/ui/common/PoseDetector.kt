@@ -59,24 +59,30 @@ object PoseDetector {
         var nowDeep = 0.0f
 
         // 스쿼드 동작 인식
-        val isLeftDetected = (squatAngleLeft > squatLowThreshold && squatAngleLeft < squatHighThreshold)
-        val isRightDetected = (squatAngleRight > squatLowThreshold && squatAngleRight < squatHighThreshold)
+        val isLeftDetected =
+            (squatAngleLeft > squatLowThreshold && squatAngleLeft < squatHighThreshold)
+        val isRightDetected =
+            (squatAngleRight > squatLowThreshold && squatAngleRight < squatHighThreshold)
         val isSquatDetected = isLeftDetected || isRightDetected
         // 스쿼트 동작이 감지되었을 때
-        if(isSquatDetected) {
+        if (isSquatDetected) {
             // 왼쪽인지 오른쪽인지 판별
-            if((outputFeature0.get(34) > outputFeature0.get(40)) || (outputFeature0.get(37) > outputFeature0.get(43))){
+            if ((outputFeature0.get(34) > outputFeature0.get(40)) || (outputFeature0.get(37) > outputFeature0.get(
+                    43))
+            ) {
                 isLeft = true // 엉덩이 x좌표가 무플 x좌표보다 크면 true 아니면 false
                 nowDeep = outputFeature0.get(33)
-            }else if((outputFeature0.get(34) < outputFeature0.get(40)) || (outputFeature0.get(37) < outputFeature0.get(43))){
+            } else if ((outputFeature0.get(34) < outputFeature0.get(40)) || (outputFeature0.get(37) < outputFeature0.get(
+                    43))
+            ) {
                 isLeft = false // 엉덩이 x좌표가 무플 x좌표보다 크면 true 아니면 false
                 nowDeep = outputFeature0.get(36)
             }
             Log.e("isLeft", "isLeft=$isLeft")
             Log.e("nowDeep", "nowDeep=$nowDeep")
             // 가장 낯게 내려갔을때의 엉덩이 높이
-            if(nowDeep > minDeep){
-                if(!upDownFlag){
+            if (nowDeep > minDeep) {
+                if (!upDownFlag) {
                     minDeep = nowDeep
                     Log.e("minDeep", "minDeep=$minDeep")
                 }
@@ -92,48 +98,62 @@ object PoseDetector {
             Log.e("fun_result_knee", "fun_result_knee=$fun_result_knee")
 
             // 허리 너무 숙였을 때 피드백
-            if(!squatStateGood_Upper(outputFeature0) && messageFlag){
+            if (!squatStateGood_Upper(outputFeature0) && messageFlag) {
                 tts.speak("허리를 곧게 펴고 상체를 들어주세요", TextToSpeech.QUEUE_FLUSH, null, null)
                 messageFlag = true
             }
             // 무릎 너무 나왔을 때 피드백
-            if(!squatStateGood_Knee(outputFeature0) && !messageFlag){
+            if (!squatStateGood_Knee(outputFeature0) && !messageFlag) {
                 tts.speak("몸의 무게중심을 뒤로 당겨주세요", TextToSpeech.QUEUE_FLUSH, null, null)
                 messageFlag = true
             }
 
             // 앉은 자세가 정확한지 확인
-            if (squatStateGood_Upper(outputFeature0) && squatStateGood_Hip(outputFeature0) && squatStateGood_Knee(outputFeature0) && !upDownFlag) {
+            if (squatStateGood_Upper(outputFeature0) && squatStateGood_Hip(outputFeature0) && squatStateGood_Knee(
+                    outputFeature0) && !upDownFlag
+            ) {
                 validSquat = true
                 Log.e("validSquat", "validSquat=$validSquat")
-            } else{
+            } else {
                 validSquat = false
             }
             // 일어서는 동작 감지
-            if(nowDeep < minDeep){
-                if(validSquat && !upDownFlag){
+            if (nowDeep < minDeep) {
+                if (validSquat && !upDownFlag) {
                     minDeep = 0.0f
                     upDownFlag = true
                     return true
-                }else if(!validSquat && !upDownFlag){
+                } else if (!validSquat && !upDownFlag) {
                     // 덜 앉았을 때 피드백
-                    if(!messageFlag){
-                        if(isLeft){ // 왼쪽
+                    if (!messageFlag) {
+                        if (isLeft) { // 왼쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
-                            if(outputFeature0.get(33) < outputFeature0.get(39)){
-                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                            if (outputFeature0.get(33) < outputFeature0.get(39)) {
+                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.",
+                                    TextToSpeech.QUEUE_FLUSH,
+                                    null,
+                                    null)
                                 messageFlag = true
-                            }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
-                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                            } else { // 엉덩이 높이가 무릎 높이보다 낮을 때
+                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.",
+                                    TextToSpeech.QUEUE_FLUSH,
+                                    null,
+                                    null)
                                 messageFlag = true
                             }
-                        }else{ // 오른쪽
+                        } else { // 오른쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
-                            if(outputFeature0.get(36) < outputFeature0.get(42)){
-                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                            if (outputFeature0.get(36) < outputFeature0.get(42)) {
+                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.",
+                                    TextToSpeech.QUEUE_FLUSH,
+                                    null,
+                                    null)
                                 messageFlag = true
-                            }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
-                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                            } else { // 엉덩이 높이가 무릎 높이보다 낮을 때
+                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.",
+                                    TextToSpeech.QUEUE_FLUSH,
+                                    null,
+                                    null)
                                 messageFlag = true
                             }
                         }
@@ -143,7 +163,7 @@ object PoseDetector {
                     return false
                 }
             }
-        }else{
+        } else {
             upDownFlag = false
             messageFlag = false
         }
@@ -152,7 +172,7 @@ object PoseDetector {
 
     // 스쿼트의 상체 자세가 바른지 확인하는 함수.
     fun squatStateGood_Upper(outputFeature0: FloatArray): Boolean {
-        if(isLeft){ // 왼쪽
+        if (isLeft) { // 왼쪽
             return (calculateAngle(
                 outputFeature0.get(16),
                 outputFeature0.get(15),
@@ -160,7 +180,7 @@ object PoseDetector {
                 outputFeature0.get(33),
                 outputFeature0.get(16),
                 outputFeature0.get(33)) > 45f)
-        } else{ // 오른쪽
+        } else { // 오른쪽
             return (calculateAngle(
                 outputFeature0.get(19),
                 outputFeature0.get(18),
@@ -173,7 +193,7 @@ object PoseDetector {
 
     // 스쿼트의 하체 엉덩이 자세가 바른지 확인하는 함수.
     fun squatStateGood_Hip(outputFeature0: FloatArray): Boolean {
-        if(isLeft){ // 왼쪽
+        if (isLeft) { // 왼쪽
             return (calculateAngle(
                 outputFeature0.get(34),
                 outputFeature0.get(33),
@@ -181,7 +201,7 @@ object PoseDetector {
                 outputFeature0.get(39),
                 outputFeature0.get(34),
                 outputFeature0.get(39)) < 10f)
-        } else{ // 오른쪽
+        } else { // 오른쪽
             return (calculateAngle(
                 outputFeature0.get(37),
                 outputFeature0.get(36),
@@ -194,7 +214,7 @@ object PoseDetector {
 
     // 스쿼트의 하체 무릎 자세가 바른지 확인하는 함수.
     fun squatStateGood_Knee(outputFeature0: FloatArray): Boolean {
-        if(isLeft){ // 왼쪽
+        if (isLeft) { // 왼쪽
             return (calculateAngle(
                 outputFeature0.get(40),
                 outputFeature0.get(39),
@@ -202,7 +222,7 @@ object PoseDetector {
                 outputFeature0.get(45),
                 outputFeature0.get(40),
                 outputFeature0.get(45)) > 50f)
-        } else{ // 오른쪽
+        } else { // 오른쪽
             return (calculateAngle(
                 outputFeature0.get(43),
                 outputFeature0.get(42),
@@ -247,29 +267,33 @@ object PoseDetector {
         val latPullDownHighThreshold = 120f
         val nowDeep = (outputFeature0.get(21) + outputFeature0.get(24)) / 2
         // 랫풀다운 동작 감지
-        val isLeftDetected = (latPullDownLeftAngle > latPullDownLowThreshold && latPullDownLeftAngle < latPullDownHighThreshold)
-        val isRightDetected = (latPullDownRightAngle > latPullDownLowThreshold && latPullDownRightAngle < latPullDownHighThreshold)
+        val isLeftDetected =
+            (latPullDownLeftAngle > latPullDownLowThreshold && latPullDownLeftAngle < latPullDownHighThreshold)
+        val isRightDetected =
+            (latPullDownRightAngle > latPullDownLowThreshold && latPullDownRightAngle < latPullDownHighThreshold)
         val isLatPullDownDetected = isLeftDetected || isRightDetected
         // 랫풀다운 동작이 감지되었을 때
-        if(isLatPullDownDetected){
-            if(nowDeep > minDeep){
-                if(!upDownFlag){
+        if (isLatPullDownDetected) {
+            if (nowDeep > minDeep) {
+                if (!upDownFlag) {
                     minDeep = nowDeep
                 }
             }
             // 팔 당기는 자세가 정확한지 확인
-            if (isLatPullDownStateGood_Arm(outputFeature0) && isLatPullDownStateGood_Shoulder(outputFeature0) && isLatPullDownStateGood_Upper(outputFeature0) && !upDownFlag) {
+            if (isLatPullDownStateGood_Arm(outputFeature0) && isLatPullDownStateGood_Shoulder(
+                    outputFeature0) && isLatPullDownStateGood_Upper(outputFeature0) && !upDownFlag
+            ) {
                 validLatPullDown = true
             }
-            if(nowDeep < minDeep){
-                if(validLatPullDown && !upDownFlag){
+            if (nowDeep < minDeep) {
+                if (validLatPullDown && !upDownFlag) {
                     validLatPullDown = false
                     minDeep = 0.0f
                     upDownFlag = true
                     return true
                 }
             }
-        }else{
+        } else {
             upDownFlag = false
         }
 
@@ -283,7 +307,7 @@ object PoseDetector {
             outputFeature0.get(21),
             outputFeature0.get(25),
             outputFeature0.get(24))
-        if(Math.abs(gradientArm) > 1){
+        if (Math.abs(gradientArm) > 1) {
             // 임시
             return false
         }
@@ -309,12 +333,12 @@ object PoseDetector {
             outputFeature0.get(19),
             outputFeature0.get(36))
 
-        if(abs(angleShoulderLeft - angleShoulderRight) > 5f){
-            if(angleShoulderLeft > angleShoulderRight){
+        if (abs(angleShoulderLeft - angleShoulderRight) > 5f) {
+            if (angleShoulderLeft > angleShoulderRight) {
                 tts.speak(".", TextToSpeech.QUEUE_FLUSH, null, null)
             }
             return false
-        }else{
+        } else {
             return (angleShoulderLeft < 60f && angleShoulderRight < 60f)
         }
 
@@ -332,7 +356,7 @@ object PoseDetector {
     }
 
     // 레그 익스텐션 자세 추정 함수
-    fun detectLegExtension(outputFeature0: FloatArray) : Boolean {
+    fun detectLegExtension(outputFeature0: FloatArray): Boolean {
 
         val legExLeftAngle = calculateAngle(        // 왼쪽 레그 익스텐션 각도
             outputFeature0.get(33),
@@ -350,15 +374,14 @@ object PoseDetector {
             outputFeature0.get(43),
             outputFeature0.get(48),
             outputFeature0.get(49)
-            )
+        )
 
 
         // 레그 익스텐션의 왼쪽 기준 각도와 오른쪽 기준 각도로 판단
-        if ( (legExLeftAngle < 180f && legExLeftAngle > 160f) || (legExRightAngle < 180f && legExRightAngle > 160f) ) {
+        if ((legExLeftAngle < 180f && legExLeftAngle > 160f) || (legExRightAngle < 180f && legExRightAngle > 160f)) {
             status_legex = "legex"
-        }
-        else if ((legExLeftAngle >= 80f && legExLeftAngle < 100f) || (legExRightAngle >= 80f && legExRightAngle < 100f) ) {
-            if ( status_legex == "legex" ) {
+        } else if ((legExLeftAngle >= 80f && legExLeftAngle < 100f) || (legExRightAngle >= 80f && legExRightAngle < 100f)) {
+            if (status_legex == "legex") {
                 isLegEx = true
                 status_legex = "stand"
 
@@ -370,7 +393,7 @@ object PoseDetector {
     }
 
     // 데드리프트 자세 추정 함수
-    fun detectDeadLift(outputFeature0: FloatArray) : Boolean {
+    fun detectDeadLift(outputFeature0: FloatArray): Boolean {
 
         val deadLiftLeftAngle = calculateAngle(     // 데드리프트 왼쪽 각도
             outputFeature0.get(15),
@@ -391,11 +414,10 @@ object PoseDetector {
         )
 
         // 데드리프트의 왼쪽 기준 각도와 오른쪽 기준 각도로 판단
-        if ( deadLiftLeftAngle < 80f || deadLiftRightAngle < 80f ) {
+        if (deadLiftLeftAngle < 80f || deadLiftRightAngle < 80f) {
             status_dead = "dead"
-        }
-        else if (deadLiftLeftAngle >= 160f || deadLiftRightAngle >= 160f) {
-            if ( status_dead == "dead" ) {
+        } else if (deadLiftLeftAngle >= 160f || deadLiftRightAngle >= 160f) {
+            if (status_dead == "dead") {
                 isDeadLift = true
                 status_dead = "stand"
 
@@ -407,7 +429,7 @@ object PoseDetector {
     }
 
     // 벤치프레스 자세 추정 함수
-    fun detectBenchPress(outputFeature0: FloatArray, tts: TextToSpeech) : Boolean {
+    fun detectBenchPress(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
 
         // 상체 각도
         val benchUpperLeftAngle = calculateAngle(       // 벤치프레스 수행시 상체의 왼쪽 각도
@@ -466,15 +488,19 @@ object PoseDetector {
         )
 
         // 벤치프레스 수행 시, 상체, 하체, 벤치 각도를 모두 고려하여 왼쪽/오른쪽 기준으로 자세 판단
-        if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
+        if ((benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f)) {
             if ((benchUpperLeftAngle >= 80f && benchUpperLeftAngle <= 105f) || (benchUpperRightAngle >= 80f && benchUpperRightAngle <= 105f)) {
 //                    status_bench = "bench"
                 // 팔꿈치 높이가 어깨 높이보다 높을 때
-                if ( ((outputFeature0.get(21) > outputFeature0.get(15)) || (outputFeature0.get(24) > outputFeature0.get(18)))) {
+                if (((outputFeature0.get(21) > outputFeature0.get(15)) || (outputFeature0.get(24) > outputFeature0.get(
+                        18)))
+                ) {
                     bench_counting = false      // 카운팅 안되게 설정
                     feedback_incline = true
                     tts.speak("팔꿈치를 어깨까지 더 내리세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                } else if ( bench_counting == true && ((outputFeature0.get(21) <= outputFeature0.get(15)) || (outputFeature0.get(24) <= outputFeature0.get(18)))) {
+                } else if (bench_counting == true && ((outputFeature0.get(21) <= outputFeature0.get(
+                        15)) || (outputFeature0.get(24) <= outputFeature0.get(18)))
+                ) {
                     status_bench = "bench"
                 }
                 incline_counting = true
@@ -499,7 +525,7 @@ object PoseDetector {
 //    }
 
     // 인클라인 벤치프레스 자세 추정 함수
-    fun detectInclineBenchPress(outputFeature0: FloatArray, tts: TextToSpeech) : Boolean {
+    fun detectInclineBenchPress(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
 
         // 상체 각도
         val benchUpperLeftAngle = calculateAngle(
@@ -574,15 +600,19 @@ object PoseDetector {
 //            }
 //        }
 
-        if ( (benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f) ) {
+        if ((benchLowerLeftAngle > 80f && benchLowerLeftAngle < 100f) || (benchLowerRightAngle > 80f && benchLowerRightAngle < 100f)) {
             if ((benchUpperLeftAngle >= 80f && benchUpperLeftAngle <= 105f) || (benchUpperRightAngle >= 80f && benchUpperRightAngle <= 105f)) {
 //                    status_bench = "bench"
                 // 팔꿈치 높이가 어깨 높이보다 높을 때
-                if ( ((outputFeature0.get(21) > outputFeature0.get(15)) || (outputFeature0.get(24) > outputFeature0.get(18)))) {
+                if (((outputFeature0.get(21) > outputFeature0.get(15)) || (outputFeature0.get(24) > outputFeature0.get(
+                        18)))
+                ) {
                     incline_counting = false      // 카운팅 안되게 설정
                     feedback_incline = true
                     tts.speak("팔꿈치를 어깨까지 더 내리세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                } else if ( incline_counting == true && ((outputFeature0.get(21) <= outputFeature0.get(15)) || (outputFeature0.get(24) <= outputFeature0.get(18)))) {
+                } else if (incline_counting == true && ((outputFeature0.get(21) <= outputFeature0.get(
+                        15)) || (outputFeature0.get(24) <= outputFeature0.get(18)))
+                ) {
                     status_incline = "incline"
                 }
                 incline_counting = true
@@ -599,11 +629,12 @@ object PoseDetector {
         }
         return false
     }
-//    // 기울기 계산 함수
-//    fun calculateGradient(x1: Float, y1: Float, x2: Float, y2: Float): Float{
-//        return (y2 - y1) / (x2 - x1)
-//    }
-//
+
+    //    // 기울기 계산 함수
+    fun calculateGradient(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+        return (y2 - y1) / (x2 - x1)
+    }
+
 //    // tts
 //    fun setTTS(ttsEngine: TextToSpeech){
 //        tts = ttsEngine
