@@ -293,6 +293,69 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                     Log.e("result", "${result},${count}")
                                 }
                             }
+                            else if (selectedExerciseName == "레그 익스텐션") {
+                                if (outputFeature0.get(35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
+                                        41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
+                                        47) > 0.3 && outputFeature0.get(50) > 0.3
+                                ) {
+                                    var result = PoseDetector.detectLegExtension(outputFeature0)
+
+                                    val intent: Intent = Intent()
+                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
+
+                                    countExercise(result)
+                                    activityResult.launch(intent)
+                                    Log.e("result", "${result},${count}")
+                                }
+                            }
+                            else if (selectedExerciseName == "데드리프트") {
+                                if (outputFeature0.get(17) > 0.3 && outputFeature0.get(20) > 0.3 && outputFeature0.get(
+                                        35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
+                                        41) > 0.3 && outputFeature0.get(44) > 0.3
+                                ) {
+                                    var result = PoseDetector.detectDeadLift(outputFeature0)
+
+                                    val intent: Intent = Intent()
+                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
+
+                                    countExercise(result)
+                                    activityResult.launch(intent)
+                                    Log.e("result", "${result},${count}")
+                                }
+                            }
+                            else if (selectedExerciseName == "벤치프레스") {
+                                if ( outputFeature0.get(17) > 0.3 && outputFeature0.get(23) > 0.3 && outputFeature0.get(29) > 0.3 &&
+                                    outputFeature0.get(20) > 0.3 && outputFeature0.get(26) > 0.3 && outputFeature0.get(32) > 0.3 &&
+                                    outputFeature0.get(35) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(47) > 0.3 &&
+                                    outputFeature0.get(38) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(50) > 0.3
+                                ) {
+                                    var result = PoseDetector.detectBenchPress(outputFeature0)
+
+                                    val intent: Intent = Intent()
+                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
+
+                                    countExercise(result)
+                                    activityResult.launch(intent)
+                                    Log.e("result", "${result},${count}")
+                                }
+                            }
+                            else if (selectedExerciseName == "인클라인 벤치프레스") {
+                                if ( outputFeature0.get(17) > 0.3 && outputFeature0.get(23) > 0.3 && outputFeature0.get(29) > 0.3 &&
+                                    outputFeature0.get(20) > 0.3 && outputFeature0.get(26) > 0.3 && outputFeature0.get(32) > 0.3 &&
+                                    outputFeature0.get(35) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(47) > 0.3 &&
+                                    outputFeature0.get(38) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(50) > 0.3
+                                ) {
+                                    var result = PoseDetector.detectInclineBenchPress(outputFeature0)
+
+                                    val intent: Intent = Intent()
+                                    intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
+
+                                    countExercise(result)
+                                    activityResult.launch(intent)
+                                    Log.e("result", "${result},${count}")
+                                }
+                            }
+                            
                         }
 
                         withContext(Dispatchers.Main) {
