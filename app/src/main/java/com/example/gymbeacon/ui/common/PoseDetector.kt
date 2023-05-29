@@ -68,27 +68,16 @@ object PoseDetector {
                 isLeft = false // 엉덩이 x좌표가 무플 x좌표보다 크면 true 아니면 false
                 nowDeep = outputFeature0.get(36)
             }
-            Log.e("isLeft", "isLeft=$isLeft")
-            Log.e("nowDeep", "nowDeep=$nowDeep")
+
             // 가장 낯게 내려갔을때의 엉덩이 높이
             if(nowDeep > minDeep){
                 if(!upDownFlag){
                     minDeep = nowDeep
-                    Log.e("minDeep", "minDeep=$minDeep")
                 }
             }
-            Log.e("upDownFlag", "upDownFlag=$upDownFlag")
-
-            // 임시 로그
-            val fun_result_upper = squatStateGood_Upper(outputFeature0)
-            Log.e("fun_result_upper", "fun_result_upper=$fun_result_upper")
-            val fun_result_hip = squatStateGood_Hip(outputFeature0)
-            Log.e("fun_result_hip", "fun_result_hip=$fun_result_hip")
-            val fun_result_knee = squatStateGood_Knee(outputFeature0)
-            Log.e("fun_result_knee", "fun_result_knee=$fun_result_knee")
 
             // 허리 너무 숙였을 때 피드백
-            if(!squatStateGood_Upper(outputFeature0) && messageFlag){
+            if(!squatStateGood_Upper(outputFeature0) && !messageFlag){
                 tts.speak("허리를 곧게 펴고 상체를 들어주세요", TextToSpeech.QUEUE_FLUSH, null, null)
                 messageFlag = true
             }
@@ -99,12 +88,8 @@ object PoseDetector {
             }
 
             // 앉은 자세가 정확한지 확인
-            if (squatStateGood_Upper(outputFeature0) && squatStateGood_Hip(outputFeature0) && squatStateGood_Knee(outputFeature0) && !upDownFlag) {
-                validSquat = true
-                Log.e("validSquat", "validSquat=$validSquat")
-            } else{
-                validSquat = false
-            }
+            validSquat = squatStateGood_Upper(outputFeature0) && squatStateGood_Hip(outputFeature0) && squatStateGood_Knee(outputFeature0) && !upDownFlag
+
             // 일어서는 동작 감지
             if(nowDeep < minDeep){
                 if(validSquat && !upDownFlag){
@@ -113,26 +98,23 @@ object PoseDetector {
                     return true
                 }else if(!validSquat && !upDownFlag){
                     // 덜 앉았을 때 피드백
-                    if(!messageFlag){
+                    if(!messageFlag && !squatStateGood_Hip(outputFeature0)){
                         if(isLeft){ // 왼쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
                             if(outputFeature0.get(33) < outputFeature0.get(39)){
                                 tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                                messageFlag = true
                             }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
                                 tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                                messageFlag = true
                             }
                         }else{ // 오른쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
                             if(outputFeature0.get(36) < outputFeature0.get(42)){
                                 tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                                messageFlag = true
                             }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
                                 tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
-                                messageFlag = true
                             }
                         }
+                        messageFlag = true
                     }
                     minDeep = 0.0f
                     upDownFlag = true
@@ -222,7 +204,7 @@ object PoseDetector {
         return acos((a.pow(2) + b.pow(2) - c.pow(2)) / (2 * a * b)) * 180 / PI.toFloat()
     }
 
-    fun detectLatPullDown(outputFeature0: FloatArray): Boolean {
+    fun detectLatPullDown(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
         val latPullDownLeftAngle = calculateAngle(
             outputFeature0.get(22),
             outputFeature0.get(21),
@@ -242,10 +224,12 @@ object PoseDetector {
         val latPullDownLowThreshold = 1f
         val latPullDownHighThreshold = 120f
         val nowDeep = (outputFeature0.get(21) + outputFeature0.get(24)) / 2
+
         // 랫풀다운 동작 감지
         val isLeftDetected = (latPullDownLeftAngle > latPullDownLowThreshold && latPullDownLeftAngle < latPullDownHighThreshold)
         val isRightDetected = (latPullDownRightAngle > latPullDownLowThreshold && latPullDownRightAngle < latPullDownHighThreshold)
-        val isLatPullDownDetected = isLeftDetected || isRightDetected
+        val isLatPullDownDetected = isLeftDetected && isRightDetected
+
         // 랫풀다운 동작이 감지되었을 때
         if(isLatPullDownDetected){
             if(nowDeep > minDeep){
@@ -253,41 +237,57 @@ object PoseDetector {
                     minDeep = nowDeep
                 }
             }
-            // 팔 당기는 자세가 정확한지 확인
-            if (isLatPullDownStateGood_Arm(outputFeature0) && isLatPullDownStateGood_Shoulder(outputFeature0) && isLatPullDownStateGood_Upper(outputFeature0) && !upDownFlag) {
-                validLatPullDown = true
+            // 어깨 치우쳐져있으면 피드백
+            if(!isLatPullDownStateGood_Arm(outputFeature0) && !messageFlag){
+                if(latPullDownLeftAngle > latPullDownRightAngle){
+                    tts.speak("오른팔에 힘이 더 들어갔습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    messageFlag = true
+                } else{
+                    tts.speak("왼팔에 힘이 더 들어갔습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    messageFlag = true
+                }
             }
+
+            // 상체 기울어지면 피드백
+            if(!isLatPullDownStateGood_Upper(outputFeature0) && !messageFlag){
+                if(outputFeature0.get(15) > outputFeature0.get(18)){
+                    tts.speak("상체가 왼쪽으로 기울었습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    messageFlag = true
+                } else{
+                    tts.speak("상체가 오른쪽으로 기울었습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    messageFlag = true
+                }
+            }
+
+            // 팔 당기는 자세가 정확한지 확인
+            validLatPullDown = isLatPullDownStateGood_Shoulder(outputFeature0) && isLatPullDownStateGood_Arm(outputFeature0)
+                    && isLatPullDownStateGood_Upper(outputFeature0) && !upDownFlag
+
+            // 팔 올리는 동작 감지
             if(nowDeep < minDeep){
                 if(validLatPullDown && !upDownFlag){
-                    validLatPullDown = false
                     minDeep = 0.0f
                     upDownFlag = true
                     return true
+                }else if(!validLatPullDown && !upDownFlag){
+                    // 팔 덜 내렸을 때 피드백
+                    if(!messageFlag && !isLatPullDownStateGood_Shoulder(outputFeature0)){
+                        tts.speak("등에 자극이 올 때까지 팔을 더 당겨주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                        messageFlag = true
+                    }
+                    minDeep = 0.0f
+                    upDownFlag = true
+                    return false
                 }
             }
         }else{
             upDownFlag = false
+            messageFlag = false
         }
-
         return false
     }
 
-    // 랫풀다운에서 팔 기울기가 바른지 확인하는 함수.
-    fun isLatPullDownStateGood_Arm(outputFeature0: FloatArray): Boolean {
-        val gradientArm = calculateGradient(
-            outputFeature0.get(22),
-            outputFeature0.get(21),
-            outputFeature0.get(25),
-            outputFeature0.get(24))
-        if(Math.abs(gradientArm) > 1){
-            // 임시
-            return false
-        }
-        // 임시
-        return false
-    }
-
-    // 랫풀다운에서 어깨 각도가 바른지 확인하는 함수.
+    // 랫풀다운에서 어깨 각도가 임계값에 도달했는지 확인하는 함수.
     fun isLatPullDownStateGood_Shoulder(outputFeature0: FloatArray): Boolean {
         val angleShoulderLeft = calculateAngle(
             outputFeature0.get(22),
@@ -298,33 +298,44 @@ object PoseDetector {
             outputFeature0.get(33))
         val angleShoulderRight = calculateAngle(
             outputFeature0.get(25),
-
             outputFeature0.get(24),
             outputFeature0.get(19),
             outputFeature0.get(18),
             outputFeature0.get(19),
             outputFeature0.get(36))
 
-        if(abs(angleShoulderLeft - angleShoulderRight) > 5f){
-            if(angleShoulderLeft > angleShoulderRight){
-                tts.speak(".", TextToSpeech.QUEUE_FLUSH, null, null)
-            }
-            return false
-        }else{
-            return (angleShoulderLeft < 60f && angleShoulderRight < 60f)
-        }
-
+        return (angleShoulderLeft < 30f && angleShoulderRight < 30f)
     }
 
-    // 랫풀다운에서 상체 기울기가 바른지 확인하는 함수.
+    // 랫풀다운에서 어깨 각도가 바른지 확인하는 함수.
+    fun isLatPullDownStateGood_Arm(outputFeature0: FloatArray): Boolean {
+        val angleShoulderLeft = calculateAngle(
+            outputFeature0.get(22),
+            outputFeature0.get(21),
+            outputFeature0.get(16),
+            outputFeature0.get(15),
+            outputFeature0.get(16),
+            outputFeature0.get(33))
+        val angleShoulderRight = calculateAngle(
+            outputFeature0.get(25),
+            outputFeature0.get(24),
+            outputFeature0.get(19),
+            outputFeature0.get(18),
+            outputFeature0.get(19),
+            outputFeature0.get(36))
+
+        return (abs(angleShoulderLeft - angleShoulderRight) < 10f)
+    }
+
+    // 랫풀다운에서 상체 기울기가 바른지 확인하는 함수. - 상체가 한쪽으로 쏠리는지 확인
     fun isLatPullDownStateGood_Upper(outputFeature0: FloatArray): Boolean {
         return (calculateAngle(
-            outputFeature0.get(39),
-            outputFeature0.get(40),
-            outputFeature0.get(33),
-            outputFeature0.get(34),
-            outputFeature0.get(40),
-            outputFeature0.get(33)) > 150f)
+            outputFeature0.get(16),
+            outputFeature0.get(15),
+            outputFeature0.get(19),
+            outputFeature0.get(18),
+            outputFeature0.get(19),
+            outputFeature0.get(15)) < 10f)
     }
 
     // 레그 익스텐션 자세 추정 함수

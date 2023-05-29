@@ -283,7 +283,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                         41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
                                         47) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectLatPullDown(outputFeature0)
+                                    var result = PoseDetector.detectLatPullDown(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
