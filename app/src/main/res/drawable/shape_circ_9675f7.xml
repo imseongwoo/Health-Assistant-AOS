@@ -7,11 +7,8 @@
                 android:width="39.3dp"
                 android:height="40dp" />
 
-            <solid android:color="@color/color_9675f7" />
+            <solid android:color="@color/black" />
 
-            <stroke
-                android:width="0.5dp"
-                android:color="@color/color_9675f7" />
         </shape>
     </item>
 </layer-list>
