@@ -70,6 +70,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     // 녹화 관련 (04-05 추가)
     private lateinit var mMediaRecorder: MediaRecorder
     private var mNextVideoAbsolutePath: String? = null
+    private var isRecording : Boolean = false     // 녹화 토글 버튼 확인용
 
     // 원하는 폴더이름 생성
     private val DETAIL_PATH = "DCIM/Koreatech/"
@@ -122,6 +123,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val detailIntent = intent
         selectedExerciseName = detailIntent.getStringExtra("upper")!!
 
+        isRecording = binding.recordToggle.isChecked
 
         // 운동별로 안내창 다이어로그 띄어주기
 
@@ -329,7 +331,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                     outputFeature0.get(35) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(47) > 0.3 &&
                                     outputFeature0.get(38) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectBenchPress(outputFeature0)
+                                    var result = PoseDetector.detectBenchPress(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
@@ -345,7 +347,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                     outputFeature0.get(35) > 0.3 && outputFeature0.get(41) > 0.3 && outputFeature0.get(47) > 0.3 &&
                                     outputFeature0.get(38) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectInclineBenchPress(outputFeature0)
+                                    var result = PoseDetector.detectInclineBenchPress(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
@@ -355,7 +357,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                     Log.e("result", "${result},${count}")
                                 }
                             }
-                            
+
                         }
 
                         withContext(Dispatchers.Main) {
@@ -366,12 +368,22 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
         }
 
-        // 04-05 추가
-        binding.buttonDetailRecord.setOnClickListener {
-            startRecording()
-        }
-        binding.buttonStopRecording.setOnClickListener {
-            stopRecordingVideo()
+//        // 04-05 추가
+//        binding.buttonDetailRecord.setOnClickListener {
+//            startRecording()
+//        }
+//        binding.buttonStopRecording.setOnClickListener {
+//            stopRecordingVideo()
+//        }
+
+        // 녹화 버튼의 클릭 리스너 설정
+        binding.recordToggle.setOnClickListener {
+            isRecording = !isRecording
+            print(binding.recordToggle.isChecked.toString())
+//            // 토글 버튼의 상태에 따라
+//            if (isRecording == true) {
+//                binding.recordToggle.setTextColor(Color.WHITE)
+//            }
         }
 
     }
@@ -420,16 +432,25 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             imageViewDetailStart.setOnClickListener {
+                //3. 운동 시작 버튼 눌렀을 때 갯수 카운트 초기화
+                count = 0
                 maxNum = textViewDetailPageCount.text.toString()
+                imageViewDetailStart.text = "기록 중지"
+
+                if (binding.recordToggle.isChecked == true) {
+                    startRecording()
+                    Log.d("녹화 시작함 ??", binding.recordToggle.isChecked.toString())
+                    print(binding.recordToggle.isChecked.toString())
+                }
             }
 
-            buttonDetailRecord.setOnClickListener {
-                startRecording()
-            }
-
-            buttonStopRecording.setOnClickListener {
-                stopRecordingVideo()
-            }
+//            buttonDetailRecord.setOnClickListener {
+//                startRecording()
+//            }
+//
+//            buttonStopRecording.setOnClickListener {
+//                stopRecordingVideo()
+//            }
         }
     }
 
@@ -440,20 +461,35 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (languageStatus == TextToSpeech.LANG_MISSING_DATA ||
                 languageStatus == TextToSpeech.LANG_NOT_SUPPORTED
             ) {
-                Toast.makeText(this, "언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "언어를 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 val data: String = count.toString()
                 var speechStatus: Int = 0
 
                 if (data != previousTtsData && data != "0") {
                     if (data.toInt() >= maxNum.toInt()) {
-                        tts.speak("세트가 끝났습니다", TextToSpeech.QUEUE_FLUSH, null, null)
-                        GlobalScope.launch {
-                            delay(2000) // 2초 대기
-//                            finish() // 종료
-                            initCount()
+                        // 2. 설정한 카운트 개수 말하고 세트 종료 메세지 출력하기
+                        //tts.speak(maxNum, TextToSpeech.QUEUE_FLUSH, null, null)
+                        count = maxNum.toInt()
 
+                        tts.speak(maxNum, TextToSpeech.QUEUE_FLUSH, null, null)
+                        Thread.sleep(1000)
+                        tts.speak("세트가 끝났습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                        //isRecording = false     // 녹화 종료
+
+                        if (binding.recordToggle.isChecked == true) {
+                            stopRecordingVideo()
                         }
+
+                        Thread.sleep(2000) // 2초 대기
+                        initCount()
+
+//                        GlobalScope.launch {
+//                            delay(2000) // 2초 대기
+////                            finish() // 종료
+//                            initCount()
+//
+//                        }
 
                     } else {
                         speechStatus = tts.speak(data, TextToSpeech.QUEUE_FLUSH, null, null)
@@ -483,7 +519,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             it.stop()
             it.shutdown()
         }
-        model.close()
+//        model.close()
     }
 
     // 04-05 추가
@@ -575,13 +611,20 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     //파일 이름 및 저장경로를 생성, 04-05 추가
     private fun getVideoFilePath(exerciseName: String): String {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timeStamp = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.getDefault()).format(Date())
         val dir = Environment.getExternalStorageDirectory().absoluteFile
         val path = dir.path + "/" + DETAIL_PATH
         val dst = File(path)
         if (!dst.exists()) dst.mkdirs()
 
-        return path + timeStamp + "_" + exerciseName + ".mp4"
+        // 8. 캘린더페이지 녹화 영상 이름에 운동이름 + 운동 횟수 : 우선도 낮음
+//        if (count == 0) {
+//            return path + timeStamp + "_" + exerciseName + " -회" + ".mp4"
+//        }
+
+        //return path + timeStamp + "_" + exerciseName + " -회" + ".mp4"
+        return path + timeStamp + "_" + exerciseName + " " + maxNum + "회" + ".mp4"
+
     }
 
     // 녹화 시작 04-05 추가
@@ -601,22 +644,22 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             val previewSurface = Surface(texture)       // SurfaceTexture를 가지고 미리보기 Surface 생성
             surfaces.add(previewSurface)        // 미리보기 Surface 목록에 추가
             mCaptureRequestBuilder!!.addTarget(previewSurface)  // 빌드를 위해 미리보기 Surface를 캡처 요청 빌더에 추가
-            val recordSurface = mMediaRecorder.surface      // 미디어레코더의 Surface를 가져옴
+            val recordSurface = mMediaRecorder!!.surface      // 미디어레코더의 Surface를 가져옴
             surfaces.add(recordSurface)     // 녹화된 화면을 저장할 Surface 목록에 추가
             mCaptureRequestBuilder!!.addTarget(recordSurface)   // 빌드를 위해 MediaRecorder Surface를 캡처 요청 빌더에 추가
 
-            binding.buttonDetailRecord.setText("녹화 중..")
+//            binding.buttonDetailRecord.setText("녹화 중..")
 
             cameraDevice!!.createCaptureSession(surfaces, object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     mCameraCaptureSession = session     // 생성된 세션을 클래스 변수에 저장
                     mCameraCaptureSession!!.setRepeatingRequest(mCaptureRequestBuilder!!.build(), null, null)  // 세션에서 지속적으로 비디오 프레임을 캡처하도록 반복 요청 설정
-                    Toast.makeText(this@DetailActivity, "녹화 시작...", Toast.LENGTH_SHORT).show()   // 녹화 시작 버튼을 누르면 "녹화 중"이라는 메세지 출력
+                    Toast.makeText(this@DetailActivity, "녹화를 시작합니다.", Toast.LENGTH_SHORT).show()   // 녹화 시작 버튼을 누르면 "녹화 중"이라는 메세지 출력
                 }
 
-                    override fun onConfigureFailed(session: CameraCaptureSession) {
-                    }
-                },
+                override fun onConfigureFailed(session: CameraCaptureSession) {
+                }
+            },
                 handler)
             //timer()
         } catch (e: CameraAccessException) {    // 카메라 접근 권한 예외 처리
@@ -628,11 +671,14 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     //녹화 중지 04-05 추가
     private fun stopRecordingVideo() {
-        binding.buttonDetailRecord.setText("녹화 시작")
+//        binding.buttonDetailRecord.setText("녹화 시작")
+
         Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()                 // 녹화 종료 메세지
         Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()     // 저장 메세지 출력
-        mMediaRecorder.stop()               // 미디어레코더 녹음 중지
-        mMediaRecorder.reset()
+        mMediaRecorder?.stop()               // 미디어레코더 녹음 중지
+        mMediaRecorder?.reset()
+//        mMediaRecorder?.release()
+//        mMediaRecorder = null
 
         mNextVideoAbsolutePath = null
         cameraDevice?.close()
@@ -641,6 +687,27 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         //녹화 종료 후 카메라 미리보기 재개
         openCamera()
 
+//        if (mMediaRecorder != null) {
+//            try {
+//                mMediaRecorder!!.stop()
+//                mMediaRecorder!!.reset()
+//                mMediaRecorder!!.release()
+//            } catch (e: IllegalStateException) {
+//                // 예외 처리
+//            } finally {
+//                mMediaRecorder = null
+//            }
+//        }
+//
+//        Toast.makeText(this, "녹화가 종료되었습니다.", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Video saved: $mNextVideoAbsolutePath", Toast.LENGTH_SHORT).show()
+//
+//        mNextVideoAbsolutePath = null
+//        cameraDevice?.close()
+//        cameraDevice = null
+//
+//        // 녹화 종료 후 카메라 미리보기 재개
+//        openCamera()
     }
 
     // 04-05 추가
@@ -656,6 +723,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             count += 1
         }
     }
+
 
     companion object {
         private const val REQUEST_RECORD_AUDIO_PERMISSION = 201
