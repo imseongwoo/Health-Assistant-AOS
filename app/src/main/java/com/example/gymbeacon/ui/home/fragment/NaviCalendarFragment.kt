@@ -129,8 +129,11 @@ class NaviCalendarFragment : Fragment() {
             videoAdapter.notifyDataSetChanged()
         } else {    // 동영상이 있을 경우 동영상의 이름과 저장 경로를 Video data class에 저장 후 adapter로 넘겨줌
             val videos = videoFiles.map { file ->
-                val exerciseName = file.name.substringBeforeLast(".mp4").substringAfterLast("_")
-                Video(exerciseName, file.path)
+                // 8. 캘린더페이지 녹화 영상 이름에 운동이름 + 운동 횟수 : 우선도 낮음
+                val exerciseName = file.name.substringBeforeLast(" ").substringAfterLast("_")
+                val exerciseCount = file.name.substringBeforeLast(".mp4").substringAfterLast(" ")
+                //val exerciseNameCount = file.name.substringBeforeLast(".mp4").substringAfterLast("_")
+                Video(exerciseName, exerciseCount, file.path)
             }
 
             videoAdapter = VideoAdapter(videos){
