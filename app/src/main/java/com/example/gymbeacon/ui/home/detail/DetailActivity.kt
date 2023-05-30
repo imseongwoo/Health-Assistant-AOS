@@ -300,7 +300,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                         41) > 0.3 && outputFeature0.get(44) > 0.3 && outputFeature0.get(
                                         47) > 0.3 && outputFeature0.get(50) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectLegExtension(outputFeature0)
+                                    var result = PoseDetector.detectLegExtension(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA
@@ -315,7 +315,7 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                                         35) > 0.3 && outputFeature0.get(38) > 0.3 && outputFeature0.get(
                                         41) > 0.3 && outputFeature0.get(44) > 0.3
                                 ) {
-                                    var result = PoseDetector.detectDeadLift(outputFeature0)
+                                    var result = PoseDetector.detectDeadLift(outputFeature0, tts)
 
                                     val intent: Intent = Intent()
                                     intent.action = TextToSpeech.Engine.ACTION_CHECK_TTS_DATA

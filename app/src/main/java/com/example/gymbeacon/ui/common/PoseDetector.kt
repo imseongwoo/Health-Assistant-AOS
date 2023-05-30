@@ -20,10 +20,13 @@ object PoseDetector {
     // 레그 익스텐션
     var status_legex = "stand"      // 상태 = state or legex
     var isLegEx = false
+    private var isLegFeedback = false
+    private var isLegExCounting = true
 
     // 데드리프트
-    var status_dead = "stand"        // 상태 = state or dead
+    var status_dead = "stand"        // 상태 = stand or dead
     var isDeadLift = false
+    private var isDeadFeedback = false
 
     // 벤치프레스
     var status_bench = "initial"      // 상태 = initial or bench
@@ -246,6 +249,7 @@ object PoseDetector {
         return acos((a.pow(2) + b.pow(2) - c.pow(2)) / (2 * a * b)) * 180 / PI.toFloat()
     }
 
+
     fun detectLatPullDown(outputFeature0: FloatArray): Boolean {
         val latPullDownLeftAngle = calculateAngle(
             outputFeature0.get(22),
@@ -356,7 +360,7 @@ object PoseDetector {
     }
 
     // 레그 익스텐션 자세 추정 함수
-    fun detectLegExtension(outputFeature0: FloatArray): Boolean {
+    fun detectLegExtension(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
 
         val legExLeftAngle = calculateAngle(        // 왼쪽 레그 익스텐션 각도
             outputFeature0.get(33),
@@ -377,10 +381,17 @@ object PoseDetector {
         )
 
 
+
         // 레그 익스텐션의 왼쪽 기준 각도와 오른쪽 기준 각도로 판단
-        if ((legExLeftAngle < 180f && legExLeftAngle > 160f) || (legExRightAngle < 180f && legExRightAngle > 160f)) {
+        if ((legExLeftAngle <= 180f && legExLeftAngle > 170f) || (legExRightAngle <= 180f && legExRightAngle > 170f)) {
             status_legex = "legex"
-        } else if ((legExLeftAngle >= 80f && legExLeftAngle < 100f) || (legExRightAngle >= 80f && legExRightAngle < 100f)) {
+            isLegFeedback = false
+        }
+        else if ( (legExLeftAngle <= 170f || legExRightAngle <= 170f) && isLegFeedback == false) {
+            isLegFeedback = true
+            tts.speak("다리를 더 높이 올리세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+        else if ((legExLeftAngle >= 80f && legExLeftAngle < 120f) || (legExRightAngle >= 80f && legExRightAngle < 120f)) {
             if (status_legex == "legex") {
                 isLegEx = true
                 status_legex = "stand"
@@ -393,7 +404,7 @@ object PoseDetector {
     }
 
     // 데드리프트 자세 추정 함수
-    fun detectDeadLift(outputFeature0: FloatArray): Boolean {
+    fun detectDeadLift(outputFeature0: FloatArray, tts: TextToSpeech): Boolean {
 
         val deadLiftLeftAngle = calculateAngle(     // 데드리프트 왼쪽 각도
             outputFeature0.get(15),
@@ -413,17 +424,55 @@ object PoseDetector {
             outputFeature0.get(43)
         )
 
+        val deadLeftLowerAngle = calculateAngle(
+            outputFeature0.get(33),
+            outputFeature0.get(34),
+            outputFeature0.get(39),
+            outputFeature0.get(40),
+            outputFeature0.get(45),
+            outputFeature0.get(46)
+        )
+
+        val deadRightLowerAngle = calculateAngle(
+            outputFeature0.get(36),
+            outputFeature0.get(37),
+            outputFeature0.get(42),
+            outputFeature0.get(43),
+            outputFeature0.get(48),
+            outputFeature0.get(49)
+        )
+
+        Log.d("dead 각도", deadLiftLeftAngle.toString())
+
         // 데드리프트의 왼쪽 기준 각도와 오른쪽 기준 각도로 판단
-        if (deadLiftLeftAngle < 80f || deadLiftRightAngle < 80f) {
-            status_dead = "dead"
-        } else if (deadLiftLeftAngle >= 160f || deadLiftRightAngle >= 160f) {
+        if ( (deadLiftLeftAngle > 30f && deadLiftLeftAngle < 60f) || (deadLiftRightAngle > 30f && deadLiftRightAngle < 60f) ) {
+
+            if ( (deadLeftLowerAngle < 70f || deadRightLowerAngle < 70f) && isDeadFeedback == false ) {
+                isDeadFeedback = true
+                tts.speak("엉덩이를 더 올리세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+            }
+            else {
+                status_dead = "dead"
+            }
+        }
+        else if ( (deadLiftLeftAngle <= 180f && deadLiftLeftAngle >= 170f) || (deadLiftRightAngle <= 180f && deadLiftRightAngle >= 170f) ) {  // 숙였다가 올라올 때
             if (status_dead == "dead") {
                 isDeadLift = true
                 status_dead = "stand"
+                isDeadFeedback = false
 
                 return isDeadLift
             }
         }
+//        else if ( (deadLiftLeftAngle > 180f || deadLiftRightAngle > 180f)) {
+//            if (status_dead == "stand") {
+//                isDeadLift = false
+//                tts.speak("허리가 너무 뒤로 꺾였습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+//                status_dead = "dead"
+//
+//                return isDeadLift
+//            }
+//        }
 
         return false
     }
