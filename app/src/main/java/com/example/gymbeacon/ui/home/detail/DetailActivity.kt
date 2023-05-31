@@ -436,6 +436,8 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 count = 0
                 maxNum = textViewDetailPageCount.text.toString()
 
+                Toast.makeText(this@DetailActivity, "기록을 시작합니다.", Toast.LENGTH_SHORT).show()
+
                 if (binding.recordToggle.isChecked == true) {
                     startRecording()
                     Log.d("녹화 시작함 ??", binding.recordToggle.isChecked.toString())

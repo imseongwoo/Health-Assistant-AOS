@@ -58,7 +58,7 @@ object PoseDetector {
             outputFeature0.get(48)
         )
         val squatLowThreshold = 10f
-        val squatHighThreshold = 160f
+        val squatHighThreshold = 150f
         var nowDeep = 0.0f
 
         // 스쿼드 동작 인식
@@ -109,19 +109,22 @@ object PoseDetector {
                         if(isLeft){ // 왼쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
                             if(outputFeature0.get(33) < outputFeature0.get(39)){
-                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                tts.speak("더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
                             }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
-                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                tts.speak("너무 많이 앉았습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
                             }
                         }else{ // 오른쪽
                             // 엉덩이 높이가 무릎 높이보다 높을 때
                             if(outputFeature0.get(36) < outputFeature0.get(42)){
-                                tts.speak("무릎과 엉덩이의 높이가 수평이 되도록 더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                tts.speak("더 앉아주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
                             }else{ // 엉덩이 높이가 무릎 높이보다 낮을 때
-                                tts.speak("너무 많이 앉았습니다. 무릎과 엉덩이의 높이가 수평이 되게 해주세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                tts.speak("너무 많이 앉았습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                                messageFlag = true
                             }
                         }
-                        messageFlag = true
                     }
                     minDeep = 0.0f
                     upDownFlag = true
@@ -165,7 +168,7 @@ object PoseDetector {
                 outputFeature0.get(40),
                 outputFeature0.get(39),
                 outputFeature0.get(34),
-                outputFeature0.get(39)) < 10f)
+                outputFeature0.get(39)) < 20f)
         } else{ // 오른쪽
             return (calculateAngle(
                 outputFeature0.get(37),
@@ -173,7 +176,7 @@ object PoseDetector {
                 outputFeature0.get(43),
                 outputFeature0.get(42),
                 outputFeature0.get(37),
-                outputFeature0.get(42)) < 10f)
+                outputFeature0.get(42)) < 20f)
         }
     }
 
@@ -228,13 +231,13 @@ object PoseDetector {
             outputFeature0.get(19),
             outputFeature0.get(36))
 
-        val latPullDownLowThreshold = 1f
-        val latPullDownHighThreshold = 120f
+        //val latPullDownLowThreshold = 1f
+        val latPullDownHighThreshold = 110f
         val nowDeep = (outputFeature0.get(21) + outputFeature0.get(24)) / 2
 
         // 랫풀다운 동작 감지
-        val isLeftDetected = (latPullDownLeftAngle > latPullDownLowThreshold && latPullDownLeftAngle < latPullDownHighThreshold)
-        val isRightDetected = (latPullDownRightAngle > latPullDownLowThreshold && latPullDownRightAngle < latPullDownHighThreshold)
+        val isLeftDetected = (latPullDownLeftAngle < latPullDownHighThreshold)
+        val isRightDetected = (latPullDownRightAngle < latPullDownHighThreshold)
         val isLatPullDownDetected = isLeftDetected && isRightDetected
 
         // 랫풀다운 동작이 감지되었을 때
@@ -242,16 +245,6 @@ object PoseDetector {
             if(nowDeep > minDeep){
                 if(!upDownFlag){
                     minDeep = nowDeep
-                }
-            }
-            // 어깨 치우쳐져있으면 피드백
-            if(!isLatPullDownStateGood_Arm(outputFeature0) && !messageFlag){
-                if(latPullDownLeftAngle > latPullDownRightAngle){
-                    tts.speak("오른팔에 힘이 더 들어갔습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
-                    messageFlag = true
-                } else{
-                    tts.speak("왼팔에 힘이 더 들어갔습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
-                    messageFlag = true
                 }
             }
 
@@ -262,6 +255,17 @@ object PoseDetector {
                     messageFlag = true
                 } else{
                     tts.speak("상체가 오른쪽으로 기울었습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    messageFlag = true
+                }
+            }
+
+            // 어깨 치우쳐져있으면 피드백
+            if(!isLatPullDownStateGood_Arm(outputFeature0) && !messageFlag){
+                if(latPullDownLeftAngle > latPullDownRightAngle){
+                    tts.speak("오른팔에 힘이 더 들어갔습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    messageFlag = true
+                } else{
+                    tts.speak("왼팔에 힘이 더 들어갔습니다.", TextToSpeech.QUEUE_FLUSH, null, null)
                     messageFlag = true
                 }
             }
@@ -311,7 +315,7 @@ object PoseDetector {
             outputFeature0.get(19),
             outputFeature0.get(36))
 
-        return (angleShoulderLeft < 30f && angleShoulderRight < 30f)
+        return (angleShoulderLeft < 60f && angleShoulderRight < 60f)
     }
 
     // 랫풀다운에서 어깨 각도가 바른지 확인하는 함수.
@@ -325,14 +329,13 @@ object PoseDetector {
             outputFeature0.get(33))
         val angleShoulderRight = calculateAngle(
             outputFeature0.get(25),
-
             outputFeature0.get(24),
             outputFeature0.get(19),
             outputFeature0.get(18),
             outputFeature0.get(19),
             outputFeature0.get(36))
 
-        return (abs(angleShoulderLeft - angleShoulderRight) < 10f)
+        return (abs(angleShoulderLeft - angleShoulderRight) < 20f)
     }
 
     // 랫풀다운에서 상체 기울기가 바른지 확인하는 함수. - 상체가 한쪽으로 쏠리는지 확인
@@ -342,8 +345,8 @@ object PoseDetector {
             outputFeature0.get(15),
             outputFeature0.get(19),
             outputFeature0.get(18),
-            outputFeature0.get(19),
-            outputFeature0.get(15)) < 10f)
+            outputFeature0.get(16),
+            outputFeature0.get(18)) < 20f)
     }
 
     // 레그 익스텐션 자세 추정 함수
