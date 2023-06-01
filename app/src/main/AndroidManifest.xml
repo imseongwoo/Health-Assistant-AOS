@@ -47,7 +47,8 @@
         <activity
             android:name=".ui.home.detail.DetailActivity"
             android:exported="false"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.LowerBodyCategoryActivity"
             android:exported="false" />
