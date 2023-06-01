@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GymBeacon</string>
+    <string name="app_name">PoFit</string>
     <string name="login_app_name">Health Assistant</string>
     <string name="login">로그인</string>
     <string name="edit_text_id">아이디</string>
