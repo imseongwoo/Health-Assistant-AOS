@@ -29,6 +29,7 @@ import com.example.gymbeacon.ui.common.CommonUtil
 import com.example.gymbeacon.ui.common.PoseDetector
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -40,6 +41,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityDetailBinding
     lateinit var cameraManager: CameraManager
