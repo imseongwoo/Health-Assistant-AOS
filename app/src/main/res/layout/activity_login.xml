@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="vm"
+            type="com.example.gymbeacon.ui.login.LoginViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -49,6 +51,7 @@
                 android:layout_marginTop="30dp"
                 android:background="@null"
                 android:hint="@string/edit_text_id"
+                android:text="@={vm.account}"
                 android:textColorHint="@color/color_c4c4c4"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="83dp"
                 android:layout_marginTop="25dp"
+                android:text="@={vm.password}"
                 android:background="@null"
                 android:hint="@string/edit_text_password"
                 android:inputType="textPassword"
