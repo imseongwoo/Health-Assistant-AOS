@@ -8,8 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,8 +19,8 @@ import com.example.gymbeacon.databinding.FragmentNaviMypageBinding
 import com.example.gymbeacon.ui.chart.ChartActivity
 import com.example.gymbeacon.ui.chart.DateCountsData
 import com.example.gymbeacon.ui.chart.MyMarkerView
-import com.example.gymbeacon.ui.common.CommonUtil
-import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
+import com.example.domain.auth.CommonUtil
+import com.example.gymbeacon.ui.home.viewmodel.NaviViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
@@ -32,11 +30,9 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.snapshot.Index
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -47,7 +43,7 @@ class NaviMyPageFragment : Fragment() {
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerExerciseCountMap: MutableMap<String, Pair<Int,Int>>
     var returnCount = 1
-    private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: NaviViewModel by viewModels { ViewModelFactory() }
 
     // 레이더차트에 필요한 운동별 count 사이즈
     var counts_bench = 0

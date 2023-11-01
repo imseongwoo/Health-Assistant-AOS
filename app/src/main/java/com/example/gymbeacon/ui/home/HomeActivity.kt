@@ -12,7 +12,9 @@ import com.example.gymbeacon.ui.home.fragment.NaviHomeFragment
 import com.example.gymbeacon.ui.home.fragment.NaviMyPageFragment
 import com.example.gymbeacon.ui.home.fragment.NaviSettingFragment
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private val naviFragmentHome by lazy { NaviHomeFragment.newInstance() }

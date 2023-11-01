@@ -1,7 +1,9 @@
 package com.example.gymbeacon.di
 
 import com.example.data.datasource.remote.UserRemoteDataSource
+import com.example.data.repository.NaviRepositoryImpl
 import com.example.data.repository.UserRepositoryImpl
+import com.example.domain.repository.NaviRepository
 import com.example.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -18,5 +20,13 @@ object RepositoryModule {
         userRemoteDataSource: UserRemoteDataSource
     ): UserRepository{
         return UserRepositoryImpl(userRemoteDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNaviRepository(
+        userRemoteDataSource: UserRemoteDataSource
+    ): NaviRepository {
+        return NaviRepositoryImpl(userRemoteDataSource)
     }
 }

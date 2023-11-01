@@ -24,8 +24,8 @@ import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivityDetailBinding
 import com.example.gymbeacon.ml.LiteModelMovenetSingleposeLightningTfliteFloat164
 import com.example.gymbeacon.model.BodyPart
-import com.example.gymbeacon.model.HealthEntity
-import com.example.gymbeacon.ui.common.CommonUtil
+import com.example.domain.model.HealthEntity
+import com.example.domain.auth.CommonUtil
 import com.example.gymbeacon.ui.common.PoseDetector
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase

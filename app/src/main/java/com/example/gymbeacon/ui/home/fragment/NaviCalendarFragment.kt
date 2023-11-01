@@ -25,18 +25,16 @@ import com.example.gymbeacon.databinding.FragmentNaviCalendarBinding
 import com.example.gymbeacon.model.Video
 import com.example.gymbeacon.ui.common.VideoPlayerActivity
 import com.example.gymbeacon.ui.home.adapter.VideoAdapter
-import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
+import com.example.gymbeacon.ui.home.viewmodel.NaviViewModel
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NaviCalendarFragment : Fragment() {
     lateinit var binding: FragmentNaviCalendarBinding
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerExerciseCountMap: MutableMap<String, Pair<Int, Int>>
-    private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: NaviViewModel by viewModels { ViewModelFactory() }
     private lateinit var videoAdapter: VideoAdapter
 
     private val requestPermissionLauncher =

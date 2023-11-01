@@ -1,4 +1,4 @@
-package com.example.gymbeacon.ui.common
+package com.example.domain.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference

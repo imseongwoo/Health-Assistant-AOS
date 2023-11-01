@@ -102,18 +102,4 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
-/*
-    fun signinEmail() {
-        auth?.signInWithEmailAndPassword(binding.editTextId.text.toString(),
-            binding.editTextPassword.text.toString())
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Login, 아이디와 패스워드가 맞았을 때
-                    goHomeActivity(task.result?.user)
-                } else {
-                    // Show the error message, 아이디와 패스워드가 틀렸을 때
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                }
-            }
-    }*/
 }

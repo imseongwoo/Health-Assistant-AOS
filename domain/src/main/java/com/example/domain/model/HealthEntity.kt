@@ -1,4 +1,4 @@
-package com.example.gymbeacon.model
+package com.example.domain.model
 
 data class HealthEntity(
     var uid: String? = "",
