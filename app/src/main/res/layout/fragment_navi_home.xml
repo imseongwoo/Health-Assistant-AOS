@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.example.gymbeacon.ui.home.viewmodel.NaviViewModel" />
@@ -22,14 +23,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/toolbar_home"
-                        android:layout_width="100dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/pofit_logo"
-                        android:layout_marginStart="-18dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                <ImageView
+                    android:id="@+id/toolbar_home"
+                    android:layout_width="100dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="-18dp"
+                    android:src="@drawable/pofit_logo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,86 +38,80 @@
                     android:layout_width="match_parent"
                     android:layout_height="00dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="10dp"
-                    android:paddingBottom="20dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/rectangle_radius"
+                    android:paddingBottom="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar_home"
-                    >
+                    app:layout_constraintTop_toBottomOf="@id/toolbar_home">
 
 
                     <TextView
                         android:id="@+id/text_view_user_recently"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:text="마지막 운동 기록"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/black"
-                        android:text="마지막 운동 기록"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/text_view_user_hello"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right"
                         android:layout_marginStart="16dp"
-                        app:layout_goneMarginTop="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
                         android:text="사용자 님"
                         android:textColor="@color/color_222222"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_gravity="right"
-                        />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_goneMarginTop="5dp" />
 
                     <TextView
                         android:id="@+id/text_view_exercise_recently_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
                         android:layout_marginStart="10dp"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="15dp"
                         android:text="최근 운동 날짜 : "
-                        app:layout_constraintTop_toBottomOf="@id/text_view_user_recently"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/text_view_user_recently" />
 
                     <TextView
-                        android:id="@+id/text_view_exercise_recently_date2"
+                        android:id="@+id/text_view_exercise_recently_date_second"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
                         android:layout_marginStart="10dp"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="15dp"
                         android:text="운동 날짜"
-                        app:layout_constraintTop_toBottomOf="@id/text_view_user_recently"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/text_view_exercise_recently_date"
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/text_view_user_recently" />
 
                     <TextView
                         android:id="@+id/text_view_exercise_recently_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
                         android:layout_marginStart="10dp"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="30dp"
                         android:text="최근 운동 정보"
-                        app:layout_constraintTop_toBottomOf="@id/text_view_exercise_recently_date"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/text_view_exercise_recently_date" />
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -124,109 +119,118 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/text_view_exercise_recently_name"
-                        >
+                        app:layout_constraintTop_toBottomOf="@id/text_view_exercise_recently_name">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
                                 android:layout_height="180dp"
-                                android:layout_weight="1"
-                                >
+                                android:layout_weight="1">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:orientation="vertical"
-                                    >
+                                    android:orientation="vertical">
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1" />
 
                                     <TextView
-                                        android:id="@+id/text_view_exercise_info1"
+                                        android:id="@+id/text_view_exercise_info"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
                                         android:text=""
-                                        android:textColor="@color/black"/>
+                                        android:textColor="@color/black" />
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1" />
+
                                     <TextView
-                                        android:id="@+id/text_view_exercise_info2"
+                                        android:id="@+id/text_view_exercise_info_second"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
                                         android:text=""
-                                        android:textColor="@color/black"/>
+                                        android:textColor="@color/black" />
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1" />
+
                                     <TextView
-                                        android:id="@+id/text_view_exercise_info3"
+                                        android:id="@+id/text_view_exercise_info_third"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
                                         android:text=""
-                                        android:textColor="@color/black"/>
+                                        android:textColor="@color/black" />
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1" />
+
                                     <TextView
-                                        android:id="@+id/text_view_exercise_info4"
+                                        android:id="@+id/text_view_exercise_info_fourth"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
                                         android:text=""
-                                        android:textColor="@color/black"/>
+                                        android:textColor="@color/black" />
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1" />
+
                                     <TextView
-                                        android:id="@+id/text_view_exercise_info5"
+                                        android:id="@+id/text_view_exercise_info_fifth"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
                                         android:text=""
-                                        android:textColor="@color/black"/>
+                                        android:textColor="@color/black" />
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1" />
+
                                     <TextView
-                                        android:id="@+id/text_view_exercise_info6"
+                                        android:id="@+id/text_view_exercise_info_sixth"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginEnd="10dp"
                                         android:text=""
-                                        android:textColor="@color/black"/>
+                                        android:textColor="@color/black" />
+
                                     <Space
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -234,36 +238,22 @@
 
                                 </LinearLayout>
 
-<!--                    <androidx.viewpager2.widget.ViewPager2-->
-<!--                        android:id="@+id/view_pager"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="180dp"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        android:layout_marginStart="2dp"-->
-<!--                        android:layout_marginEnd="2dp"-->
-<!--                        android:background="@drawable/rectangle_radius"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"/>-->
-
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
                                 android:layout_height="180dp"
-                                android:layout_weight="1"
-                                >
+                                android:layout_weight="1">
 
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pieChart"
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        >
-                    </com.github.mikephil.charting.charts.PieChart>
+                                <com.github.mikephil.charting.charts.PieChart
+                                    android:id="@+id/pieChart"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="180dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"></com.github.mikephil.charting.charts.PieChart>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -279,15 +269,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/home_upper_text"
                     android:textColor="@color/color_222222"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/text_view_user_info_box"
                     app:layout_constraintStart_toStartOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/text_view_user_info_box" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -295,147 +284,145 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_view_home_upper"
-                    >
+                    app:layout_constraintTop_toBottomOf="@id/text_view_home_upper">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                <!-- 벤치프레스 -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/bench_box"
-                        android:layout_width="0dp"
-                        android:layout_height="160dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_radius">
+                        <!-- 벤치프레스 -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/bench_box"
+                            android:layout_width="0dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rectangle_radius">
 
-                    <ImageView
-                        android:id="@+id/image_view_bench"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/custom_lower_body"
-                        android:clipToOutline="true"
-                        android:gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/bench_press"
-                        app:layout_constraintTop_toTopOf="@id/bench_box"
-                        app:layout_constraintBottom_toBottomOf="@id/bench_box"
-                        app:layout_constraintStart_toStartOf="@id/bench_box"
-                        app:layout_constraintEnd_toEndOf="@id/bench_box"
-                        android:textColor="@color/white" />
+                            <ImageView
+                                android:id="@+id/image_view_bench"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/custom_lower_body"
+                                android:clipToOutline="true"
+                                android:gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/bench_press"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/bench_box"
+                                app:layout_constraintEnd_toEndOf="@id/bench_box"
+                                app:layout_constraintStart_toStartOf="@id/bench_box"
+                                app:layout_constraintTop_toTopOf="@id/bench_box" />
 
-                    <TextView
-                        android:id="@+id/text_view_bench"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="12sp"
-                        android:text="@string/text_view_bench"
-                        app:layout_constraintTop_toBottomOf="@id/image_view_bench"
-                        app:layout_constraintStart_toStartOf="@id/bench_box"
-                        app:layout_constraintEnd_toEndOf="@id/bench_box"
-                        android:textColor="@color/color_222222" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/text_view_bench"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/text_view_bench"
+                                android:textColor="@color/color_222222"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="@id/bench_box"
+                                app:layout_constraintStart_toStartOf="@id/bench_box"
+                                app:layout_constraintTop_toBottomOf="@id/image_view_bench" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- 랫풀다운 -->
+                        <!-- 랫풀다운 -->
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/latpulldown_box"
-                        android:layout_width="0dp"
-                        android:layout_height="160dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_radius">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/latpulldown_box"
+                            android:layout_width="0dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rectangle_radius">
 
-                <ImageView
-                    android:id="@+id/image_view_latpulldown"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@drawable/custom_lower_body"
-                    android:clipToOutline="true"
-                    android:gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/latpulldown"
-                    app:layout_constraintTop_toTopOf="@id/latpulldown_box"
-                    app:layout_constraintBottom_toBottomOf="@id/latpulldown_box"
-                    app:layout_constraintStart_toStartOf="@id/latpulldown_box"
-                    app:layout_constraintEnd_toEndOf="@id/latpulldown_box"
-                    android:textColor="@color/white" />
+                            <ImageView
+                                android:id="@+id/image_view_latpulldown"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/custom_lower_body"
+                                android:clipToOutline="true"
+                                android:gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/latpulldown"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/latpulldown_box"
+                                app:layout_constraintEnd_toEndOf="@id/latpulldown_box"
+                                app:layout_constraintStart_toStartOf="@id/latpulldown_box"
+                                app:layout_constraintTop_toTopOf="@id/latpulldown_box" />
 
-                <TextView
-                    android:id="@+id/text_view_latpulldown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="12sp"
-                    android:text="@string/text_view_latpulldown"
-                    app:layout_constraintTop_toBottomOf="@id/image_view_latpulldown"
-                    app:layout_constraintStart_toStartOf="@id/latpulldown_box"
-                    app:layout_constraintEnd_toEndOf="@id/latpulldown_box"
-                    android:textColor="@color/color_222222" />
+                            <TextView
+                                android:id="@+id/text_view_latpulldown"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/text_view_latpulldown"
+                                android:textColor="@color/color_222222"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="@id/latpulldown_box"
+                                app:layout_constraintStart_toStartOf="@id/latpulldown_box"
+                                app:layout_constraintTop_toBottomOf="@id/image_view_latpulldown" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- 인클라인 벤치프레스 -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/incline_box"
-                        android:layout_width="0dp"
-                        android:layout_height="160dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_radius">
+                        <!-- 인클라인 벤치프레스 -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/incline_box"
+                            android:layout_width="0dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rectangle_radius">
 
-                <ImageView
-                    android:id="@+id/image_view_incline"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@drawable/custom_lower_body"
-                    android:clipToOutline="true"
-                    android:gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/incline_bench"
-                    app:layout_constraintTop_toTopOf="@id/incline_box"
-                    app:layout_constraintBottom_toBottomOf="@id/incline_box"
-                    app:layout_constraintStart_toStartOf="@id/incline_box"
-                    app:layout_constraintEnd_toEndOf="@id/incline_box"
-                    android:textColor="@color/white" />
+                            <ImageView
+                                android:id="@+id/image_view_incline"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/custom_lower_body"
+                                android:clipToOutline="true"
+                                android:gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/incline_bench"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/incline_box"
+                                app:layout_constraintEnd_toEndOf="@id/incline_box"
+                                app:layout_constraintStart_toStartOf="@id/incline_box"
+                                app:layout_constraintTop_toTopOf="@id/incline_box" />
 
-                <TextView
-                    android:id="@+id/text_view_incline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="12sp"
-                    android:text="@string/text_view_incline"
-                    app:layout_constraintTop_toBottomOf="@id/image_view_incline"
-                    app:layout_constraintStart_toStartOf="@id/incline_box"
-                    app:layout_constraintEnd_toEndOf="@id/incline_box"
-                    android:textColor="@color/color_222222" />
+                            <TextView
+                                android:id="@+id/text_view_incline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/text_view_incline"
+                                android:textColor="@color/color_222222"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="@id/incline_box"
+                                app:layout_constraintStart_toStartOf="@id/incline_box"
+                                app:layout_constraintTop_toBottomOf="@id/image_view_incline" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -445,163 +432,161 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/home_lower_text"
                     android:textColor="@color/color_222222"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/text_view_upper_box"
                     app:layout_constraintStart_toStartOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/text_view_upper_box" />
 
                 <!-- 하체 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/text_view_lower_box"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_home_lower"
-                >
-
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/text_view_lower_box"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:orientation="horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/text_view_home_lower">
 
-                    <!-- 레그 익스텐션 -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/legex_box"
-                        android:layout_width="0dp"
-                        android:layout_height="160dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_radius">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageView
-                            android:id="@+id/image_view_legex"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/custom_lower_body"
-                            android:clipToOutline="true"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/leg_extention"
-                            app:layout_constraintTop_toTopOf="@id/legex_box"
-                            app:layout_constraintBottom_toBottomOf="@id/legex_box"
-                            app:layout_constraintStart_toStartOf="@id/legex_box"
-                            app:layout_constraintEnd_toEndOf="@id/legex_box"
-                            android:textColor="@color/white" />
+                        <!-- 레그 익스텐션 -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/legex_box"
+                            android:layout_width="0dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rectangle_radius">
 
-                        <TextView
-                            android:id="@+id/text_view_legex"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="12sp"
-                            android:text="@string/text_view_legex"
-                            app:layout_constraintTop_toBottomOf="@id/image_view_legex"
-                            app:layout_constraintStart_toStartOf="@id/legex_box"
-                            app:layout_constraintEnd_toEndOf="@id/legex_box"
-                            android:textColor="@color/color_222222" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <ImageView
+                                android:id="@+id/image_view_legex"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/custom_lower_body"
+                                android:clipToOutline="true"
+                                android:gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/leg_extention"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/legex_box"
+                                app:layout_constraintEnd_toEndOf="@id/legex_box"
+                                app:layout_constraintStart_toStartOf="@id/legex_box"
+                                app:layout_constraintTop_toTopOf="@id/legex_box" />
 
-                    <!-- 스쿼트 -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/squat_box"
-                        android:layout_width="0dp"
-                        android:layout_height="160dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_radius">
+                            <TextView
+                                android:id="@+id/text_view_legex"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/text_view_legex"
+                                android:textColor="@color/color_222222"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="@id/legex_box"
+                                app:layout_constraintStart_toStartOf="@id/legex_box"
+                                app:layout_constraintTop_toBottomOf="@id/image_view_legex" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ImageView
-                            android:id="@+id/image_view_squat"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/custom_lower_body"
-                            android:clipToOutline="true"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/squat"
-                            app:layout_constraintTop_toTopOf="@id/squat_box"
-                            app:layout_constraintBottom_toBottomOf="@id/squat_box"
-                            app:layout_constraintStart_toStartOf="@id/squat_box"
-                            app:layout_constraintEnd_toEndOf="@id/squat_box"
-                            android:textColor="@color/white" />
+                        <!-- 스쿼트 -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/squat_box"
+                            android:layout_width="0dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rectangle_radius">
 
-                        <TextView
-                            android:id="@+id/text_view_squat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="12sp"
-                            android:text="@string/text_view_squat"
-                            app:layout_constraintTop_toBottomOf="@id/image_view_squat"
-                            app:layout_constraintStart_toStartOf="@id/squat_box"
-                            app:layout_constraintEnd_toEndOf="@id/squat_box"
-                            android:textColor="@color/color_222222" />
+                            <ImageView
+                                android:id="@+id/image_view_squat"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/custom_lower_body"
+                                android:clipToOutline="true"
+                                android:gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/squat"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/squat_box"
+                                app:layout_constraintEnd_toEndOf="@id/squat_box"
+                                app:layout_constraintStart_toStartOf="@id/squat_box"
+                                app:layout_constraintTop_toTopOf="@id/squat_box" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/text_view_squat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/text_view_squat"
+                                android:textColor="@color/color_222222"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="@id/squat_box"
+                                app:layout_constraintStart_toStartOf="@id/squat_box"
+                                app:layout_constraintTop_toBottomOf="@id/image_view_squat" />
 
-                    <!-- 데드리프트 -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/dead_lift_box"
-                        android:layout_width="0dp"
-                        android:layout_height="160dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rectangle_radius">
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ImageView
-                            android:id="@+id/image_view_dead_lift"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/custom_lower_body"
-                            android:clipToOutline="true"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/dead_lift"
-                            app:layout_constraintTop_toTopOf="@id/dead_lift_box"
-                            app:layout_constraintBottom_toBottomOf="@id/dead_lift_box"
-                            app:layout_constraintStart_toStartOf="@id/dead_lift_box"
-                            app:layout_constraintEnd_toEndOf="@id/dead_lift_box"
-                            android:textColor="@color/white" />
+                        <!-- 데드리프트 -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/dead_lift_box"
+                            android:layout_width="0dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rectangle_radius">
 
-                        <TextView
-                            android:id="@+id/text_view_dead_lift"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="12sp"
-                            android:text="@string/text_view_dead"
-                            app:layout_constraintTop_toBottomOf="@id/image_view_dead_lift"
-                            app:layout_constraintStart_toStartOf="@id/dead_lift_box"
-                            app:layout_constraintEnd_toEndOf="@id/dead_lift_box"
-                            android:textColor="@color/color_222222" />
+                            <ImageView
+                                android:id="@+id/image_view_dead_lift"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/custom_lower_body"
+                                android:clipToOutline="true"
+                                android:gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/dead_lift"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="@id/dead_lift_box"
+                                app:layout_constraintEnd_toEndOf="@id/dead_lift_box"
+                                app:layout_constraintStart_toStartOf="@id/dead_lift_box"
+                                app:layout_constraintTop_toTopOf="@id/dead_lift_box" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/text_view_dead_lift"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/text_view_dead"
+                                android:textColor="@color/color_222222"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="@id/dead_lift_box"
+                                app:layout_constraintStart_toStartOf="@id/dead_lift_box"
+                                app:layout_constraintTop_toBottomOf="@id/image_view_dead_lift" />
 
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

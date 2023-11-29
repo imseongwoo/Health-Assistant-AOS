@@ -77,4 +77,10 @@
     <string name="text_view_email">이메일</string>
     <string name="text_view_password">비밀번호</string>
     <string name="text_sign_up">가입하기</string>
+    <string name="dead_lift">데드리프트</string>
+    <string name="leg_extension">레그 익스텐션</string>
+    <string name="squat">스쿼트</string>
+    <string name="lat_pull_down">랫 풀 다운</string>
+    <string name="incline_bench_press">인클라인 벤치프레스</string>
+    <string name="bench_press">벤치프레스</string>
 </resources>

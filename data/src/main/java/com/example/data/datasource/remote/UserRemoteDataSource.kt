@@ -1,5 +1,6 @@
 package com.example.data.datasource.remote
 
+import android.util.Log
 import com.example.data.datasource.UserDataSource
 import com.example.domain.auth.CommonUtil
 import com.example.domain.auth.FirebaseAuthManager
@@ -57,19 +58,22 @@ class UserRemoteDataSource : UserDataSource {
                         val date = shot.child("timestamp").getValue(String::class.java)
                         val count = shot.child("count").getValue(String::class.java)
                         val exercise = shot.child("exercise").getValue(String::class.java)
+
+                        Log.e("db","${exercise}")
                         entityArrayList.add(HealthEntity(uid, date, count, exercise))
+                        Log.e("dblist","${entityArrayList}")
 
                         when (exercise) {
                             "스쿼트", "레그 익스텐션", "데드리프트" -> countsLower += count?.toInt() ?: 0
                             "벤치프레스", "인클라인 벤치프레스" -> countsChest += count?.toInt() ?: 0
                             "랫 풀 다운" -> countsBack += count?.toInt() ?: 0
                         }
-                        onResult(NaviHomeEntity(countsLower,
-                            countsChest,
-                            countsBack,
-                            entityArrayList,
-                            isSuccess = true))
                     }
+                    onResult(NaviHomeEntity(countsLower,
+                        countsChest,
+                        countsBack,
+                        entityArrayList,
+                        isSuccess = true))
                 }
 
                 override fun onCancelled(error: DatabaseError) {

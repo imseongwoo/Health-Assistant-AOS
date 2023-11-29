@@ -23,9 +23,8 @@ class NaviViewModel @Inject constructor(
     private val _pieChartData = MutableLiveData<NaviHomeEntity>()
     val pieChartData: MutableLiveData<NaviHomeEntity> get() = _pieChartData
 
-    init {
-        getDbData(nowTimeStamp = "2023-03-19")
-    }
+    private val _recentWeightData = MutableLiveData<ArrayList<HealthEntity>>()
+    val recentWeightData:MutableLiveData<ArrayList<HealthEntity>> get() =_recentWeightData
 
     fun getDbData(nowTimeStamp: String): LiveData<MutableList<HealthEntity>> {
         val mutableData = MutableLiveData<MutableList<HealthEntity>>()
@@ -47,6 +46,7 @@ class NaviViewModel @Inject constructor(
             repository.getHomeWeightData {
                 if (it.isSuccess) {
                     _pieChartData.value = it
+                    _recentWeightData.value = it.entityArrayList
                 }
 
             }

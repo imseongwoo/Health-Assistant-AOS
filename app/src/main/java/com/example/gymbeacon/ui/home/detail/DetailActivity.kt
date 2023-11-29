@@ -170,11 +170,11 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         handlerThread.start()
         handler = Handler(handlerThread.looper)
 
-        paint.setColor(Color.YELLOW)
-        paint.strokeWidth = 5f      // 선 두께 설정
-
+        paint.apply {
+            setColor(Color.YELLOW)
+            strokeWidth = 5f
+        }
         initTTS()
-
 
         binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             override fun onSurfaceTextureAvailable(p0: SurfaceTexture, p1: Int, p2: Int) {
@@ -207,10 +207,10 @@ class DetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                     // 결과 값을 가져온 후 이미지 처리 및 그림 그리는 작업 수행
                     withContext(Dispatchers.Default) {
-                        var mutable = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                        var canvas = Canvas(mutable)
-                        var h = bitmap.height
-                        var w = bitmap.width
+                        val mutable = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                        val canvas = Canvas(mutable)
+                        val h = bitmap.height
+                        val w = bitmap.width
                         var x = 0
 
                         var circleDrawn = false
