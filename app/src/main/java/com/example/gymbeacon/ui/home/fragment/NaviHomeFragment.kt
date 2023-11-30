@@ -34,9 +34,6 @@ class NaviHomeFragment : Fragment() {
     private var auth: FirebaseAuth? = null
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference
-    private val entityArrayList = ArrayList<HealthEntity>()
-    private var recentlyDate: String? = "test"
-    private var maxDate: LocalDate? = null
     private val viewModel: NaviViewModel by viewModels()
 
     override fun onCreateView(
@@ -137,37 +134,14 @@ class NaviHomeFragment : Fragment() {
         }
 
         viewModel.recentWeightData.observe(viewLifecycleOwner) {
-            val recentDate = it.last().timestamp
-            var countDeadLift = 0
-            var countLegExtenstion = 0
-            var countSquat = 0
-            var countLatPullDown = 0
-            var countInclineBench = 0
-            var countBench = 0
-
-            for (recentEntity in it) {
-                if (recentEntity.timestamp == recentDate) {
-                    Log.e("datetest","${recentEntity}]")
-                    when(recentEntity.exercise) {
-                        getString(R.string.dead_lift) -> countDeadLift += recentEntity.count?.toInt() ?: 0
-                        getString(R.string.leg_extension) -> countLegExtenstion += recentEntity.count?.toInt() ?: 0
-                        getString(R.string.squat) -> countSquat += recentEntity.count?.toInt() ?: 0
-                        getString(R.string.lat_pull_down) -> countLatPullDown += recentEntity.count?.toInt() ?: 0
-                        getString(R.string.incline_bench_press) -> countInclineBench += recentEntity.count?.toInt() ?: 0
-                        getString(R.string.bench_press) -> countBench += recentEntity.count?.toInt() ?: 0
-                    }
-
-                }
-            }
-
             with(binding) {
-                textViewExerciseRecentlyDateSecond.text = recentDate
-                textViewExerciseInfo.text = "벤치프레스 : ${countBench}회"
-                textViewExerciseInfoSecond.text = "인클라인 벤치프레스 : ${countInclineBench}회"
-                textViewExerciseInfoThird.text = "랫 풀 다운 : ${countLatPullDown}회"
-                textViewExerciseInfoFourth.text = "스쿼트 : ${countSquat}회"
-                textViewExerciseInfoFifth.text = "데드리프트 : ${countDeadLift}회"
-                textViewExerciseInfoSixth.text = "레그 익스텐션 : ${countLegExtenstion}회"
+                textViewExerciseRecentlyDateSecond.text = it.recentDate
+                textViewExerciseInfo.text = "벤치프레스 : ${it.countBench}회"
+                textViewExerciseInfoSecond.text = "인클라인 벤치프레스 : ${it.countInclineBench}회"
+                textViewExerciseInfoThird.text = "랫 풀 다운 : ${it.countLatPullDown}회"
+                textViewExerciseInfoFourth.text = "스쿼트 : ${it.countSquat}회"
+                textViewExerciseInfoFifth.text = "데드리프트 : ${it.countDeadLift}회"
+                textViewExerciseInfoSixth.text = "레그 익스텐션 : ${it.countLegExtenstion}회"
             }
         }
 
