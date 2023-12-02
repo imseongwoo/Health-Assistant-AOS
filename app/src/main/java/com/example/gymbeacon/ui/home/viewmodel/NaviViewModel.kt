@@ -9,6 +9,7 @@ import com.example.data.model.WeightData
 import com.example.domain.model.HealthEntity
 import com.example.domain.model.NaviHomeEntity
 import com.example.domain.repository.NaviRepository
+import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,8 +21,8 @@ class NaviViewModel @Inject constructor(
     val dbData = MutableLiveData<MutableList<HealthEntity>>()
     val exerciseCountMapLiveData = MutableLiveData<MutableMap<String, Int>>()
 
-    private val _pieChartData = MutableLiveData<NaviHomeEntity>()
-    val pieChartData: MutableLiveData<NaviHomeEntity> get() = _pieChartData
+    private val _pieChartData = MutableLiveData<ArrayList<PieEntry>>()
+    val pieChartData: MutableLiveData<ArrayList<PieEntry>> get() = _pieChartData
 
     private val _recentWeightData = MutableLiveData<WeightData>()
     val recentWeightData: MutableLiveData<WeightData> get() = _recentWeightData
@@ -45,12 +46,25 @@ class NaviViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getHomeWeightData {
                 if (it.isSuccess) {
-                    _pieChartData.value = it
+                    _pieChartData.value = getPieData(it)
                     _recentWeightData.value = getRecentWeightData(it.entityArrayList)
-
                 }
             }
         }
+    }
+
+    fun getPieData(data: NaviHomeEntity): ArrayList<PieEntry> {
+        val pieEntryArrayList = ArrayList<PieEntry>()
+        if (data.countsBack != 0) {
+            pieEntryArrayList.add(PieEntry(data.countsBack.toFloat(), "등"))
+        }
+        if (data.countsLower != 0) {
+            pieEntryArrayList.add(PieEntry(data.countsLower.toFloat(), "하체"))
+        }
+        if (data.countsUpper != 0) {
+            pieEntryArrayList.add(PieEntry(data.countsUpper.toFloat(), "가슴"))
+        }
+        return pieEntryArrayList
     }
 
     fun getRecentWeightData(data: ArrayList<HealthEntity>): WeightData {

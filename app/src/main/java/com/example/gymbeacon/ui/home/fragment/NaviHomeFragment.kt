@@ -89,47 +89,34 @@ class NaviHomeFragment : Fragment() {
     private fun subscribe() {
         with(viewModel) {
             pieChartData.observe(viewLifecycleOwner) {
-                val pieEntryArrayList = ArrayList<PieEntry>()
-                if (it.isSuccess) {
-                    Log.e("data","${it}")
-                    with(binding.pieChart) {
-                        setUsePercentValues(true)
-                        animateXY(1000, 1000)
+                with(binding.pieChart) {
+                    setUsePercentValues(true)
+                    animateXY(1000, 1000)
 
-                        if (it.countsBack != 0) {
-                            pieEntryArrayList.add(PieEntry(it.countsBack.toFloat(), "등"))
-                        }
-                        if (it.countsLower != 0) {
-                            pieEntryArrayList.add(PieEntry(it.countsLower.toFloat(), "하체"))
-                        }
-                        if (it.countsUpper != 0) {
-                            pieEntryArrayList.add(PieEntry(it.countsUpper.toFloat(), "가슴"))
-                        }
+                    val pieDataSet = PieDataSet(it, "")
+                    val colorsPie = listOf(
+                        Color.rgb(110, 87, 233),
+                        Color.rgb(2, 204, 204),
+                        Color.rgb(233, 93, 132)
+                    )
 
-                        val pieDataSet = PieDataSet(pieEntryArrayList, "")
-                        val colorsPie = listOf(
-                            Color.rgb(110, 87, 233),
-                            Color.rgb(2, 204, 204),
-                            Color.rgb(233, 93, 132)
-                        )
-
-                        pieDataSet.apply {
-                            colors = colorsPie
-                            valueTextSize = 14f
-                            valueTextColor = Color.BLACK
-                            sliceSpace = 5f
-                        }
-                        val pieData = PieData(pieDataSet)
-                        pieDataSet.valueFormatter = PercentFormatter(binding.pieChart)
-
-                        val des = Description()
-                        des.text = ""
-                        description = des
-
-                        data = pieData
-
+                    pieDataSet.apply {
+                        colors = colorsPie
+                        valueTextSize = 14f
+                        valueTextColor = Color.BLACK
+                        sliceSpace = 5f
                     }
+                    val pieData = PieData(pieDataSet)
+                    pieDataSet.valueFormatter = PercentFormatter(binding.pieChart)
+
+                    val des = Description()
+                    des.text = ""
+                    description = des
+
+                    data = pieData
+
                 }
+
             }
         }
 
