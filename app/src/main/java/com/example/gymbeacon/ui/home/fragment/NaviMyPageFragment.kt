@@ -101,10 +101,6 @@ class NaviMyPageFragment : Fragment() {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
 
         with(binding) {
-//            chartBtn.setOnClickListener {
-//                goToChartActivity()
-//            }
-
         //  실시간 DB 참조 위치(health/momentum) 설정
             CommonUtil.myRef.orderByChild("uid").equalTo(CommonUtil.mAuth.uid)
                 .addValueEventListener(object : ValueEventListener {
@@ -303,65 +299,12 @@ class NaviMyPageFragment : Fragment() {
 
                         binding.pieChart.animateXY(1000, 1000)
                         binding.pieChart.setUsePercentValues(true)
-                        // 파이 차트//////////////////////////////////////////////
-
-
-                    } //onDataChange
-
-                    override fun onCancelled(error: DatabaseError) {} //onCancelled
-                }) //addValueEventListener
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
 
         }
 
-    }
-
-    fun setData(year: Int, month: Int, dayOfMonth: Int) {
-        var customMonth = ""
-        if (month < 10) {
-            customMonth = "0" + month.toString()
-        } else {
-            customMonth = month.toString()
-        }
-        val nowTimeStamp = year.toString() + "-" + customMonth + "-" + dayOfMonth.toString()
-        val sumCount = mutableListOf<Int>()
-
-        viewModel.getDbData(nowTimeStamp)
-        var exerciseCountMap = mutableMapOf<String, Int>()
-        exerciseCountMap = viewModel.getExerciseCountMap()
-
-    }
-
-    fun goToChartActivity() {
-        Intent(activity, ChartActivity::class.java).also { startActivity(it) }
-    }
-
-    fun fillDateCounts(
-        barChart: BarChart,
-        dateCountsDataArrayList: ArrayList<DateCountsData>,
-        labelsNames: ArrayList<String>,
-        barEntryArrayList: ArrayList<BarEntry?>?
-    ) {
-        for (i in dateCountsDataArrayList.indices) {
-            var date = dateCountsDataArrayList[i].date
-            var counts = dateCountsDataArrayList[i].counts
-
-            barEntryArrayList?.add(BarEntry(i.toFloat(), counts.toFloat()))
-            labelsNames.add(date)
-        }
-
-        val barDataSet = BarDataSet(barEntryArrayList, "날짜별 부위별 운동 개수")
-        barDataSet.valueFormatter = CountValueFormatter()
-
-        barDataSet.color = Color.rgb(31, 120, 180)
-        val description = Description()
-        description.text = "날짜"
-        barChart.description = description
-        val barData = BarData(barDataSet)
-        barChart.data = barData
-        barChart.let { graphInitSetting(it, labelsNames, dateCountsDataArrayList) } // 차트 기본 세팅
-
-        // 가장 최근에 추가한 데이터의 위치로 이동처리
-        barChart.moveViewToX(barDataSet.entryCount.toFloat())
     }
 
     fun graphInitSetting(barChart: BarChart, labelsNames: ArrayList<String>, dateCountsDataArrayList: ArrayList<DateCountsData>) {

@@ -1,7 +1,6 @@
 package com.example.gymbeacon.ui.home.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,29 +17,11 @@ import javax.inject.Inject
 class NaviViewModel @Inject constructor(
     private val repository: NaviRepository,
 ) : ViewModel() {
-    val dbData = MutableLiveData<MutableList<HealthEntity>>()
-    val exerciseCountMapLiveData = MutableLiveData<MutableMap<String, Int>>()
-
     private val _pieChartData = MutableLiveData<ArrayList<PieEntry>>()
     val pieChartData: MutableLiveData<ArrayList<PieEntry>> get() = _pieChartData
 
     private val _recentWeightData = MutableLiveData<WeightData>()
     val recentWeightData: MutableLiveData<WeightData> get() = _recentWeightData
-
-    fun getDbData(nowTimeStamp: String): LiveData<MutableList<HealthEntity>> {
-        val mutableData = MutableLiveData<MutableList<HealthEntity>>()
-        repository.getDatabaseData(nowTimeStamp).observeForever {
-            mutableData.value = it
-            dbData.value = it
-            Log.d("data", "${it}")
-        }
-        return mutableData
-    }
-
-    fun getExerciseCountMap(): MutableMap<String, Int> {
-        exerciseCountMapLiveData.value = repository.getExerciseCountMap()
-        return repository.getExerciseCountMap()
-    }
 
     fun getHomeWeightData() {
         viewModelScope.launch {

@@ -71,34 +71,6 @@ class NaviCalendarFragment : Fragment() {
             calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
                 setData(year, month + 1, dayOfMonth)
                 textViewExerciseVideo.setText("${month+1}.${dayOfMonth} 운동")
-                viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
-                    val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
-
-                    for (healthEntity in healthEntities) {
-                        val exercise = healthEntity.exercise
-                        val count = healthEntity.count?.toIntOrNull() ?: 0
-
-                        if (exercise != null && exercise.isNotEmpty()) {
-                            val (sum, num) = exerciseCountMap.getOrDefault(exercise, Pair(0, 0))
-                            exerciseCountMap[exercise] = Pair(sum + count, num + 1)
-                        }
-                    }
-
-                    for ((exercise, countPair) in exerciseCountMap) {
-                        val (sum, num) = countPair
-                        val average = if (num > 0) sum / num else 0
-                        Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
-                    }
-
-                    viewPagerExerciseCountMap = exerciseCountMap
-
-//                    this@NaviCalendarFragment.viewPager = binding.viewPager
-//                    viewPager.adapter = MyPageViewPagerAdapter(exerciseCountMap)
-//                    viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-                }
-
-
             }
         }
     }
@@ -131,7 +103,6 @@ class NaviCalendarFragment : Fragment() {
                 // 8. 캘린더페이지 녹화 영상 이름에 운동이름 + 운동 횟수 : 우선도 낮음
                 val exerciseName = file.name.substringBeforeLast(" ").substringAfterLast("_")
                 val exerciseCount = file.name.substringBeforeLast(".mp4").substringAfterLast(" ")
-                //val exerciseNameCount = file.name.substringBeforeLast(".mp4").substringAfterLast("_")
                 Video(exerciseName, exerciseCount, file.path)
             }
 
@@ -152,7 +123,6 @@ class NaviCalendarFragment : Fragment() {
             }
 
         }
-        viewModel.getDbData(nowTimeStamp)
     }
 
     fun checkPermission() {
