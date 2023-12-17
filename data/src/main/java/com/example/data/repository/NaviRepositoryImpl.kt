@@ -1,17 +1,25 @@
-package com.example.gymbeacon.repository
+package com.example.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.gymbeacon.ui.common.CommonUtil
-import com.example.gymbeacon.model.HealthEntity
+import com.example.data.datasource.remote.UserRemoteDataSource
+import com.example.domain.auth.CommonUtil
+import com.example.domain.base.ErrorType
+import com.example.domain.base.RespResult
+import com.example.domain.model.HealthEntity
+import com.example.domain.model.NaviHomeEntity
+import com.example.domain.repository.NaviRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import javax.inject.Inject
 
-class NaviMyPageRepository {
+class NaviRepositoryImpl @Inject constructor(
+    private val userRemoteDataSource: UserRemoteDataSource
+) : NaviRepository{
     private val exerciseCountMap = mutableMapOf<String, Int>()
 
-    fun getDatabaseData(nowTimeStamp: String) : LiveData<MutableList<HealthEntity>> {
+    override fun getDatabaseData(nowTimeStamp: String) : LiveData<MutableList<HealthEntity>> {
 
         val mutableData = MutableLiveData<MutableList<HealthEntity>>()
         val exerciseCountMap = mutableMapOf<String, Int>()
@@ -42,13 +50,23 @@ class NaviMyPageRepository {
         return mutableData
     }
 
-    private fun setExerciseCountMap(map: MutableMap<String, Int>) {
+    override fun setExerciseCountMap(map: MutableMap<String, Int>) {
         for ((exercise,count) in map) {
             exerciseCountMap[exercise] = count
         }
     }
 
-    fun getExerciseCountMap(): MutableMap<String, Int> {
+    override fun getExerciseCountMap(): MutableMap<String, Int> {
         return exerciseCountMap
+    }
+
+    override suspend fun getHomeWeightData(onChanged: (NaviHomeEntity) -> Unit) {
+        return userRemoteDataSource.getTrainingData() { naviHomeEntity ->
+            if (naviHomeEntity.isSuccess){
+                onChanged(naviHomeEntity)
+                //RespResult.Success(naviHomeEntity.isSuccess)
+            }else {
+            }
+        }
     }
 }

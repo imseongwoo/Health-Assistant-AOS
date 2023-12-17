@@ -9,29 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.Button
-import android.widget.CompoundButton
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.gymbeacon.R
 import com.example.gymbeacon.ViewModelFactory
-import com.example.gymbeacon.databinding.FragmentNaviMypageBinding
 import com.example.gymbeacon.databinding.FragmentPartChartBinding
 import com.example.gymbeacon.ui.chart.DateCountsData
 import com.example.gymbeacon.ui.chart.MyMarkerView
-import com.example.gymbeacon.ui.common.CommonUtil
-import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
+import com.example.domain.auth.CommonUtil
+import com.example.gymbeacon.ui.home.viewmodel.NaviViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -41,7 +35,7 @@ import java.util.*
 
 class PartChartFragment : Fragment() {
     lateinit var binding: FragmentPartChartBinding
-    private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: NaviViewModel by viewModels { ViewModelFactory() }
 
     private var selectedButton: Button? = null
 

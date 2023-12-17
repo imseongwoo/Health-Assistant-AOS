@@ -4,45 +4,54 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.example.gymbeacon.R
 import com.example.gymbeacon.databinding.ActivitySignUpBinding
 import com.example.gymbeacon.ui.home.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-    var auth : FirebaseAuth? = null
+    val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up)
-        auth = FirebaseAuth.getInstance()
+        binding.vm = viewModel
+        subscribe()
+
         with(binding) {
             buttonSignUp.setOnClickListener {
-                signUp()
+                viewModel.signUp()
             }
         }
     }
 
-    fun signUp() {
-        auth?.createUserWithEmailAndPassword(binding.editTextId.text.toString(),binding.editTextPassword.text.toString())
-            ?.addOnCompleteListener {
-                    task ->
-                if(task.isSuccessful) {
-                    goHomeActivity(task.result?.user)
-                } else if(task.exception?.message.isNullOrEmpty()) {
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this,"이미 회원가입 된 계정입니다.", Toast.LENGTH_SHORT).show()
+    fun goHomeActivity() {
+        Intent(this, HomeActivity::class.java).also { startActivity(it) }
+    }
+
+    fun subscribe() {
+        with(viewModel) {
+            signUpState.observe(this@SignUpActivity) {
+                if (it != null) {
+                    if (it.isSuccess) {
+                        goHomeActivity()
+                    } else {
+                        if (it.errorMessage.isNotEmpty()) {
+                            showToast(it.errorMessage)
+                        }
+                    }
                 }
             }
+        }
     }
 
-    fun goHomeActivity(user: FirebaseUser?) {
-        if (user != null) {
-            Intent(this, HomeActivity::class.java).also { startActivity(it) }
-        }
+    fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

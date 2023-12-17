@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="vm"
+            type="com.example.gymbeacon.ui.signup.SignUpViewModel" />
 
     </data>
 
@@ -48,6 +51,7 @@
                 android:layout_marginHorizontal="63dp"
                 android:textColorHint="@color/color_c4c4c4"
                 android:textSize="12sp"
+                android:text="@={vm.account}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sign_up_id_text_view"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -70,6 +74,7 @@
                 android:layout_marginHorizontal="63dp"
                 android:textColorHint="@color/color_c4c4c4"
                 android:textSize="12sp"
+                android:text="@={vm.password}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sign_up_password_text_view"
                 app:layout_constraintStart_toStartOf="parent" />

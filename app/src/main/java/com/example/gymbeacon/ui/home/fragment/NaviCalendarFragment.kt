@@ -2,6 +2,7 @@ package com.example.gymbeacon.ui.home.fragment
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -24,18 +25,16 @@ import com.example.gymbeacon.databinding.FragmentNaviCalendarBinding
 import com.example.gymbeacon.model.Video
 import com.example.gymbeacon.ui.common.VideoPlayerActivity
 import com.example.gymbeacon.ui.home.adapter.VideoAdapter
-import com.example.gymbeacon.ui.home.viewmodel.NaviMyPageViewModel
+import com.example.gymbeacon.ui.home.viewmodel.NaviViewModel
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NaviCalendarFragment : Fragment() {
     lateinit var binding: FragmentNaviCalendarBinding
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerExerciseCountMap: MutableMap<String, Pair<Int, Int>>
-    private val viewModel: NaviMyPageViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: NaviViewModel by viewModels { ViewModelFactory() }
     private lateinit var videoAdapter: VideoAdapter
 
     private val requestPermissionLauncher =
@@ -59,7 +58,7 @@ class NaviCalendarFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         checkPermission()
 
         val currentDate = Calendar.getInstance().time
@@ -72,34 +71,6 @@ class NaviCalendarFragment : Fragment() {
             calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
                 setData(year, month + 1, dayOfMonth)
                 textViewExerciseVideo.setText("${month+1}.${dayOfMonth} 운동")
-                viewModel.dbData.observe(viewLifecycleOwner) { healthEntities ->
-                    val exerciseCountMap = mutableMapOf<String, Pair<Int, Int>>()
-
-                    for (healthEntity in healthEntities) {
-                        val exercise = healthEntity.exercise
-                        val count = healthEntity.count?.toIntOrNull() ?: 0
-
-                        if (exercise != null && exercise.isNotEmpty()) {
-                            val (sum, num) = exerciseCountMap.getOrDefault(exercise, Pair(0, 0))
-                            exerciseCountMap[exercise] = Pair(sum + count, num + 1)
-                        }
-                    }
-
-                    for ((exercise, countPair) in exerciseCountMap) {
-                        val (sum, num) = countPair
-                        val average = if (num > 0) sum / num else 0
-                        Log.d("NaviMyPage", "$exercise: total=$sum, count=$num, average=$average")
-                    }
-
-                    viewPagerExerciseCountMap = exerciseCountMap
-
-//                    this@NaviCalendarFragment.viewPager = binding.viewPager
-//                    viewPager.adapter = MyPageViewPagerAdapter(exerciseCountMap)
-//                    viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-                }
-
-
             }
         }
     }
@@ -132,7 +103,6 @@ class NaviCalendarFragment : Fragment() {
                 // 8. 캘린더페이지 녹화 영상 이름에 운동이름 + 운동 횟수 : 우선도 낮음
                 val exerciseName = file.name.substringBeforeLast(" ").substringAfterLast("_")
                 val exerciseCount = file.name.substringBeforeLast(".mp4").substringAfterLast(" ")
-                //val exerciseNameCount = file.name.substringBeforeLast(".mp4").substringAfterLast("_")
                 Video(exerciseName, exerciseCount, file.path)
             }
 
@@ -153,7 +123,6 @@ class NaviCalendarFragment : Fragment() {
             }
 
         }
-        viewModel.getDbData(nowTimeStamp)
     }
 
     fun checkPermission() {
